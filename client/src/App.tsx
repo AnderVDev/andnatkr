@@ -4,7 +4,8 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-import LoginPage from "./scenes/loginPage/index";
+import LoginPage from "./scenes/login/index";
+import Home from "./scenes/home/index";
 // import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
