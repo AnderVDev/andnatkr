@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+import Form from "./Form.tsx";
 
-type Props = {};
+// type Props = {};
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -26,7 +27,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to AlriuzBook, The Social Media Not for you!
+          Welcome to AndnaTkr a simple Finance Tracker!
         </Typography>
         <Form />
       </Box>
