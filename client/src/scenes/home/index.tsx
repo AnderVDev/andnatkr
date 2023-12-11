@@ -6,7 +6,6 @@ type Props = {};
 const Home = (props: Props) => {
   return (
     <>
-      <Navbar />
       <div>Home</div>
     </>
   );

@@ -6,6 +6,7 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import LoginPage from "./scenes/login/index";
 import Home from "./scenes/home/index";
+import Layout from "./scenes/layout";
 // import "./App.css";
 
 function App() {
@@ -22,7 +23,9 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/home" element={<Home />} />
+            <Route element={<Layout />}>
+              <Route path="/home" element={<Home />} />
+            </Route>
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
