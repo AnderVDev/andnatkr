@@ -4,11 +4,11 @@ import FlexBetween from "./FlexBetween";
 
 type Props = {};
 
-const StatBox = ({ title, value, increase, icon, description }) => {
+const StatBox = ({span, title, value, increase, icon, description }) => {
   const theme = useTheme();
   return (
     <Box
-      gridColumn="span 2"
+      gridColumn={`span ${span}` || "span 2"}
       gridRow="span 1"
       display="flex"
       flexDirection="column"
