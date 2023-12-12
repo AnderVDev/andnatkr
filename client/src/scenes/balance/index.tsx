@@ -1,4 +1,10 @@
-import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Header from "../../components/Header";
 import FlexBetween from "../../components/FlexBetween";
 import {
@@ -15,6 +21,8 @@ import {
 import StatBox from "../../components/StatBox";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
+import TodoList from "../../components/TodoList";
+import Modal from "../../components/Modal";
 
 type Props = {};
 
@@ -130,6 +138,7 @@ const Balance = () => {
         <Box
           gridColumn="span 8"
           gridRow="span 3"
+          borderRadius="0.55rem"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -164,10 +173,25 @@ const Balance = () => {
           />
         </Box>
         <Box
-         gridColumn="span 4"
-         gridRow="span 3"
+          gridColumn="span 4"
+          gridRow="span 3"
+          borderRadius="0.55rem"
+          sx={{ backgroundColor: theme.palette.background.alt }}
         >
-            TodoList
+          <FlexBetween>
+            <Typography
+              variant="h6"
+              sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
+            >
+              TodoList
+            </Typography>
+            <IconButton
+            //   onClick={<Modal HandleOpen={handleOpen}/>}
+            >
+              <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+            </IconButton>
+          </FlexBetween>
+          <TodoList />
         </Box>
       </Box>
       <Box
