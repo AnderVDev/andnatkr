@@ -38,7 +38,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
     <AppBar sx={{ position: "static", background: "none", boxShadow: "none" }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* LEFT SIDE */}
-        <FlexBetween>
+        <FlexBetween gap="1.2rem">
           <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <MenuIcon />
           </IconButton>
