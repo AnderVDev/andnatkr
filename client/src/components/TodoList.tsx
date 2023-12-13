@@ -40,6 +40,7 @@ const TodoList = () => {
     >
       {todoList.map((task) => (
         <ListItem
+        
           key={task.id}
           secondaryAction={
             <IconButton edge="end" aria-label="comments">
@@ -67,7 +68,6 @@ const TodoList = () => {
           </ListItemButton>
         </ListItem>
       ))}
-      <Divider />
     </List>
   );
 };
