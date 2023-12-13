@@ -22,6 +22,7 @@ import StatBox from "../../components/StatBox";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
+// import Dialog from "../../components/Dialog";
 import Modal from "../../components/Modal";
 
 type Props = {};
@@ -65,13 +66,13 @@ const Balance = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <FlexBetween>
-        <Header title="BALANCE" subtitle="Managing balance" />
+      <Header title="BALANCE" subtitle="Managing balance" />
+      {/* <FlexBetween>
 
         <IconButton sx={{ mr: "1.5rem" }}>
           <AddCircleOutlineOutlined sx={{ fontSize: "2rem" }} />
         </IconButton>
-      </FlexBetween>
+      </FlexBetween> */}
       {/* Main Grid */}
       <Box
         mt="20px"
@@ -167,6 +168,7 @@ const Balance = () => {
         >
           <DataGrid
             loading={false}
+            // loading={isLoading || !data}
             getRowId={() => {}}
             rows={(data && data.transactions) || []}
             columns={columns}
@@ -185,11 +187,11 @@ const Balance = () => {
             >
               TodoList
             </Typography>
-            <IconButton
-            //   onClick={<Modal HandleOpen={handleOpen}/>}
-            >
+            {/* <Dialog /> */}
+            <Modal />
+            {/* <IconButton>
               <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
-            </IconButton>
+            </IconButton> */}
           </FlexBetween>
           <TodoList />
         </Box>
