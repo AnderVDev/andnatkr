@@ -8,7 +8,8 @@ import LoginPage from "./scenes/login/index";
 import Home from "./scenes/home/index";
 import Layout from "./scenes/layout";
 import Balance from "./scenes/balance";
-// import "./App.css";
+import Transactions from "./scenes/transactions";
+
 
 function App() {
   const mode = "dark";
@@ -27,6 +28,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />
+              <Route path="/transactions" element={<Transactions />} />
             </Route>
           </Routes>
         </ThemeProvider>

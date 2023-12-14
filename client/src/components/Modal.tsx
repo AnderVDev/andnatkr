@@ -1,43 +1,93 @@
-import { useState } from "react";
-import { Box, Button, Typography, Modal } from "@mui/material";
+import {useState} from "react";
+import {
+  styled,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+import TodoForm from "./TodoForm";
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
 type Props = {};
 
-const Modal = ({ handleOpen }) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const Modal = () => {
+  const[open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Box>
-      <Modal
-        open={open}
+    <>
+      <IconButton onClick={handleClickOpen}>
+        <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+      </IconButton>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
+        Open dialog
+      </Button> */}
+      <BootstrapDialog
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="customized-dialog-title"
+        open={open}
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          New
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseOutlined />
+        </IconButton>
+        <DialogContent dividers>
+
+            <TodoForm />
+          {/* <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+            ac consectetur ac, vestibulum at eros.
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          <Typography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+            auctor.
           </Typography>
-        </Box>
-      </Modal>
-    </Box>
+          <Typography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
+            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
+            dui. Donec ullamcorper nulla non metus auctor fringilla.
+          </Typography> */}
+        </DialogContent>
+        {/* <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Save changes
+          </Button>
+        </DialogActions> */}
+      </BootstrapDialog>
+    </>
   );
 };
 
