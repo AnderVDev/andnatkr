@@ -9,6 +9,7 @@ import Home from "./scenes/home/index";
 import Layout from "./scenes/layout";
 import Balance from "./scenes/balance";
 import Transactions from "./scenes/transactions";
+import Overview from "./scenes/overview";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />
               <Route path="/transactions" element={<Transactions />} />
+              <Route path="/overview" element={<Overview />} />
             </Route>
           </Routes>
         </ThemeProvider>
