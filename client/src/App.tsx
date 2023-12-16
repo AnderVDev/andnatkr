@@ -13,6 +13,7 @@ import Overview from "./scenes/overview";
 import Operations from "./scenes/operations";
 import Mortgages from "./scenes/mortgages";
 import Performance from "./scenes/performance";
+import Dashboard from "./scenes/dashboard";
 
 function App() {
   const mode = "dark";
@@ -29,6 +30,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />
               <Route path="/transactions" element={<Transactions />} />

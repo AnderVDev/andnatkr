@@ -63,7 +63,7 @@ const Mortgages = (props: Props) => {
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
-        <Header title="Mortgages" subtitle="List of Transactions" />
+        <Header title="MORTGAGES" subtitle="List of Transactions" />
         <ModalMortgages />
       </FlexBetween>
       <Box
