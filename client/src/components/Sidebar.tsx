@@ -29,7 +29,7 @@ import {
   TrendingUpOutlined,
   PointOfSaleOutlined,
   PieChartOutlined,
-  ApartmentOutlined,
+  HomeWorkOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ const navItems = [
   },
   {
     text: "Properties",
-    icon: <ApartmentOutlined />,
+    icon: <HomeWorkOutlined />,
   },
   {
     text: "Breakdown",

@@ -67,9 +67,6 @@ const Transactions = () => {
        <FlexBetween>
       <Header title="TRANSACTIONS" subtitle="List of Transactions" />
       <ModalTransactions />
-        {/* <IconButton sx={{ mr: "1.5rem" }}>
-          <AddCircleOutlineOutlined sx={{ fontSize: "2rem" }} />
-        </IconButton> */}
       </FlexBetween>
       <Box
         mt="40px"

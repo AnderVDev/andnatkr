@@ -9,7 +9,7 @@ import Header from "../../components/Header";
 import FlexBetween from "../../components/FlexBetween";
 import {
   AddCircleOutlineOutlined,
-  Email,
+  ApartmentOutlined,
   PaidOutlined,
   SavingsOutlined,
   AccountBalanceWalletOutlined,
@@ -77,6 +77,25 @@ const Overview = () => {
       >
         {/* ROW 1 */}
         <StatBox
+          span="6"
+          title="506"
+          value="Depto. 619 (3B, 2B), Independencia, RM"
+          increase="+14%"
+          description="Since last month"
+          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="6"
+          title="Belisario Prats 1850"
+          value="Depto. 619 (1B, 1B), Independencia, RM"
+          increase="+14%"
+          description="Since last month"
+          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
+        />
+        
+        {/* ROW 2 */}
+  
+        <StatBox
           span="3"
           title="Balance"
           value="1000"
@@ -108,23 +127,7 @@ const Overview = () => {
           description="Since last month"
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
-        {/* ROW 2 */}
-        <StatBox
-          span="6"
-          title="Anderson"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
-          icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
-        />
-        <StatBox
-          span="6"
-          title="Ana"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
-          icon={<Person3Outlined sx={{ fontSize: "26px" }} />}
-        />
+        
 
         {/* Row3 */}
         <Box
