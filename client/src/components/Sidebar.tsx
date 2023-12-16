@@ -27,7 +27,7 @@ import {
   CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
-  PointOfSaleOutlined,
+  AccountBalanceWalletOutlined,
   PieChartOutlined,
   HomeWorkOutlined,
 } from "@mui/icons-material";
@@ -58,11 +58,11 @@ const navItems = [
   },
   {
     text: "Overview",
-    icon: <PointOfSaleOutlined />,
+    icon: <HomeWorkOutlined />,
   },
   {
-    text: "Properties",
-    icon: <HomeWorkOutlined />,
+    text: "Operations",
+    icon: <AccountBalanceWalletOutlined />,
   },
   {
     text: "Breakdown",

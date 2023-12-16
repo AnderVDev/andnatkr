@@ -10,6 +10,7 @@ import Layout from "./scenes/layout";
 import Balance from "./scenes/balance";
 import Transactions from "./scenes/transactions";
 import Overview from "./scenes/overview";
+import Operations from "./scenes/operations";
 
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
               <Route path="/balance" element={<Balance />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/overview" element={<Overview />} />
+              <Route path="/operations" element={<Operations />} />
+              {/* <Route path="/operations" element={<Operations />} /> */}
             </Route>
           </Routes>
         </ThemeProvider>
