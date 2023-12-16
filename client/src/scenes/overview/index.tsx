@@ -22,7 +22,6 @@ import StatBox from "../../components/StatBox";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
-// import Dialog from "../../components/Dialog";
 import Modal from "../../components/Modal";
 
 type Props = {};

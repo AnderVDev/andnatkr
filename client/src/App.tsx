@@ -12,7 +12,7 @@ import Transactions from "./scenes/transactions";
 import Overview from "./scenes/overview";
 import Operations from "./scenes/operations";
 import Mortgages from "./scenes/mortgages";
-
+import Performance from "./scenes/performance";
 
 function App() {
   const mode = "dark";
@@ -35,6 +35,7 @@ function App() {
               <Route path="/overview" element={<Overview />} />
               <Route path="/operations" element={<Operations />} />
               <Route path="/mortgages" element={<Mortgages />} />
+              <Route path="/performance" element={<Performance />} />
             </Route>
           </Routes>
         </ThemeProvider>
