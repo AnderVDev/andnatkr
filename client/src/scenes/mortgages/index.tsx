@@ -11,7 +11,7 @@ import {
   import StatBox from "../../components/StatBox";
   import { DataGrid } from "@mui/x-data-grid";
   import { useState } from "react";
-//   import ModalRealEstate from "./Modal";
+  import ModalMortgages from "./Modal";
 
 type Props = {};
 
@@ -64,7 +64,7 @@ const Mortgages = (props: Props) => {
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Header title="Mortgages" subtitle="List of Transactions" />
-        {/* <ModalRealEstate /> */}
+        <ModalMortgages />
       </FlexBetween>
       <Box
         mt="40px"
