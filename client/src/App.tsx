@@ -11,6 +11,7 @@ import Balance from "./scenes/balance";
 import Transactions from "./scenes/transactions";
 import Overview from "./scenes/overview";
 import Operations from "./scenes/operations";
+import Mortgages from "./scenes/mortgages";
 
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/overview" element={<Overview />} />
               <Route path="/operations" element={<Operations />} />
-              {/* <Route path="/operations" element={<Operations />} /> */}
+              <Route path="/mortgages" element={<Mortgages />} />
             </Route>
           </Routes>
         </ThemeProvider>

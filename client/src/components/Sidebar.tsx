@@ -30,6 +30,7 @@ import {
   AccountBalanceWalletOutlined,
   PieChartOutlined,
   HomeWorkOutlined,
+  MuseumOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -65,21 +66,17 @@ const navItems = [
     icon: <AccountBalanceWalletOutlined />,
   },
   {
-    text: "Breakdown",
-    icon: <TrendingUpOutlined />,
+    text: "Mortgages",
+    icon: <MuseumOutlined />,
   },
   // {
-  //   text: "Management",
-  //   icon: null,
+  //   text: "Breakdown",
+  //   icon: <PieChartOutlined />,
   // },
-  // {
-  //   text: "Admin",
-  //   icon: <AdminPanelSettingsOutlined />,
-  // },
-  // {
-  //   text: "Performance",
-  //   icon: <TrendingUpOutlined />,
-  // },
+  {
+    text: "Performance",
+    icon: <TrendingUpOutlined />,
+  },
 ];
 
 const Sidebar = ({

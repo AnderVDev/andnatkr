@@ -11,7 +11,7 @@ import {
   import StatBox from "../../components/StatBox";
   import { DataGrid } from "@mui/x-data-grid";
   import { useState } from "react";
-  import ModalRealEstate from "./Modal";
+//   import ModalRealEstate from "./Modal";
 
 type Props = {};
 
@@ -56,15 +56,15 @@ const columns = [
   },
 ];
 
-const Operations = (props: Props) => {
+const Mortgages = (props: Props) => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useState(false);
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
-        <Header title="OPERTATIONS" subtitle="List of Real estate administration Transactions" />
-        <ModalRealEstate />
+        <Header title="Mortgages" subtitle="List of Transactions" />
+        {/* <ModalRealEstate /> */}
       </FlexBetween>
       <Box
         mt="40px"
@@ -102,4 +102,4 @@ const Operations = (props: Props) => {
   );
 };
 
-export default Operations;
+export default Mortgages;

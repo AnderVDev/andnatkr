@@ -12,8 +12,6 @@ import {
 import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 import TransactionForm from "../../components/TransactionForm";
 
-
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
