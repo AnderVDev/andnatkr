@@ -1,0 +1,34 @@
+package com.andnatkr.server.domain.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name="users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private Role role;
+    private String avatar;
+    private String description;
+    private Timestamp TIMESTAMP;
+
+}
