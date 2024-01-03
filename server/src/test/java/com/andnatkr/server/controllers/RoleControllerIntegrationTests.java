@@ -76,11 +76,10 @@ public class RoleControllerIntegrationTests {
     public void testThatListRolesSuccessfullyReturnsListOfRole() throws Exception {
         Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         roleService.save(testRoleAdmin);
-        String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/roles")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(roleJson)
+
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(

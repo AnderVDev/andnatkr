@@ -22,12 +22,13 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static User createdTestUserA(){
+    public static User createdTestUserA(final Role role){
         return User.builder()
                 .firstName("Carlos")
                 .lastName("Estebanz")
                 .email("fake@email.com")
                 .password("test")
+                .role(role)
                 .avatar("avatar.jpg")
                 .description("Test user data A")
                 .build();

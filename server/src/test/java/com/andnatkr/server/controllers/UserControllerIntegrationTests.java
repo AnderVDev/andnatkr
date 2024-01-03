@@ -25,14 +25,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class UserControllerIntegrationTests {
 
     private final UserService userService;
-    private final RoleService roleService;
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public UserControllerIntegrationTests(UserService userService, RoleService roleService, MockMvc mockMvc) {
+    public UserControllerIntegrationTests(UserService userService, MockMvc mockMvc) {
         this.userService = userService;
-        this.roleService = roleService;
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
     }
@@ -40,19 +38,61 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatCreateUserSuccessfullyReturnsHttp201Created() throws Exception{
-        Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
-        Role savedRole = roleService.save(testRoleAdmin);
-
-        User testUser = TestDataUtil.createdTestUserA();
-
+        User testUser = TestDataUtil.createdTestUserA(null);
         String userJson = objectMapper.writeValueAsString(testUser);
-
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated()
+        );
+    }
+
+    @Test
+    public void testThatCreateUserSuccessfullyReturnsSavedUser() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA(null);
+        String userJson = objectMapper.writeValueAsString(testUser);
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".firstName").value(testUser.getFirstName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".lastName").value(testUser.getLastName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".email").value(testUser.getEmail())
+        );
+    }
+
+    @Test
+    public void testThatListUsersReturnsHttpStatus200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListUsersSuccessfullyReturnsListOfUsers() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA(null);
+        userService.save(testUser);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].firstName").value(testUser.getFirstName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].lastName").value(testUser.getLastName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].email").value(testUser.getEmail())
         );
     }
 }

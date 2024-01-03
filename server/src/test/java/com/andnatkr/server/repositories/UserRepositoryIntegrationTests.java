@@ -34,6 +34,7 @@ public class UserRepositoryIntegrationTests {
         Optional<User> result = underTest.findById(user.getId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(user);
+
     }
 
 }
