@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class RealEstatesController {
+public class RealEstateController {
     private final RealEstateService realEstateService;
     private final Mapper<RealEstate, RealEstateDto> realEstateMapper;
 
-    public RealEstatesController(RealEstateService realEstateService, Mapper<RealEstate, RealEstateDto> realEstateMapper) {
+    public RealEstateController(RealEstateService realEstateService, Mapper<RealEstate, RealEstateDto> realEstateMapper) {
         this.realEstateService = realEstateService;
         this.realEstateMapper = realEstateMapper;
     }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "finance_statements")
-public class FinanceStatements {
+public class FinanceStatement {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "finance_statements_id_seq")
     private Integer id;

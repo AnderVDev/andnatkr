@@ -27,7 +27,7 @@ public class RealEstateMgmt {
 
     @ManyToOne
     @JoinColumn(name = "finance_statement_id")
-    private FinanceStatements financeStatements;
+    private FinanceStatement financeStatement;
 
     @ManyToOne
     @JoinColumn(name = "real_estate_id")
