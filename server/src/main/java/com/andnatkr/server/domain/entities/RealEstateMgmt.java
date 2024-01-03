@@ -21,17 +21,17 @@ public class RealEstateMgmt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "finance_statement_id")
     private FinanceStatements financeStatements;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "real_estate_id")
-    private RealEstates realEstates;
+    private RealEstate realEstate;
 
     private Integer amount;
     private String month;
