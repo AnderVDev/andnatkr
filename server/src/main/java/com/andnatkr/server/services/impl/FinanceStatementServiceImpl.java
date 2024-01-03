@@ -1,7 +1,7 @@
 package com.andnatkr.server.services.impl;
 
 import com.andnatkr.server.domain.entities.FinanceStatement;
-import com.andnatkr.server.repositories.FinanceStatementsRepository;
+import com.andnatkr.server.repositories.FinanceStatementRepository;
 import com.andnatkr.server.services.FinanceStatementService;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +11,21 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class FinanceStatementServiceImpl implements FinanceStatementService {
-    private final FinanceStatementsRepository financeStatementsRepository;
+    private final FinanceStatementRepository financeStatementRepository;
 
-    public FinanceStatementServiceImpl(FinanceStatementsRepository financeStatementsRepository) {
-        this.financeStatementsRepository = financeStatementsRepository;
+    public FinanceStatementServiceImpl(FinanceStatementRepository financeStatementRepository) {
+        this.financeStatementRepository = financeStatementRepository;
     }
 
     @Override
     public FinanceStatement save(FinanceStatement financeStatement) {
-        return financeStatementsRepository.save(financeStatement);
+        return financeStatementRepository.save(financeStatement);
     }
 
     @Override
     public List<FinanceStatement> findAll() {
         return StreamSupport.stream(
-                financeStatementsRepository
+                financeStatementRepository
                         .findAll()
                         .spliterator(),
                 false
