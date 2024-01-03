@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -25,5 +26,6 @@ public class UserDto {
     private Role role;
     private String avatar;
     private String description;
-    private Timestamp TIMESTAMP;
+    private Date createdAt;
+    private Date updatedAt;
 }

@@ -1,7 +1,6 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
-import com.andnatkr.server.domain.dto.RoleDto;
 import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.services.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +35,7 @@ public class RoleControllerIntegrationTests {
 
     @Test
     public void testThatCreateRoleSuccessfullyReturnsHttp201Created() throws Exception{
-        Role testRoleAdmin = TestDataUtil.createdTestUserAdmin();
+        Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/roles")
@@ -49,7 +48,7 @@ public class RoleControllerIntegrationTests {
 
     @Test
     public void testThatCreateRolesSuccessfullyReturnsSavedRole() throws Exception {
-        Role testRoleAdmin = TestDataUtil.createdTestUserAdmin();
+        Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/roles")
@@ -75,7 +74,7 @@ public class RoleControllerIntegrationTests {
     }
     @Test
     public void testThatListRolesSuccessfullyReturnsListOfRole() throws Exception {
-        Role testRoleAdmin = TestDataUtil.createdTestUserAdmin();
+        Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         roleService.save(testRoleAdmin);
         String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(

@@ -28,8 +28,8 @@ public class UserRepositoryIntegrationTests {
 
     @Test
     public void testThatUserCanBeCreatedAndRecalled(){
-        Role role = TestDataUtil.createdTestUserAdmin();
-        User user = TestDataUtil.createdTestUserA(role);
+        Role role = TestDataUtil.createdTestRoleAdmin();
+        User user = TestDataUtil.createdTestUserB(role);
         underTest.save(user);
         Optional<User> result = underTest.findById(user.getId());
         assertThat(result).isPresent();

@@ -25,7 +25,7 @@ public class RoleController {
     }
 
     @PostMapping(path ="/roles")
-    public ResponseEntity<RoleDto> createRole(@RequestBody RoleDto role){
+    public ResponseEntity<RoleDto> createdRole(@RequestBody RoleDto role){
         Role roleEntity = roleMapper.mapFrom(role);
         Role savedRoleEntity = roleService.save(roleEntity);
         return new ResponseEntity<>(
