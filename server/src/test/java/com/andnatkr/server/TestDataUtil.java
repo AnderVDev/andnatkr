@@ -11,8 +11,14 @@ public class TestDataUtil {
 
     public static Role createdTestUserAdmin(){
         return Role.builder()
-                .role_id(255)
+                .id(255)
                 .description("admin")
+                .build();
+    }
+    public static Role createdTestUserNonAdmin(){
+        return Role.builder()
+                .id(245)
+                .description("Non admin")
                 .build();
     }
 

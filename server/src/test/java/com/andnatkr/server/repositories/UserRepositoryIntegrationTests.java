@@ -3,7 +3,6 @@ package com.andnatkr.server.repositories;
 import com.andnatkr.server.TestDataUtil;
 import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
-import com.andnatkr.server.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
