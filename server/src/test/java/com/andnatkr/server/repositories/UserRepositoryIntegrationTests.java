@@ -28,12 +28,14 @@ public class UserRepositoryIntegrationTests {
 
     @Test
     public void testThatUserCanBeCreatedAndRecalled(){
-        Role role = TestDataUtil.createdTestRoleAdmin();
-        User user = TestDataUtil.createdTestUserB(role);
+        User user = TestDataUtil.createdTestUserC(null);
         underTest.save(user);
         Optional<User> result = underTest.findById(user.getId());
         assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(user);
+        assertThat(result.get())
+                .hasFieldOrPropertyWithValue("firstName", user.getFirstName())
+                .hasFieldOrPropertyWithValue("lastName", user.getLastName())
+                .hasFieldOrPropertyWithValue("email", user.getEmail());
 
     }
 

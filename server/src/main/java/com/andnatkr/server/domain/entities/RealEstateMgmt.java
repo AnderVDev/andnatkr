@@ -8,32 +8,36 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="users")
-public class User {
+@Table(name = "real_estate_management")
+public class RealEstateMgmt {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "finance_statement_id")
+    private FinanceStatements financeStatements;
 
-    private String avatar;
-    private String description;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "real_estate_id")
+    private RealEstates realEstates;
+
+    private Integer amount;
+    private String month;
+    private Integer year;
+    private String detail;
+    private String comments;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

@@ -3,8 +3,7 @@ package com.andnatkr.server;
 import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+
 
 public class TestDataUtil {
     public TestDataUtil() {}
@@ -25,7 +24,7 @@ public class TestDataUtil {
     public static User createdTestUserA(final Role role){
         return User.builder()
                 .firstName("Carlos")
-                .lastName("Estebanz")
+                .lastName("Esteban")
                 .email("fake@email.com")
                 .password("test")
                 .role(role)
