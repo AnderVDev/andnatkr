@@ -87,8 +87,11 @@ public class RoleController {
         if (!roleService.isExists(id)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        ResponseEntity<RoleDto> roleById = getRoleById(id);
+        RoleDto deletedRole = roleById.getBody();
         roleService.delete(id);
         return new ResponseEntity<>(
+                deletedRole,
                 HttpStatus.NO_CONTENT
         );
     }
