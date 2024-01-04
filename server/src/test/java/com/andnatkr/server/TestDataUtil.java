@@ -1,5 +1,7 @@
 package com.andnatkr.server;
 
+import com.andnatkr.server.domain.entities.FinanceStatement;
+import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
 
@@ -53,6 +55,24 @@ public class TestDataUtil {
                 .role(role)
                 .avatar("https://example.com/avatar.jpg")
                 .description("Enthusiastic about community engagement and discussions.")
+                .build();
+    }
+
+//    Finance Statement Dummy Data
+
+    public static FinanceStatement createdFinanceStatementA(){
+        return FinanceStatement.builder()
+                .id(1)
+                .description("INCOME")
+                .build();
+    }
+
+//    Real Estate Dummy Data
+    public static RealEstate createdRealEstateA(){
+        return RealEstate.builder()
+                .id(25)
+                .dep_number(777)
+                .description("3B / 2B")
                 .build();
     }
 }
