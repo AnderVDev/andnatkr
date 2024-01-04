@@ -5,16 +5,30 @@ import com.andnatkr.server.repositories.RealEstateMgmtRepository;
 import com.andnatkr.server.services.RealEstateMgmtService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
-    public final RealEstateMgmtRepository managementRepository;
+    public final RealEstateMgmtRepository mgmtRepository;
 
-    public RealEstateMgmtServiceImpl(RealEstateMgmtRepository managementRepository) {
-        this.managementRepository = managementRepository;
+    public RealEstateMgmtServiceImpl(RealEstateMgmtRepository mgmtRepository) {
+        this.mgmtRepository = mgmtRepository;
     }
 
     @Override
     public RealEstateMgmt save(RealEstateMgmt input) {
-        return managementRepository.save(input);
+        return mgmtRepository.save(input);
+    }
+
+    @Override
+    public List<RealEstateMgmt> findAll() {
+        return StreamSupport.stream(
+                mgmtRepository
+                        .findAll()
+                        .spliterator(),
+                false
+        ).collect(Collectors.toList());
     }
 }

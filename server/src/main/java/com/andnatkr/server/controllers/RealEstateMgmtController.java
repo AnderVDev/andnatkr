@@ -6,9 +6,13 @@ import com.andnatkr.server.mappers.Mapper;
 import com.andnatkr.server.services.RealEstateMgmtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class RealEstateMgmtController {
@@ -27,5 +31,12 @@ public class RealEstateMgmtController {
         return new ResponseEntity<>(
                 mgmtMapper.mapTo(savedInput),
                 HttpStatus.CREATED);
+    }
+    @GetMapping("/management")
+    public List<RealEstateMgmtDto> inputList(){
+        List<RealEstateMgmt> inputs = mgmtService.findAll();
+        return inputs.stream()
+                .map(mgmtMapper::mapTo)
+                .collect(Collectors.toList());
     }
 }
