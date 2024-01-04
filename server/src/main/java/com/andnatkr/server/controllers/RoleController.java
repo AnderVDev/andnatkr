@@ -6,12 +6,10 @@ import com.andnatkr.server.mappers.Mapper;
 import com.andnatkr.server.services.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,5 +37,59 @@ public class RoleController {
         return roles.stream()
                 .map( roleMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> getRoleById(@PathVariable("id") Integer id){
+        Optional<Role> foundRole = roleService.findOne(id);
+        return foundRole.map(roleEntity -> {
+            RoleDto roleDto = roleMapper.mapTo(roleEntity);
+            return new ResponseEntity<>(roleDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> fullUpdatedRole(
+            @PathVariable("id") Integer id,
+            @RequestBody RoleDto role
+    ){
+        if(!roleService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        role.setId(id);
+        Role roleEntity = roleMapper.mapFrom(role);
+        Role updatedRole = roleService.save(roleEntity);
+        return new ResponseEntity<>(
+                roleMapper.mapTo(updatedRole),
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> partialUpdatedRole(
+            @PathVariable("id") Integer id,
+            @RequestBody RoleDto role
+    ){
+        if(!roleService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        role.setId(id);
+        Role roleEntity = roleMapper.mapFrom(role);
+        Role updatedRole = roleService.partialUpdated(id, roleEntity);
+        return new ResponseEntity<>(
+                roleMapper.mapTo(updatedRole),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> deletedRole(@PathVariable("id") Integer id){
+        if (!roleService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        roleService.delete(id);
+        return new ResponseEntity<>(
+                HttpStatus.NO_CONTENT
+        );
     }
 }
