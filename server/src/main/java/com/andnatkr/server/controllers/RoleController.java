@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/v1")
 public class RoleController {
     private final RoleService roleService;
     private final Mapper<Role, RoleDto> roleMapper;
