@@ -1,9 +1,7 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
-import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
-import com.andnatkr.server.services.RoleService;
 import com.andnatkr.server.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

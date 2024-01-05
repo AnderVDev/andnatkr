@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,15 +21,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+//    @ManyToOne
+//    @JoinColumn(name = "role_id", referencedColumnName = "id")
+//    private RoleOld roleOld;
+    private String role;
 
     private String avatar;
     private String description;

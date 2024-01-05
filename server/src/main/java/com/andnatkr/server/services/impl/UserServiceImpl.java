@@ -1,9 +1,7 @@
 package com.andnatkr.server.services.impl;
 
-import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
 import com.andnatkr.server.repositories.UserRepository;
-import com.andnatkr.server.services.RoleService;
 import com.andnatkr.server.services.UserService;
 import org.springframework.stereotype.Service;
 
