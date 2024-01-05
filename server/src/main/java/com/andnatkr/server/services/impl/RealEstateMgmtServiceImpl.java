@@ -1,5 +1,6 @@
 package com.andnatkr.server.services.impl;
 
+import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 import com.andnatkr.server.repositories.RealEstateMgmtRepository;
 import com.andnatkr.server.services.RealEstateMgmtService;
@@ -63,4 +64,5 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     public void delete(Long id) {
         mgmtRepository.deleteById(id);
     }
+
 }

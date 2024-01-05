@@ -45,6 +45,8 @@ public class RealEstateMgmtController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+
+
     @PutMapping(path = "/{id}")
     public ResponseEntity<RealEstateMgmtDto> fullUpdatedInput(
             @PathVariable("id") Long id,
@@ -84,10 +86,13 @@ public class RealEstateMgmtController {
         if(!mgmtService.isExists(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Optional<RealEstateMgmt> deletedInputEntity = mgmtService.findOne(id);
+        RealEstateMgmtDto deletedInputDto = deletedInputEntity.map(mgmtMapper::mapTo).orElse(null);
+
         mgmtService.delete(id);
         return new ResponseEntity<>(
+                deletedInputDto,
                 HttpStatus.NO_CONTENT
         );
     }
-
 }

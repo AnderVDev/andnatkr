@@ -1,5 +1,6 @@
 package com.andnatkr.server.services;
 
+import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface RealEstateMgmtService {
     RealEstateMgmt partialUpdated(Long id, RealEstateMgmt inputEntity);
 
     void delete(Long id);
+
 }
