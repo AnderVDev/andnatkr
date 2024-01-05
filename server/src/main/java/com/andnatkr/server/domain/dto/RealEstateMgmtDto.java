@@ -1,6 +1,5 @@
 package com.andnatkr.server.domain.dto;
 
-import com.andnatkr.server.domain.entities.FinanceStatement;
 import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.User;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ public class RealEstateMgmtDto {
 
     private Long id;
     private User user;
-    private FinanceStatement financeStatement;
+    private String financeStatement;
     private RealEstate realEstate;
     private Integer amount;
     private String month;

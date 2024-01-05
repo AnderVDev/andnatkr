@@ -1,6 +1,5 @@
 package com.andnatkr.server;
 
-import com.andnatkr.server.domain.entities.FinanceStatement;
 import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.Role;
 import com.andnatkr.server.domain.entities.User;
@@ -60,12 +59,7 @@ public class TestDataUtil {
 
 //    Finance Statement Dummy Data
 
-    public static FinanceStatement createdFinanceStatementA(){
-        return FinanceStatement.builder()
-                .id(1)
-                .description("INCOME")
-                .build();
-    }
+
 
 //    Real Estate Dummy Data
     public static RealEstate createdRealEstateA(){

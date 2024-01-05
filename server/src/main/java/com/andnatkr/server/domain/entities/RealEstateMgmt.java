@@ -24,10 +24,7 @@ public class RealEstateMgmt {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "finance_statement_id")
-    private FinanceStatement financeStatement;
+    private String financeStatement;
 
     @ManyToOne
     @JoinColumn(name = "real_estate_id")

@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/roles")
 public class RoleController {
     private final RoleService roleService;
     private final Mapper<Role, RoleDto> roleMapper;
@@ -23,7 +23,7 @@ public class RoleController {
         this.roleMapper = roleMapper;
     }
 
-    @PostMapping(path ="/roles")
+    @PostMapping
     public ResponseEntity<RoleDto> createdRole(@RequestBody RoleDto role){
         Role roleEntity = roleMapper.mapFrom(role);
         Role savedRoleEntity = roleService.save(roleEntity);
@@ -32,7 +32,7 @@ public class RoleController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping(path ="/roles")
+    @GetMapping
     public List<RoleDto> rolesList(){
         List<Role> roles = roleService.findAll();
         return roles.stream()
@@ -40,7 +40,7 @@ public class RoleController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/roles/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<RoleDto> getRoleById(@PathVariable("id") Integer id){
         Optional<Role> foundRole = roleService.findOne(id);
         return foundRole.map(roleEntity -> {
@@ -49,7 +49,7 @@ public class RoleController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/roles/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<RoleDto> fullUpdatedRole(
             @PathVariable("id") Integer id,
             @RequestBody RoleDto role
@@ -66,7 +66,7 @@ public class RoleController {
         );
     }
 
-    @PatchMapping(path = "/roles/{id}")
+    @PatchMapping(path = "/{id}")
     public ResponseEntity<RoleDto> partialUpdatedRole(
             @PathVariable("id") Integer id,
             @RequestBody RoleDto role
@@ -83,7 +83,7 @@ public class RoleController {
         );
     }
 
-    @DeleteMapping(path = "/roles/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<RoleDto> deletedRole(@PathVariable("id") Integer id){
         if (!roleService.isExists(id)){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -91,6 +91,7 @@ public class RoleController {
         ResponseEntity<RoleDto> roleById = getRoleById(id);
         RoleDto deletedRole = roleById.getBody();
         roleService.delete(id);
+
         return new ResponseEntity<>(
                 deletedRole,
                 HttpStatus.NO_CONTENT

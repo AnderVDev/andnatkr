@@ -1,7 +1,6 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
-import com.andnatkr.server.domain.entities.FinanceStatement;
 import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.services.RealEstateService;
 import com.fasterxml.jackson.databind.ObjectMapper;

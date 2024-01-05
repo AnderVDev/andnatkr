@@ -38,7 +38,7 @@ public class RoleControllerIntegrationTests {
         Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/roles")
+                MockMvcRequestBuilders.post("/api/v1/roles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -51,7 +51,7 @@ public class RoleControllerIntegrationTests {
         Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         String roleJson = objectMapper.writeValueAsString(testRoleAdmin);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/roles")
+                MockMvcRequestBuilders.post("/api/v1/roles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -66,7 +66,7 @@ public class RoleControllerIntegrationTests {
     @Test
     public void testThatListRolesAuthorsReturnsHttpStatus200() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/roles")
+                MockMvcRequestBuilders.get("/api/v1/roles")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -77,7 +77,7 @@ public class RoleControllerIntegrationTests {
         Role testRoleAdmin = TestDataUtil.createdTestRoleAdmin();
         roleService.save(testRoleAdmin);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/roles")
+                MockMvcRequestBuilders.get("/api/v1/roles")
                         .contentType(MediaType.APPLICATION_JSON)
 
         ).andExpect(

@@ -6,6 +6,7 @@ import com.andnatkr.server.services.RealEstateMgmtService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,5 +31,15 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
                         .spliterator(),
                 false
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<RealEstateMgmt> findOne(Long id) {
+        return mgmtRepository.findById(id);
+    }
+
+    @Override
+    public boolean isExists(Long id) {
+        return mgmtRepository.existsById(id);
     }
 }
