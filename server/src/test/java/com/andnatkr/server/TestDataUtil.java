@@ -1,7 +1,6 @@
 package com.andnatkr.server;
 
 import com.andnatkr.server.domain.entities.RealEstate;
-import com.andnatkr.server.domain.entities.RoleOld;
 import com.andnatkr.server.domain.entities.User;
 
 
