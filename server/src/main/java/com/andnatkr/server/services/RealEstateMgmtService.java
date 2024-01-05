@@ -13,4 +13,8 @@ public interface RealEstateMgmtService {
     Optional<RealEstateMgmt> findOne(Long id);
 
     boolean isExists(Long id);
+
+    RealEstateMgmt partialUpdated(Long id, RealEstateMgmt inputEntity);
+
+    void delete(Long id);
 }

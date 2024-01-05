@@ -55,10 +55,39 @@ public class RealEstateMgmtController {
         }
         input.setId(id);
         RealEstateMgmt inputEntity = mgmtMapper.mapFrom(input);
-        RealEstateMgmt savedInput = mgmtService.save(inputEntity);
+        RealEstateMgmt updatedInputEntity = mgmtService.save(inputEntity);
         return new ResponseEntity<>(
-                mgmtMapper.mapTo(savedInput),
+                mgmtMapper.mapTo(updatedInputEntity),
                 HttpStatus.OK
         );
     }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<RealEstateMgmtDto> partialUpdatedInput(
+            @PathVariable("id") Long id,
+            @RequestBody RealEstateMgmtDto input
+    ){
+        if(!mgmtService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        input.setId(id);
+        RealEstateMgmt inputEntity = mgmtMapper.mapFrom(input);
+        RealEstateMgmt updatedInputEntity = mgmtService.partialUpdated(id, inputEntity);
+        return new ResponseEntity<>(
+                mgmtMapper.mapTo(updatedInputEntity),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public  ResponseEntity<RealEstateMgmtDto> deletedInput(@PathVariable("id") Long id){
+        if(!mgmtService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        mgmtService.delete(id);
+        return new ResponseEntity<>(
+                HttpStatus.NO_CONTENT
+        );
+    }
+
 }

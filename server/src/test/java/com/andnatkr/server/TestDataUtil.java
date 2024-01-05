@@ -9,57 +9,54 @@ import com.andnatkr.server.domain.entities.User;
 public class TestDataUtil {
     public TestDataUtil() {}
 
-    public static RoleOld createdTestRoleAdmin(){
-        return RoleOld.builder()
-                .id(255)
-                .description("admin")
-                .build();
-    }
-    public static RoleOld createdTestUserNonAdmin(){
-        return RoleOld.builder()
-                .id(245)
-                .description("Non admin")
-                .build();
-    }
+//    public static RoleOld createdTestRoleAdmin(){
+//        return RoleOld.builder()
+//                .id(255)
+//                .description("admin")
+//                .build();
+//    }
+//    public static RoleOld createdTestUserNonAdmin(){
+//        return RoleOld.builder()
+//                .id(245)
+//                .description("Non admin")
+//                .build();
+//    }
 
-    public static User createdTestUserA(final RoleOld roleOld){
+    //    Users Dummy Data
+    public static User createdTestUserA(){
         return User.builder()
                 .firstName("Carlos")
                 .lastName("Esteban")
                 .email("fake@email.com")
                 .password("test")
-                .roleOld(roleOld)
+                .role("admin")
                 .avatar("avatar.jpg")
                 .description("Test user data A")
                 .build();
     }
 
-    public static User createdTestUserB(final RoleOld roleOld){
+    public static User createdTestUserB(){
         return User.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .email("john.doe@example.com")
                 .password("password123")
-                .roleOld(roleOld)
+                .role("read only")
                 .avatar("https://example.com/avatar.jpg")
                 .description("A brief description about John Doe.")
                 .build();
     }
-    public static User createdTestUserC(final RoleOld roleOld){
+    public static User createdTestUserC(){
         return User.builder()
                 .firstName("Emily")
                 .lastName("Johnson")
                 .email("emily.johnson@example.com")
                 .password("password123")
-                .roleOld(roleOld)
+                .role("admin")
                 .avatar("https://example.com/avatar.jpg")
                 .description("Enthusiastic about community engagement and discussions.")
                 .build();
     }
-
-//    Finance Statement Dummy Data
-
-
 
 //    Real Estate Dummy Data
     public static RealEstate createdRealEstateA(){
