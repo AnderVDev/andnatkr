@@ -1,9 +1,11 @@
 package com.andnatkr.server.services.impl;
 
-import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
+import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 import com.andnatkr.server.repositories.RealEstateMgmtRepository;
+import com.andnatkr.server.repositories.RealEstatesRepository;
 import com.andnatkr.server.services.RealEstateMgmtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +14,17 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@RequiredArgsConstructor
 public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     public final RealEstateMgmtRepository mgmtRepository;
-
-    public RealEstateMgmtServiceImpl(RealEstateMgmtRepository mgmtRepository) {
-        this.mgmtRepository = mgmtRepository;
-    }
+    public final RealEstatesRepository estatesRepository;
 
     @Override
     public RealEstateMgmt save(RealEstateMgmt input) {
+//        Integer estateId = input.getRealEstate().getReal_estate_id();
+//        RealEstate estateEntity = estatesR    epository.findById(estateId).orElse(null);
+//        input.setRealEstate(estateEntity);
+
         return mgmtRepository.save(input);
     }
 

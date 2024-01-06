@@ -4,6 +4,7 @@ import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 import com.andnatkr.server.mappers.Mapper;
 import com.andnatkr.server.services.RealEstateMgmtService;
+import com.andnatkr.server.services.RealEstateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/management")
 public class RealEstateMgmtController {
     private final RealEstateMgmtService mgmtService;
+    private final RealEstateService estateService;
     private final Mapper<RealEstateMgmt, RealEstateMgmtDto> mgmtMapper;
 
     @PostMapping

@@ -1,6 +1,5 @@
 package com.andnatkr.server.services;
 
-import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 
 import java.util.List;
