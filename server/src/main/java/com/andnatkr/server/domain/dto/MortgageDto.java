@@ -1,5 +1,6 @@
 package com.andnatkr.server.domain.dto;
 
+import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,11 +19,12 @@ import java.util.Date;
 public class MortgageDto {
     private Long id;
     private User user;
+    private RealEstate realEstate;
     private Integer installment_number;
     private String month;
     private Integer year;
-    private Integer uf;
-    private Integer clp;
+    private Double uf;
+    private Double clp;
     private String comments;
     private Date createdAt;
     private Date updatedAt;

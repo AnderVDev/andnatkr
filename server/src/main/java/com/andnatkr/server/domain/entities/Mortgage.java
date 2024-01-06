@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="mortgage_loans")
+@Table(name="mortgages")
 public class Mortgage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,14 @@ public class Mortgage {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "real_estate_id")
+    private RealEstate realEstate;
     private Integer installment_number;
     private String month;
     private Integer year;
-    private Integer uf;
-    private Integer clp;
+    private Double uf;
+    private Double clp;
     private String comments;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -39,8 +42,5 @@ public class Mortgage {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
-
-
-
 
 }
