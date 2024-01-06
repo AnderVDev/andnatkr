@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,7 @@ public class RealEstate {
     private Integer id;
     private Integer dep_number;
     private String description;
+
+    @OneToMany(mappedBy = "realEstate")
+    private List<RealEstateMgmt> realEstateMgmtList;
 }
