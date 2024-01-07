@@ -25,12 +25,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-
-//    @ManyToOne
-//    @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    private RoleOld roleOld;
     private String role;
-
     private String avatar;
     private String description;
 
