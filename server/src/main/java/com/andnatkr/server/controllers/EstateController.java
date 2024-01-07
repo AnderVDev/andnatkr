@@ -10,19 +10,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/estates")
 @RequiredArgsConstructor
 public class EstateController {
-    private final EstateService estateService;
+    private final EstateService service;
     private final EstateMapper mapper;
 
     @PostMapping
     public ResponseEntity<EstateDto> createdEstate(@RequestBody EstateDto estate){
         Estate estateEntity = mapper.mapFrom(estate);
-        Estate savedEstateEntity = estateService.save(estateEntity);
+        Estate savedEstateEntity = service.save(estateEntity);
         return new ResponseEntity<>(
                 mapper.mapTo(savedEstateEntity),
                 HttpStatus.CREATED
@@ -31,9 +32,40 @@ public class EstateController {
 
     @GetMapping
     public List<EstateDto> estateList(){
-        List<Estate> estates = estateService.findAll();
+        List<Estate> estates = service.findAll();
         return estates.stream()
                 .map(mapper::mapTo)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<EstateDto> getEstateById(@PathVariable("id") Integer id){
+        Optional<Estate> foundEstate = service.findOne(id);
+        return  foundEstate.map(estateEntity -> {
+            EstateDto estateDto = mapper.mapTo(estateEntity);
+            return new ResponseEntity<>(estateDto,HttpStatus.OK);
+
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<EstateDto> fullUpdatedEstate(
+            @PathVariable("id") Integer id,
+            @RequestBody EstateDto estate
+    ){
+        if(!service.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        estate.setId(id);
+        Estate estateEntity = mapper.mapFrom(estate);
+        Estate updatedEntity = service.save(estateEntity);
+        return  new ResponseEntity<>(
+                mapper.mapTo(updatedEntity),
+                HttpStatus.OK
+        );
+    }
+
+
+
+
 }
