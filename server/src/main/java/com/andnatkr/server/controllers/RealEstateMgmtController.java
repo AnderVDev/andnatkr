@@ -86,7 +86,7 @@ public class RealEstateMgmtController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public  ResponseEntity<RealEstateMgmtDto> deletedInput(@PathVariable("id") Long id){
+    public ResponseEntity<RealEstateMgmtDto> deletedInput(@PathVariable("id") Long id){
         if(!mgmtService.isExists(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -1,6 +1,5 @@
 package com.andnatkr.server.services.impl;
 
-import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 import com.andnatkr.server.repositories.RealEstateMgmtRepository;
 import com.andnatkr.server.repositories.RealEstatesRepository;

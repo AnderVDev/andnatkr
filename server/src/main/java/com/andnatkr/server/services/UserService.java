@@ -17,4 +17,6 @@ public interface UserService
     boolean isExists(UUID id);
 
     User partialUpdated(UUID id, User userEntity);
+
+    void delete(UUID id);
 }

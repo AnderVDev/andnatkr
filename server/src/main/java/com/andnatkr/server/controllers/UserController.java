@@ -86,5 +86,12 @@ public class UserController {
         );
     }
 
-
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<UserDto> deletedInput(@PathVariable("id") UUID id){
+        if(!userService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

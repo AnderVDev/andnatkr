@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
             return  userRepository.save(existingUser);
         }).orElseThrow(() -> new RuntimeException("User Does not Exist"));
     }
+
+    @Override
+    public void delete(UUID id) {
+        userRepository.deleteById(id);
+    }
 }
