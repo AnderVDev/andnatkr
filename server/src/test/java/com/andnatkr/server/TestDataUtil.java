@@ -1,7 +1,7 @@
 package com.andnatkr.server;
 
 import com.andnatkr.server.domain.dto.UserDto;
-import com.andnatkr.server.domain.entities.RealEstate;
+import com.andnatkr.server.domain.entities.Estate;
 import com.andnatkr.server.domain.entities.User;
 
 import java.util.UUID;
@@ -74,8 +74,8 @@ public class TestDataUtil {
     }
 
 //    Real Estate Dummy Data
-    public static RealEstate createdRealEstateA(){
-        return RealEstate.builder()
+    public static Estate createdRealEstateA(){
+        return Estate.builder()
                 .id(25)
                 .dep_number(777)
                 .description("3B / 2B")

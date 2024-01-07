@@ -1,8 +1,8 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
-import com.andnatkr.server.domain.entities.RealEstate;
-import com.andnatkr.server.services.RealEstateService;
+import com.andnatkr.server.domain.entities.Estate;
+import com.andnatkr.server.services.EstateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,24 +20,24 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
-public class RealEstateControllerIntegrationTests {
-    private final RealEstateService realEstateService;
+public class EstateControllerIntegrationTests {
+    private final EstateService estateService;
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public RealEstateControllerIntegrationTests(RealEstateService realEstateService, MockMvc mockMvc) {
-        this.realEstateService = realEstateService;
+    public EstateControllerIntegrationTests(EstateService estateService, MockMvc mockMvc) {
+        this.estateService = estateService;
         this.mockMvc = mockMvc;
         this.objectMapper = new ObjectMapper();
     }
 
     @Test
     public void testThatCreateRealEstateSuccessFullyReturnsHttp201Created() throws Exception{
-        RealEstate realEstate = TestDataUtil.createdRealEstateA();
-        String realEstateJson = objectMapper.writeValueAsString(realEstate);
+        Estate estate = TestDataUtil.createdRealEstateA();
+        String realEstateJson = objectMapper.writeValueAsString(estate);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/real-estates")
+                MockMvcRequestBuilders.post("/api/v1/estates")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(realEstateJson)
         ).andExpect(
@@ -47,10 +47,10 @@ public class RealEstateControllerIntegrationTests {
 
     @Test
     public void testThatCreateRealEstateSuccessFullyReturnsSavedUser() throws Exception{
-        RealEstate realEstate = TestDataUtil.createdRealEstateA();
-        String realEstateJson = objectMapper.writeValueAsString(realEstate);
+        Estate estate = TestDataUtil.createdRealEstateA();
+        String realEstateJson = objectMapper.writeValueAsString(estate);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/real-estates")
+                MockMvcRequestBuilders.post("/api/v1/estates")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(realEstateJson)
         ).andExpect(
@@ -58,16 +58,16 @@ public class RealEstateControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".id").value(1)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".dep_number").value(realEstate.getDep_number())
+                MockMvcResultMatchers.jsonPath(".dep_number").value(estate.getDep_number())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".description").value(realEstate.getDescription())
+                MockMvcResultMatchers.jsonPath(".description").value(estate.getDescription())
         );
     }
 
     @Test
     public void testThatListRealEstatesReturnsHttpStatus200() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/real-estates")
+                MockMvcRequestBuilders.get("/api/v1/estates")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -76,19 +76,19 @@ public class RealEstateControllerIntegrationTests {
 
     @Test
     public void testThatListRealEstatesSuccessfullyReturnsListOfRealEstates() throws Exception {
-        RealEstate realEstate = TestDataUtil.createdRealEstateA();
-        realEstateService.save(realEstate);
+        Estate estate = TestDataUtil.createdRealEstateA();
+        estateService.save(estate);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/real-estates")
+                MockMvcRequestBuilders.get("/api/v1/estates")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("[0].id").value(1)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("[0]dep_number").value(realEstate.getDep_number())
+                MockMvcResultMatchers.jsonPath("[0]dep_number").value(estate.getDep_number())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("[0].description").value(realEstate.getDescription())
+                MockMvcResultMatchers.jsonPath("[0].description").value(estate.getDescription())
         );
     }
 

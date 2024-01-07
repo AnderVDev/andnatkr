@@ -18,7 +18,7 @@ public class RealEstateMgmtDto {
     private Long id;
     private UserDto user;
     private String financeStatement;
-    private RealEstateDto realEstate;
+    private EstateDto realEstate;
     private Integer amount;
     private String month;
     private Integer year;

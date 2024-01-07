@@ -2,7 +2,7 @@ package com.andnatkr.server.services.impl;
 
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
 import com.andnatkr.server.repositories.RealEstateMgmtRepository;
-import com.andnatkr.server.repositories.RealEstatesRepository;
+import com.andnatkr.server.repositories.EstateRepository;
 import com.andnatkr.server.services.RealEstateMgmtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     public final RealEstateMgmtRepository mgmtRepository;
-    public final RealEstatesRepository estatesRepository;
+    public final EstateRepository estatesRepository;
 
     @Override
     public RealEstateMgmt save(RealEstateMgmt input) {
@@ -50,7 +50,7 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
         return mgmtRepository.findById(id).map(existingInput -> {
             Optional.ofNullable(inputEntity.getUser()).ifPresent(existingInput::setUser);
             Optional.ofNullable(inputEntity.getFinanceStatement()).ifPresent(existingInput::setFinanceStatement);
-            Optional.ofNullable(inputEntity.getRealEstate()).ifPresent(existingInput::setRealEstate);
+            Optional.ofNullable(inputEntity.getEstate()).ifPresent(existingInput::setEstate);
             Optional.ofNullable(inputEntity.getAmount()).ifPresent(existingInput::setAmount);
             Optional.ofNullable(inputEntity.getMonth()).ifPresent(existingInput::setMonth);
             Optional.ofNullable(inputEntity.getYear()).ifPresent(existingInput::setYear);

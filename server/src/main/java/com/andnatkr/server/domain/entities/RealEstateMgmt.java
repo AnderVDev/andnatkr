@@ -27,8 +27,8 @@ public class RealEstateMgmt {
     private String financeStatement;
 
     @ManyToOne
-    @JoinColumn(name = "real_estate_id")
-    private RealEstate realEstate;
+    @JoinColumn(name = "estate_id")
+    private Estate estate;
 
     private Integer amount;
     private String month;
@@ -43,7 +43,7 @@ public class RealEstateMgmt {
 
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @Column(nullable = false)
     private Date updatedAt;
 
 }

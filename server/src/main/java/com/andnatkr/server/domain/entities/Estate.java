@@ -14,13 +14,13 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "real_estates")
-public class RealEstate {
+public class Estate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer dep_number;
     private String description;
 
-    @OneToMany(mappedBy = "realEstate")
+    @OneToMany(mappedBy = "estate")
     private List<RealEstateMgmt> realEstateMgmtList;
 }

@@ -2,10 +2,9 @@ package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.domain.dto.RealEstateMgmtDto;
 import com.andnatkr.server.domain.entities.RealEstateMgmt;
-import com.andnatkr.server.mappers.Mapper;
 import com.andnatkr.server.mappers.impl.RealEstateMgmtMapper;
 import com.andnatkr.server.services.RealEstateMgmtService;
-import com.andnatkr.server.services.RealEstateService;
+import com.andnatkr.server.services.EstateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +19,8 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/management")
 public class RealEstateMgmtController {
     private final RealEstateMgmtService mgmtService;
-    private final RealEstateService estateService;
+    private final EstateService estateService;
     private final RealEstateMgmtMapper mapper;
-//    private final Mapper<RealEstateMgmt, RealEstateMgmtDto> mgmtMapper;
 
     @PostMapping
     public ResponseEntity<RealEstateMgmtDto> createdInput(@RequestBody RealEstateMgmtDto input){
@@ -32,6 +30,7 @@ public class RealEstateMgmtController {
                 mapper.mapTo(savedInput),
                 HttpStatus.CREATED);
     }
+
     @GetMapping
     public List<RealEstateMgmtDto> inputList(){
         List<RealEstateMgmt> inputs = mgmtService.findAll();
@@ -48,8 +47,6 @@ public class RealEstateMgmtController {
             return ResponseEntity.ok(inputDto);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<RealEstateMgmtDto> fullUpdatedInput(
