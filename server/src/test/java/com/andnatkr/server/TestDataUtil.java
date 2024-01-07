@@ -3,6 +3,7 @@ package com.andnatkr.server;
 import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.User;
 
+import java.util.UUID;
 
 
 public class TestDataUtil {
@@ -24,6 +25,7 @@ public class TestDataUtil {
     //    Users Dummy Data
     public static User createdTestUserA(){
         return User.builder()
+                .id(UUID.fromString("6dfdc80c-1782-4689-a262-b3ebfa011f25"))
                 .firstName("Carlos")
                 .lastName("Esteban")
                 .email("fake@email.com")

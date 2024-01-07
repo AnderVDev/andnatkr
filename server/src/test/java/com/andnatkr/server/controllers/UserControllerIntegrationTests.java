@@ -69,7 +69,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatListUsersReturnsHttpStatus200() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1//users")
+                MockMvcRequestBuilders.get("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -81,7 +81,7 @@ public class UserControllerIntegrationTests {
         User testUser = TestDataUtil.createdTestUserA();
         userService.save(testUser);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1//users")
+                MockMvcRequestBuilders.get("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -91,6 +91,36 @@ public class UserControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].lastName").value(testUser.getLastName())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].email").value(testUser.getEmail())
+        );
+    }
+
+    @Test
+    public void testThatGetUserReturnsHttpStatus200WhenUserExists() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA();
+        userService.save(testUser);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users/" + testUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetUserReturnsUserWhenUserExists() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA();
+        userService.save(testUser);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users/" + testUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".firstName").value(testUser.getFirstName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".lastName").value(testUser.getLastName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".email").value(testUser.getEmail())
         );
     }
 }
