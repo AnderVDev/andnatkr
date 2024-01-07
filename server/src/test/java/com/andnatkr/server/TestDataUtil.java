@@ -1,5 +1,6 @@
 package com.andnatkr.server;
 
+import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.RealEstate;
 import com.andnatkr.server.domain.entities.User;
 
@@ -35,9 +36,22 @@ public class TestDataUtil {
                 .description("Test user data A")
                 .build();
     }
+    public static UserDto createdTestUserDtoA(){
+        return UserDto.builder()
+                .id(UUID.fromString("6dfdc80c-1782-4689-a262-b3ebfa011f25"))
+                .firstName("Carlos")
+                .lastName("Esteban")
+                .email("fake@email.com")
+                .password("test")
+                .role("admin")
+                .avatar("avatar.jpg")
+                .description("Test user data A")
+                .build();
+    }
 
     public static User createdTestUserB(){
         return User.builder()
+                .id(UUID.fromString("6dfdc80c-1782-4689-a262-b3ebfa011f34"))
                 .firstName("John")
                 .lastName("Doe")
                 .email("john.doe@example.com")

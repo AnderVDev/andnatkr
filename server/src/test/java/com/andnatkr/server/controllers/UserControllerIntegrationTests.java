@@ -1,6 +1,7 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
+import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.User;
 import com.andnatkr.server.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -121,6 +122,158 @@ public class UserControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath(".lastName").value(testUser.getLastName())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".email").value(testUser.getEmail())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".password").value(testUser.getPassword())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".role").value(testUser.getRole())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".avatar").value(testUser.getAvatar())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".description").value(testUser.getDescription())
         );
     }
+
+    @Test
+    public void testThatGetUserReturnsHttpStatus404WhenNoUserExists() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users/83d70697-4b1f-4055-ab20-0d375f88f173")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateUserReturnsHttpStatus404WhenNoUserExists() throws Exception {
+        UserDto testAuthorDtoA = TestDataUtil.createdTestUserDtoA();
+        String userDtoJson = objectMapper.writeValueAsString(testAuthorDtoA);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/83d70697-4b1f-4055-ab20-0d375f88f173")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateUserReturnsHttpStatus200WhenUserExists() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA();
+        User savedUser = userService.save(testUser);
+
+        UserDto testAuthorDtoA = TestDataUtil.createdTestUserDtoA();
+        String userDtoJson = objectMapper.writeValueAsString(testAuthorDtoA);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/"+ savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateUpdatesExistingUser() throws Exception {
+        User testUser = TestDataUtil.createdTestUserA();
+        User savedUser = userService.save(testUser);
+
+        User userDto = TestDataUtil.createdTestUserB();
+        userDto.setId(savedUser.getId());
+        String authorDtoUpdateJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/"+ savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(authorDtoUpdateJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".firstName").value(userDto.getFirstName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".lastName").value(userDto.getLastName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".email").value(userDto.getEmail())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".password").value(userDto.getPassword())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".role").value(userDto.getRole())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".avatar").value(userDto.getAvatar())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".description").value(userDto.getDescription())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingUserReturnsHttpStatus200OK() throws Exception{
+        User testUser = TestDataUtil.createdTestUserA();
+        User savedUser = userService.save(testUser);
+
+        UserDto userDto = TestDataUtil.createdTestUserDtoA();
+        userDto.setFirstName("UPDATED");
+        String authorDtoJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/v1/users/"+ savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(authorDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingUserReturnsUpdatedUser() throws Exception{
+        User testUser = TestDataUtil.createdTestUserA();
+        User savedUser = userService.save(testUser);
+
+        UserDto userDto = TestDataUtil.createdTestUserDtoA();
+        userDto.setFirstName("UPDATED");
+        String userDtoJson = objectMapper.writeValueAsString(userDto);
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/api/v1/users/"+ savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".firstName").value(userDto.getFirstName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".lastName").value(userDto.getLastName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".email").value(userDto.getEmail())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".password").value(userDto.getPassword())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".role").value(userDto.getRole())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".avatar").value(userDto.getAvatar())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath(".description").value(userDto.getDescription())
+        );
+    }
+
+    @Test
+    public void testThatDeleteUserReturnsHttpStatus204ForNonExistingUser() throws Exception{
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/api/v1/users/83d70697-4b1f-4055-ab20-0d375f88f173")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatDeleteUserReturnsHttpStatus204ForExistingUser() throws Exception{
+        User testUser = TestDataUtil.createdTestUserA();
+        User savedUser = userService.save(testUser);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/api/v1/users/" + savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+
+
 }
