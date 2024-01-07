@@ -1,5 +1,6 @@
 package com.andnatkr.server;
 
+import com.andnatkr.server.domain.dto.EstateDto;
 import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.Estate;
 import com.andnatkr.server.domain.entities.User;
@@ -74,11 +75,39 @@ public class TestDataUtil {
     }
 
 //    Real Estate Dummy Data
-    public static Estate createdRealEstateA(){
+    public static Estate createdEstateA(){
         return Estate.builder()
                 .id(25)
                 .dep_number(777)
                 .description("3B / 2B")
+                .comments("comment")
+                .build();
+    }
+
+    public static EstateDto createdEstateDtoA(){
+        return EstateDto.builder()
+                .id(25)
+                .dep_number(777)
+                .description("3B / 2B")
+                .comments("comment")
+                .build();
+    }
+
+    public static Estate createdEstateB(){
+        return Estate.builder()
+                .id(2)
+                .dep_number(543)
+                .description("1B / 1B")
+                .comments("comment dto test")
+                .build();
+    }
+
+    public static EstateDto createdEstateDtoB(){
+        return EstateDto.builder()
+                .id(2)
+                .dep_number(543)
+                .description("1B / 1B")
+                .comments("comment dto test")
                 .build();
     }
 }

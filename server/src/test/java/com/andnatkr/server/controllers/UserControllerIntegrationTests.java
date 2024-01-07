@@ -22,23 +22,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 public class UserControllerIntegrationTests {
-
-    private final UserService userService;
+    private final UserService service;
     private final MockMvc mockMvc;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper mapper;
 
     @Autowired
-    public UserControllerIntegrationTests(UserService userService, MockMvc mockMvc) {
-        this.userService = userService;
+    public UserControllerIntegrationTests(UserService service, MockMvc mockMvc) {
+        this.service = service;
         this.mockMvc = mockMvc;
-        this.objectMapper = new ObjectMapper();
+        this.mapper = new ObjectMapper();
     }
-
 
     @Test
     public void testThatCreateUserSuccessfullyReturnsHttp201Created() throws Exception{
         User testUser = TestDataUtil.createdTestUserA();
-        String userJson = objectMapper.writeValueAsString(testUser);
+        String userJson = mapper.writeValueAsString(testUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +49,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatCreateUserSuccessfullyReturnsSavedUser() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        String userJson = objectMapper.writeValueAsString(testUser);
+        String userJson = mapper.writeValueAsString(testUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +78,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatListUsersSuccessfullyReturnsListOfUsers() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        userService.save(testUser);
+        service.save(testUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +96,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatGetUserReturnsHttpStatus200WhenUserExists() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        userService.save(testUser);
+        service.save(testUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/v1/users/" + testUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +108,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatGetUserReturnsUserWhenUserExists() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        userService.save(testUser);
+        service.save(testUser);
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/v1/users/" + testUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -145,8 +143,8 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateUserReturnsHttpStatus404WhenNoUserExists() throws Exception {
-        UserDto testAuthorDtoA = TestDataUtil.createdTestUserDtoA();
-        String userDtoJson = objectMapper.writeValueAsString(testAuthorDtoA);
+        UserDto testUserDtoA = TestDataUtil.createdTestUserDtoA();
+        String userDtoJson = mapper.writeValueAsString(testUserDtoA);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/v1/users/83d70697-4b1f-4055-ab20-0d375f88f173")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -159,10 +157,10 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatFullUpdateUserReturnsHttpStatus200WhenUserExists() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        User savedUser = userService.save(testUser);
+        User savedUser = service.save(testUser);
 
-        UserDto testAuthorDtoA = TestDataUtil.createdTestUserDtoA();
-        String userDtoJson = objectMapper.writeValueAsString(testAuthorDtoA);
+        UserDto testUserDtoA = TestDataUtil.createdTestUserDtoA();
+        String userDtoJson = mapper.writeValueAsString(testUserDtoA);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/v1/users/"+ savedUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -175,15 +173,15 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatFullUpdateUpdatesExistingUser() throws Exception {
         User testUser = TestDataUtil.createdTestUserA();
-        User savedUser = userService.save(testUser);
+        User savedUser = service.save(testUser);
 
         User userDto = TestDataUtil.createdTestUserB();
         userDto.setId(savedUser.getId());
-        String authorDtoUpdateJson = objectMapper.writeValueAsString(userDto);
+        String userDtoUpdateJson = mapper.writeValueAsString(userDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/v1/users/"+ savedUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(authorDtoUpdateJson)
+                        .content(userDtoUpdateJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
@@ -206,15 +204,15 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatPartialUpdateExistingUserReturnsHttpStatus200OK() throws Exception{
         User testUser = TestDataUtil.createdTestUserA();
-        User savedUser = userService.save(testUser);
+        User savedUser = service.save(testUser);
 
         UserDto userDto = TestDataUtil.createdTestUserDtoA();
         userDto.setFirstName("UPDATED");
-        String authorDtoJson = objectMapper.writeValueAsString(userDto);
+        String userDtoJson = mapper.writeValueAsString(userDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/v1/users/"+ savedUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(authorDtoJson)
+                        .content(userDtoJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         );
@@ -223,11 +221,11 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatPartialUpdateExistingUserReturnsUpdatedUser() throws Exception{
         User testUser = TestDataUtil.createdTestUserA();
-        User savedUser = userService.save(testUser);
+        User savedUser = service.save(testUser);
 
         UserDto userDto = TestDataUtil.createdTestUserDtoA();
         userDto.setFirstName("UPDATED");
-        String userDtoJson = objectMapper.writeValueAsString(userDto);
+        String userDtoJson = mapper.writeValueAsString(userDto);
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/v1/users/"+ savedUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -264,7 +262,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatDeleteUserReturnsHttpStatus204ForExistingUser() throws Exception{
         User testUser = TestDataUtil.createdTestUserA();
-        User savedUser = userService.save(testUser);
+        User savedUser = service.save(testUser);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/v1/users/" + savedUser.getId())
