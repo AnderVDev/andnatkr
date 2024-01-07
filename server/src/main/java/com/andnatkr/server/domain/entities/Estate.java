@@ -23,5 +23,5 @@ public class Estate {
     private String comments;
 
     @OneToMany(mappedBy = "estate")
-    private List<RealEstateMgmt> realEstateMgmtList;
+    private List<EstateMgmt> estateMgmtList;
 }

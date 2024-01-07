@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 
-public class RealEstateMgmtDto {
+public class EstateMgmtDto {
 
     private Long id;
     private UserDto user;

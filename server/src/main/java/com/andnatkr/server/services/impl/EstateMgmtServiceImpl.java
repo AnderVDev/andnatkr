@@ -1,9 +1,9 @@
 package com.andnatkr.server.services.impl;
 
-import com.andnatkr.server.domain.entities.RealEstateMgmt;
-import com.andnatkr.server.repositories.RealEstateMgmtRepository;
+import com.andnatkr.server.domain.entities.EstateMgmt;
+import com.andnatkr.server.repositories.EstateMgmtRepository;
 import com.andnatkr.server.repositories.EstateRepository;
-import com.andnatkr.server.services.RealEstateMgmtService;
+import com.andnatkr.server.services.EstateMgmtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +14,18 @@ import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
-public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
-    public final RealEstateMgmtRepository mgmtRepository;
+public class EstateMgmtServiceImpl implements EstateMgmtService {
+    public final EstateMgmtRepository mgmtRepository;
     public final EstateRepository estatesRepository;
 
     @Override
-    public RealEstateMgmt save(RealEstateMgmt input) {
+    public EstateMgmt save(EstateMgmt input) {
 
         return mgmtRepository.save(input);
     }
 
     @Override
-    public List<RealEstateMgmt> findAll() {
+    public List<EstateMgmt> findAll() {
         return StreamSupport.stream(
                 mgmtRepository
                         .findAll()
@@ -35,7 +35,7 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     }
 
     @Override
-    public Optional<RealEstateMgmt> findOne(Long id) {
+    public Optional<EstateMgmt> findOne(Long id) {
         return mgmtRepository.findById(id);
     }
 
@@ -45,7 +45,7 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     }
 
     @Override
-    public RealEstateMgmt partialUpdated(Long id, RealEstateMgmt inputEntity) {
+    public EstateMgmt partialUpdated(Long id, EstateMgmt inputEntity) {
         inputEntity.setId(id);
         return mgmtRepository.findById(id).map(existingInput -> {
             Optional.ofNullable(inputEntity.getUser()).ifPresent(existingInput::setUser);

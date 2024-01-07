@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "real_estate_management")
-public class RealEstateMgmt {
+public class EstateMgmt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
