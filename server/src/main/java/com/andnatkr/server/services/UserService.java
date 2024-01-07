@@ -13,4 +13,8 @@ public interface UserService
     List<User> findAll();
 
     Optional<User> findOne(UUID id);
+
+    boolean isExists(UUID id);
+
+    User partialUpdated(UUID id, User userEntity);
 }

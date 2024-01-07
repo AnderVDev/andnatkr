@@ -52,4 +52,39 @@ public class UserController {
             );
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<UserDto> fullUpdatedInput(
+            @PathVariable("id") UUID id,
+            @RequestBody UserDto user
+    ){
+        if(!userService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        user.setId(id);
+        User userEntity = mapper.mapFrom(user);
+        User updatedEntity = userService.save(userEntity);
+        return new ResponseEntity<>(
+                mapper.mapTo(updatedEntity),
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<UserDto> partialUpdatedInput(
+            @PathVariable("id") UUID id,
+            @RequestBody UserDto user
+    ){
+        if(!userService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        user.setId(id);
+        User userEntity = mapper.mapFrom(user);
+        User updatedEntity = userService.partialUpdated(id, userEntity);
+        return new ResponseEntity<>(
+                mapper.mapTo(updatedEntity),
+                HttpStatus.OK
+        );
+    }
+
+
 }

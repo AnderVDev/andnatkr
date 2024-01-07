@@ -36,4 +36,14 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findOne(UUID id) {
         return userRepository.findById(id);
     }
+
+    @Override
+    public boolean isExists(UUID id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public User partialUpdated(UUID id, User userEntity) {
+        return null;
+    }
 }
