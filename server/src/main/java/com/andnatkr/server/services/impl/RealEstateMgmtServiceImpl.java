@@ -21,9 +21,6 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
 
     @Override
     public RealEstateMgmt save(RealEstateMgmt input) {
-//        Integer estateId = input.getRealEstate().getReal_estate_id();
-//        RealEstate estateEntity = estatesR    epository.findById(estateId).orElse(null);
-//        input.setRealEstate(estateEntity);
 
         return mgmtRepository.save(input);
     }
@@ -52,7 +49,7 @@ public class RealEstateMgmtServiceImpl implements RealEstateMgmtService {
     public RealEstateMgmt partialUpdated(Long id, RealEstateMgmt inputEntity) {
         inputEntity.setId(id);
         return mgmtRepository.findById(id).map(existingInput -> {
-            Optional.ofNullable(inputEntity.getUser()).ifPresent((existingInput::setUser));
+            Optional.ofNullable(inputEntity.getUser()).ifPresent(existingInput::setUser);
             Optional.ofNullable(inputEntity.getFinanceStatement()).ifPresent(existingInput::setFinanceStatement);
             Optional.ofNullable(inputEntity.getRealEstate()).ifPresent(existingInput::setRealEstate);
             Optional.ofNullable(inputEntity.getAmount()).ifPresent(existingInput::setAmount);
