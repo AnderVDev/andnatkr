@@ -13,4 +13,9 @@ public interface EstateService {
     Optional<Estate> findOne(Integer id);
 
     boolean isExists(Integer id);
+
+
+    Estate partialUpdated(Integer id, Estate estateEntity);
+
+    void delete(Integer id);
 }

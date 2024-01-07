@@ -40,4 +40,20 @@ public class EstateServiceImpl implements EstateService {
     public boolean isExists(Integer id) {
         return repository.existsById(id);
     }
+
+    @Override
+    public Estate partialUpdated(Integer id, Estate estateEntity) {
+        estateEntity.setId(id);
+        return repository.findById(id).map(existingEstate -> {
+            Optional.ofNullable(estateEntity.getDep_number()).ifPresent(existingEstate::setDep_number);
+            Optional.ofNullable(estateEntity.getDescription()).ifPresent(existingEstate::setDescription);
+            Optional.ofNullable(estateEntity.getComments()).ifPresent(existingEstate::setComments);
+            return repository.save(existingEstate);
+        }).orElseThrow(() -> new RuntimeException("Estate Does not Exist"));
+    }
+
+    @Override
+    public void delete(Integer id) {
+        repository.deleteById(id);
+    }
 }

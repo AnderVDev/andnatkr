@@ -13,4 +13,5 @@ public class EstateDto {
     private Integer id;
     private Integer dep_number;
     private String description;
+    private String comments;
 }

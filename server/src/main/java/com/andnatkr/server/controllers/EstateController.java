@@ -65,7 +65,31 @@ public class EstateController {
         );
     }
 
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<EstateDto> partialUpdatedEstate(
+            @PathVariable("id") Integer id,
+            @RequestBody EstateDto estate
+    ){
+        if(!service.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        estate.setId(id);
+        Estate estateEntity = mapper.mapFrom(estate);
+        Estate updatedEntity = service.partialUpdated(id, estateEntity);
+        return  new ResponseEntity<>(
+                mapper.mapTo(updatedEntity),
+                HttpStatus.OK
+        );
+    }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<EstateDto> deletedEstate(@PathVariable("id") Integer id){
+        if(!service.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
 }
