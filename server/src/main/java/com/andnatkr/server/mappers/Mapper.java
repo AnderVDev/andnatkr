@@ -1,7 +1,7 @@
 package com.andnatkr.server.mappers;
 
-public interface Mapper<A, B> {
-    B mapTo(A a);
+public interface Mapper<Entity, Dto> {
+    Dto mapTo(Entity entity);
 
-    A mapFrom(B b);
+    Entity mapFrom(Dto dto);
 }
