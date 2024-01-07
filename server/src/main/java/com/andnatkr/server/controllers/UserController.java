@@ -2,9 +2,7 @@ package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.User;
-import com.andnatkr.server.mappers.Mapper;
 import com.andnatkr.server.mappers.impl.UserMapper;
-import com.andnatkr.server.repositories.UserRepository;
 import com.andnatkr.server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

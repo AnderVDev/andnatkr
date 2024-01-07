@@ -36,10 +36,10 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatCreateUserSuccessfullyReturnsHttp201Created() throws Exception{
-        User testUser = TestDataUtil.createdTestUserA(null);
+        User testUser = TestDataUtil.createdTestUserA();
         String userJson = objectMapper.writeValueAsString(testUser);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/users")
+                MockMvcRequestBuilders.post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson)
         ).andExpect(
@@ -49,10 +49,10 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatCreateUserSuccessfullyReturnsSavedUser() throws Exception {
-        User testUser = TestDataUtil.createdTestUserA(null);
+        User testUser = TestDataUtil.createdTestUserA();
         String userJson = objectMapper.writeValueAsString(testUser);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/users")
+                MockMvcRequestBuilders.post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson)
         ).andExpect(
@@ -69,7 +69,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatListUsersReturnsHttpStatus200() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/users")
+                MockMvcRequestBuilders.get("/api/v1//users")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -78,10 +78,10 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatListUsersSuccessfullyReturnsListOfUsers() throws Exception {
-        User testUser = TestDataUtil.createdTestUserA(null);
+        User testUser = TestDataUtil.createdTestUserA();
         userService.save(testUser);
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/users")
+                MockMvcRequestBuilders.get("/api/v1//users")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
