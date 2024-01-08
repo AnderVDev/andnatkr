@@ -250,7 +250,7 @@ public class UserControllerIntegrationTests {
     }
 
     @Test
-    public void testThatDeleteUserReturnsHttpStatus204ForNonExistingUser() throws Exception{
+    public void testThatDeleteUserReturnsHttpStatus404ForNonExistingUser() throws Exception{
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/v1/users/83d70697-4b1f-4055-ab20-0d375f88f173")
                         .contentType(MediaType.APPLICATION_JSON)

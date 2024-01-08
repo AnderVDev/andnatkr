@@ -29,7 +29,6 @@ public class EstateMgmt {
     @ManyToOne
     @JoinColumn(name = "estate_id")
     private Estate estate;
-
     private Integer amount;
     private String month;
     private Integer year;

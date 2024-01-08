@@ -1,8 +1,10 @@
 package com.andnatkr.server;
 
 import com.andnatkr.server.domain.dto.EstateDto;
+import com.andnatkr.server.domain.dto.EstateMgmtDto;
 import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.Estate;
+import com.andnatkr.server.domain.entities.EstateMgmt;
 import com.andnatkr.server.domain.entities.User;
 
 import java.util.UUID;
@@ -108,6 +110,50 @@ public class TestDataUtil {
                 .dep_number(543)
                 .description("1B / 1B")
                 .comments("comment dto test")
+                .build();
+    }
+
+//    Input Management Dummy Data
+
+    public static EstateMgmt createdEstateMgmtA(final User user, final Estate estate){
+        return  EstateMgmt.builder()
+                .id(1L)
+                .user(null)
+                .financeStatement("INCOME")
+                .estate(null)
+                .amount(1500)
+                .month("July")
+                .year(2023)
+                .detail("No details")
+                .comments("No important comments")
+                .build();
+    }
+
+    public static EstateMgmtDto createdEstateMgmtDtoA(final User user, final Estate estate){
+        return  EstateMgmtDto.builder()
+                .id(1L)
+                .user(null)
+                .financeStatement("INCOME")
+                .estate(null)
+                .amount(1500)
+                .month("July")
+                .year(2023)
+                .detail("No details")
+                .comments("No important comments")
+                .build();
+    }
+
+    public static EstateMgmt createdEstateMgmtB(final User user, final Estate estate){
+        return  EstateMgmt.builder()
+                .id(1L)
+                .user(null)
+                .financeStatement("INCOME")
+                .estate(null)
+                .amount(1700)
+                .month("May")
+                .year(2022)
+                .detail("No details")
+                .comments("No important comments")
                 .build();
     }
 }

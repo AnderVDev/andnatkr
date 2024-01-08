@@ -12,13 +12,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class EstateMgmtDto {
 
     private Long id;
     private UserDto user;
     private String financeStatement;
-    private EstateDto realEstate;
+    private EstateDto estate;
     private Integer amount;
     private String month;
     private Integer year;
