@@ -56,4 +56,9 @@ public class MortgageServiceImpl implements MortgageService {
             return repository.save(existingEntry);
         }).orElseThrow(() -> new RuntimeException("Entry Does not Exist"));
     }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }

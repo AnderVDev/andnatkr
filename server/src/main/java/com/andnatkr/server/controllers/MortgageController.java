@@ -81,6 +81,15 @@ public class MortgageController {
         );
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<MortgageDto> deletedEntry(@PathVariable("id") Long id){
+        if(!service.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 
 }

@@ -16,4 +16,6 @@ public interface MortgageService {
 
 
     Mortgage partialUpdated(Long id, Mortgage entryEntity);
+
+    void delete(Long id);
 }
