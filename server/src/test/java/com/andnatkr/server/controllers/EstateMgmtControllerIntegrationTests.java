@@ -221,30 +221,30 @@ public class EstateMgmtControllerIntegrationTests {
         EstateMgmt savedInput = service.save(input);
 
         EstateMgmt inputB = TestDataUtil.createdEstateMgmtB(user, estate);
-        String inputJson = mapper.writeValueAsString(input);
+        String inputJson = mapper.writeValueAsString(inputB);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/management/" + savedInput.getId())
+                MockMvcRequestBuilders.put("/api/v1/management/" + savedInput.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(inputJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".user").value(input.getUser())
+                MockMvcResultMatchers.jsonPath(".user").value(inputB.getUser())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".financeStatement").value(input.getFinanceStatement())
+                MockMvcResultMatchers.jsonPath(".financeStatement").value(inputB.getFinanceStatement())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".estate").value(input.getEstate())
+                MockMvcResultMatchers.jsonPath(".estate").value(inputB.getEstate())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".amount").value(input.getAmount())
+                MockMvcResultMatchers.jsonPath(".amount").value(inputB.getAmount())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".month").value(input.getMonth())
+                MockMvcResultMatchers.jsonPath(".month").value(inputB.getMonth())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".year").value(input.getYear())
+                MockMvcResultMatchers.jsonPath(".year").value(inputB.getYear())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".detail").value(input.getDetail())
+                MockMvcResultMatchers.jsonPath(".detail").value(inputB.getDetail())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".comments").value(input.getComments())
+                MockMvcResultMatchers.jsonPath(".comments").value(inputB.getComments())
         );
     }
 
