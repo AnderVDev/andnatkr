@@ -40,4 +40,20 @@ public class MortgageServiceImpl implements MortgageService {
     public boolean isExists(Long id) {
         return repository.existsById(id);
     }
+
+    @Override
+    public Mortgage partialUpdated(Long id, Mortgage entryEntity) {
+        entryEntity.setId(id);
+        return repository.findById(id).map(existingEntry -> {
+            Optional.ofNullable(entryEntity.getUser()).ifPresent(existingEntry::setUser);
+            Optional.ofNullable(entryEntity.getEstate()).ifPresent(existingEntry::setEstate);
+            Optional.ofNullable(entryEntity.getInstallment_number()).ifPresent(existingEntry::setInstallment_number);
+            Optional.ofNullable(entryEntity.getMonth()).ifPresent(existingEntry::setMonth);
+            Optional.ofNullable(entryEntity.getYear()).ifPresent(existingEntry::setYear);
+            Optional.ofNullable(entryEntity.getUf()).ifPresent(existingEntry::setUf);
+            Optional.ofNullable(entryEntity.getClp()).ifPresent(existingEntry::setClp);
+            Optional.ofNullable(entryEntity.getComments()).ifPresent(existingEntry::setComments);
+            return repository.save(existingEntry);
+        }).orElseThrow(() -> new RuntimeException("Entry Does not Exist"));
+    }
 }

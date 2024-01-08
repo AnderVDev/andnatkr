@@ -13,4 +13,7 @@ public interface MortgageService {
     Optional<Mortgage> findOne(Long id);
 
     boolean isExists(Long id);
+
+
+    Mortgage partialUpdated(Long id, Mortgage entryEntity);
 }

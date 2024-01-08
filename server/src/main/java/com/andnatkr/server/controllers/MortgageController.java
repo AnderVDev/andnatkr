@@ -64,6 +64,23 @@ public class MortgageController {
         );
     }
 
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<MortgageDto> partialUpdatedEntry(
+            @PathVariable("id") Long id,
+            @RequestBody MortgageDto entry
+    ){
+        if(!service.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        entry.setId(id);
+        Mortgage entryEntity = mapper.mapFrom(entry);
+        Mortgage savedEntryEntity = service.partialUpdated(id, entryEntity);
+        return new ResponseEntity<>(
+                mapper.mapTo(savedEntryEntity),
+                HttpStatus.OK
+        );
+    }
+
 
 
 }
