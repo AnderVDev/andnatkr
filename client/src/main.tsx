@@ -17,18 +17,38 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import { api } from "./state/api.ts";
+import globalReducer from "./state/index.ts";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
+// const store = configureStore({
+  
+//   reducer: persistedReducer,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
+
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    persisted: persistedReducer,
+    global: globalReducer,
+    [api.reducerPath]: api.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(api.middleware),
 });
+
+setupListeners(store.dispatch);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

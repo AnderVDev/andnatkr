@@ -12,54 +12,68 @@ import {
   import { DataGrid } from "@mui/x-data-grid";
   import { useState } from "react";
   import ModalRealEstate from "./Modal";
+import { useGetEstateMgmtQuery } from "../../state/api";
 
 type Props = {};
 
 const columns = [
   {
-    field: "_id",
+    field: "id",
     headerName: "ID",
-    flex: 1,
-  },
-  {
-    field: "name",
-    headerName: "Name",
     flex: 0.5,
   },
   {
-    field: "email",
-    headerName: "Email",
+    field: "user",
+    headerName: "User",
+    flex: 0.5,
+  },
+  // {
+  //   field: "financeStatement",
+  //   headerName: "Finance Statement",
+  //   flex: 1,
+  // },
+  {
+    field: "financeStatement",
+    headerName: "Finance Statement",
     flex: 1,
   },
   {
-    field: "phoneNumber",
-    headerName: "Phone Number",
-    flex: 0.5,
-    renderCell: (params) => {
-      return params.value.replace(/^(\d{3})(\d{3})(\d{4})/, "($1)$2-$3");
-    },
-  },
-  {
-    field: "country",
-    headerName: "Country",
+    field: "estate",
+    headerName: "Estate",
     flex: 0.4,
   },
   {
-    field: "occupation",
-    headerName: "Occupation",
+    field: "amount",
+    headerName: "Amount",
     flex: 1,
   },
   {
-    field: "roleOld",
-    headerName: "Role",
-    flex: 0.5,
+    field: "month",
+    headerName: "Month",
+    flex: 1,
   },
+  {
+    field: "year",
+    headerName: "Year",
+    flex: 1,
+  },
+  {
+    field: "detail",
+    headerName: "Detail",
+    flex: 1,
+  },
+  {
+    field: "comments",
+    headerName: "Comments",
+    flex: 1,
+  },
+  
 ];
 
 const Operations = (props: Props) => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data, isLoading } = useState(false);
+  const { data, isLoading } = useGetEstateMgmtQuery();
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
@@ -92,8 +106,8 @@ const Operations = (props: Props) => {
       >
         <DataGrid
           loading={false}
-          //   loading={isLoading || !data}
-          getRowId={(row) => row._id}
+            loading={isLoading || !data}
+          getRowId={(row) => row.id}
           rows={data || []}
           columns={columns}
         />
