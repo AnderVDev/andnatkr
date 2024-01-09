@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping("api/v1/management")
 public class EstateMgmtController {
     private final EstateMgmtService service;
