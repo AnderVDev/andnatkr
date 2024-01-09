@@ -1,18 +1,19 @@
 import {
-    Box,
-    IconButton,
-    Typography,
-    useMediaQuery,
-    useTheme,
-  } from "@mui/material";
-  import Header from "../../components/Header";
-  import FlexBetween from "../../components/FlexBetween";
-  import { AddCircleOutlineOutlined } from "@mui/icons-material";
-  import StatBox from "../../components/StatBox";
-  import { DataGrid } from "@mui/x-data-grid";
-  import { useState } from "react";
-  import ModalRealEstate from "./Modal";
+  Box,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import Header from "../../components/Header";
+import FlexBetween from "../../components/FlexBetween";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
+import StatBox from "../../components/StatBox";
+import { DataGrid } from "@mui/x-data-grid";
+import { useState } from "react";
+import ModalRealEstate from "./Modal";
 import { useGetEstateMgmtQuery } from "../../state/api";
+import { flatten } from 'flat';
 
 type Props = {};
 
@@ -23,34 +24,30 @@ const columns = [
     flex: 0.5,
   },
   {
-    field: "user",
+    field: "user.firstName",
     headerName: "User",
-    flex: 0.5,
-  },
-  // {
-  //   field: "financeStatement",
-  //   headerName: "Finance Statement",
-  //   flex: 1,
-  // },
-  {
-    field: "financeStatement",
-    headerName: "Finance Statement",
     flex: 1,
   },
+
   {
-    field: "estate",
+    field: "financeStatement",
+    headerName: "Statement",
+    flex: 0.7,
+  },
+  {
+    field: "estate.dep_number",
     headerName: "Estate",
-    flex: 0.4,
+    flex: 0.7,
   },
   {
     field: "amount",
     headerName: "Amount",
-    flex: 1,
+    flex: 0.7,
   },
   {
     field: "month",
     headerName: "Month",
-    flex: 1,
+    flex: 0.7,
   },
   {
     field: "year",
@@ -67,17 +64,36 @@ const columns = [
     headerName: "Comments",
     flex: 1,
   },
-  
+  {
+    field: "createdAt",
+    headerName: "created At",
+    flex: 1,
+  },
+  {
+    field: "updatedAt",
+    headerName: "Updated At",
+    flex: 1,
+  },
 ];
+
+// const flattenData = (data) => {
+//   return flatten(data);
+// };
 
 const Operations = (props: Props) => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
+  // const flattenedData = flattenData(data);
+  // console.log({flattenedData});
   return (
+    
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
-        <Header title="OPERTATIONS" subtitle="List of Real estate administration Transactions" />
+        <Header
+          title="OPERTATIONS"
+          subtitle="List of Real estate administration Transactions"
+        />
         <ModalRealEstate />
       </FlexBetween>
       <Box
@@ -105,8 +121,7 @@ const Operations = (props: Props) => {
         }}
       >
         <DataGrid
-          loading={false}
-            loading={isLoading || !data}
+          loading={isLoading || !data}
           getRowId={(row) => row.id}
           rows={data || []}
           columns={columns}
