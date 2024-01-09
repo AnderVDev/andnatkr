@@ -2,9 +2,7 @@ package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
 import com.andnatkr.server.domain.dto.EstateMgmtDto;
-import com.andnatkr.server.domain.entities.Estate;
 import com.andnatkr.server.domain.entities.EstateMgmt;
-import com.andnatkr.server.domain.entities.User;
 import com.andnatkr.server.services.EstateMgmtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -37,7 +35,7 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatCreateInputSuccessfullyReturnsHttp201Created() throws Exception{
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(null, null);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         String inputJson = mapper.writeValueAsString(input);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/management")
@@ -50,10 +48,9 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatCreateInputSuccessfullyReturnsSavedInput() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
 
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         String inputJson = mapper.writeValueAsString(input);
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/management")
@@ -92,10 +89,7 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatListInputsSuccessfullyReturnsListOfInputs() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         service.save(input);
 
         mockMvc.perform(
@@ -134,10 +128,7 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatGetInputReturnsHttpStatus200WhenInputExists() throws  Exception{
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         service.save(input);
 
         mockMvc.perform(
@@ -150,10 +141,7 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatGetInputReturnsInputWhenInputExists() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         service.save(input);
 
         mockMvc.perform(
@@ -182,10 +170,8 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateInputReturnsHttpStatus404WhenNoInputExists() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
 
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         String inputJson = mapper.writeValueAsString(input);
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/v1/management/777")
@@ -198,29 +184,26 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatFullUpdateInputReturnsHttpStatus200WhenInputExists() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
+        EstateMgmt savedInput = service.save(input);
 
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
-        String inputJson = mapper.writeValueAsString(input);
+        EstateMgmt inputB = TestDataUtil.createdEstateMgmtB();
+        String inputJson = mapper.writeValueAsString(inputB);
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/management/" + input.getId())
+                MockMvcRequestBuilders.put("/api/v1/management/" + savedInput.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(inputJson)
         ).andExpect(
-                MockMvcResultMatchers.status().isNotFound()
+                MockMvcResultMatchers.status().isOk()
         );
     }
 
     @Test
     public void testThatFullUpdateReturnsUpdatesInputWhenInputExists() throws Exception {
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         EstateMgmt savedInput = service.save(input);
 
-        EstateMgmt inputB = TestDataUtil.createdEstateMgmtB(user, estate);
+        EstateMgmt inputB = TestDataUtil.createdEstateMgmtB();
         String inputJson = mapper.writeValueAsString(inputB);
 
         mockMvc.perform(
@@ -250,13 +233,10 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatPartialUpdateExistingInputReturnsHttpStatus200OK() throws Exception{
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         EstateMgmt savedInput = service.save(input);
 
-        EstateMgmtDto inputDto = TestDataUtil.createdEstateMgmtDtoA(user, estate);
+        EstateMgmtDto inputDto = TestDataUtil.createdEstateMgmtDtoA();
         inputDto.setComments("UPDATED");
         String inputDtoJson = mapper.writeValueAsString(inputDto);
         mockMvc.perform(
@@ -270,13 +250,10 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatPartialUpdateExistingInputReturnsUpdatedInput() throws Exception{
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         EstateMgmt savedInput = service.save(input);
 
-        EstateMgmtDto inputDto = TestDataUtil.createdEstateMgmtDtoA(user, estate);
+        EstateMgmtDto inputDto = TestDataUtil.createdEstateMgmtDtoA();
         inputDto.setComments("UPDATED");
         String inputDtoJson = mapper.writeValueAsString(inputDto);
         mockMvc.perform(
@@ -316,10 +293,7 @@ public class EstateMgmtControllerIntegrationTests {
 
     @Test
     public void testThatDeleteInputReturnsHttpStatus204ForExistingInput() throws Exception{
-        User user = TestDataUtil.createdTestUserA();
-        Estate estate = TestDataUtil.createdEstateA();
-
-        EstateMgmt input = TestDataUtil.createdEstateMgmtA(user, estate);
+        EstateMgmt input = TestDataUtil.createdEstateMgmtA();
         EstateMgmt savedInput = service.save(input);
 
         mockMvc.perform(

@@ -2,7 +2,6 @@ package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
 import com.andnatkr.server.domain.dto.MortgageDto;
-import com.andnatkr.server.domain.entities.EstateMgmt;
 import com.andnatkr.server.domain.entities.Mortgage;
 import com.andnatkr.server.services.MortgageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
