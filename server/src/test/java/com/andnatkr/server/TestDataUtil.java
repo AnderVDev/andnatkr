@@ -2,9 +2,11 @@ package com.andnatkr.server;
 
 import com.andnatkr.server.domain.dto.EstateDto;
 import com.andnatkr.server.domain.dto.EstateMgmtDto;
+import com.andnatkr.server.domain.dto.MortgageDto;
 import com.andnatkr.server.domain.dto.UserDto;
 import com.andnatkr.server.domain.entities.Estate;
 import com.andnatkr.server.domain.entities.EstateMgmt;
+import com.andnatkr.server.domain.entities.Mortgage;
 import com.andnatkr.server.domain.entities.User;
 
 import java.util.UUID;
@@ -12,19 +14,6 @@ import java.util.UUID;
 
 public class TestDataUtil {
     public TestDataUtil() {}
-
-//    public static RoleOld createdTestRoleAdmin(){
-//        return RoleOld.builder()
-//                .id(255)
-//                .description("admin")
-//                .build();
-//    }
-//    public static RoleOld createdTestUserNonAdmin(){
-//        return RoleOld.builder()
-//                .id(245)
-//                .description("Non admin")
-//                .build();
-//    }
 
     //    Users Dummy Data
     public static User createdTestUserA(){
@@ -115,7 +104,7 @@ public class TestDataUtil {
 
 //    Input Management Dummy Data
 
-    public static EstateMgmt createdEstateMgmtA(final User user, final Estate estate){
+    public static EstateMgmt createdEstateMgmtA(){
         return  EstateMgmt.builder()
                 .id(1L)
                 .user(null)
@@ -129,7 +118,7 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static EstateMgmtDto createdEstateMgmtDtoA(final User user, final Estate estate){
+    public static EstateMgmtDto createdEstateMgmtDtoA(){
         return  EstateMgmtDto.builder()
                 .id(1L)
                 .user(null)
@@ -143,7 +132,7 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static EstateMgmt createdEstateMgmtB(final User user, final Estate estate){
+    public static EstateMgmt createdEstateMgmtB(){
         return  EstateMgmt.builder()
                 .id(1L)
                 .user(null)
@@ -153,6 +142,49 @@ public class TestDataUtil {
                 .month("May")
                 .year(2022)
                 .detail("No details")
+                .comments("No important comments")
+                .build();
+    }
+
+    //    Entry Mortgage Dummy Data
+    public static Mortgage createdMortgageEntryA(){
+        return Mortgage.builder()
+                .id(1L)
+                .user(null)
+                .estate(null)
+                .installment_number(25)
+                .month("May")
+                .year(2023)
+                .uf(15.8421)
+                .clp(618451.2)
+                .comments("No important comments")
+                .build();
+    }
+
+    public static MortgageDto createdMortgageEntryDtoA(){
+        return MortgageDto.builder()
+                .id(1L)
+                .user(null)
+                .estate(null)
+                .installment_number(25)
+                .month("May")
+                .year(2023)
+                .uf(15.8421)
+                .clp(618451.2)
+                .comments("No important comments")
+                .build();
+    }
+
+    public static Mortgage createdMortgageEntryB(){
+        return Mortgage.builder()
+                .id(1L)
+                .user(null)
+                .estate(null)
+                .installment_number(25)
+                .month("June")
+                .year(2023)
+                .uf(15.1248)
+                .clp(613451.2)
                 .comments("No important comments")
                 .build();
     }

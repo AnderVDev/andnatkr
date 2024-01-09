@@ -90,6 +90,4 @@ public class MortgageController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-
 }
