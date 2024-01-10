@@ -12,6 +12,8 @@ import Header from "../../components/Header";
 // import StatBox from "../../components/StatBox";
 import FlexBetween from "../../components/FlexBetween";
 import { useGetEstateMgmtQuery } from "../../state/api";
+import ActionButtons from "../../components/ActionButtons";
+
 // import { AddCircleOutlineOutlined } from "@mui/icons-material";
 
 // type Props = {};
@@ -62,6 +64,12 @@ const columns = [
     field: "comments",
     headerName: "Comments",
     flex: 1,
+  },
+  {
+    field: "actions",
+    headerName: "Actions",
+    flex: 1,
+    renderCell: ActionButtons
   },
   // {
   //   field: "createdAt",
