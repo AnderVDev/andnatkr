@@ -88,7 +88,6 @@ const Operations = () => {
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-  console.log({ flattenedData, data });
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>

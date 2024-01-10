@@ -15,58 +15,99 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "./FlexBetween";
+import { unflatten } from "flat";
 
 // type Props = {};
 
 // Initial Values
-const initialValuesRegister = {
-  firstName: "",
-  lastName: "",
-  userName: "",
-  email: "",
-  password: "",
-  location: "",
-  occupation: "",
-  picture: "",
+const initialValuesNewInput = {
+  user: "",
+  statement: "",
+  estate: "",
+  amount: "",
+  month: "",
+  year: "",
+  detail: "",
+  comments: "",
 };
-const initialValuesLogin = {
+const initialValuesExistingInput = {
   email: "",
   password: "",
 };
 
 // Input Validations
 
-const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-  location: yup.string().required("required"),
-  occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+const newInputSchema = yup.object().shape({
+  user: yup.number().required("required"), //user id
+  statement: yup.string().required("required"),
+  estate: yup.string().required("required"), //estate id
+  amount: yup.number().required().positive(),
+  month: yup.string().required("required"),
+  year: yup.number().required("required").positive(),
+  detail: yup.string().nullable(),
+  comments: yup.string().nullable(),
 });
 
-const loginSchema = yup.object().shape({
+const ExistingInputSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
 });
-
-const handleFormSubmit = () => console.log("Form Submited");
 
 const TransactionForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [pageType, setPageType] = useState("login");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+  const [pageType, setPageType] = useState("newInput");
+  const isNewInput = pageType === "newInput";
+  const isExistingInput = pageType === "existingInput";
+
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    if (isNewInput) await newInput(values, onSubmitProps);
+  };
+
+  const newInput = async (values, onSubmitProps) => {
+    const formData = new FormData();
+    // for (let value in values) {
+    //   formData.append(value, values[value]);
+    // }
+
+    formData.append("user.id", values["user"]);
+    formData.append("financeStatement", values["statement"]);
+    formData.append("estate.id", values["estate"]);
+    formData.append("amount", values["amount"]);
+    formData.append("month", values["month"]);
+    formData.append("year", values["year"]);
+    formData.append("detail", values["detail"]);
+    formData.append("comments", values["comments"]);
+
+    const formDataObject = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+    const jsonString = unflatten(formDataObject);
+
+    console.log(jsonString);
+
+    const savedResponse = await fetch(
+      "http://localhost:8080/api/v1/management",
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonString,
+      }
+    );
+  };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
-      validationSchema={isLogin ? loginSchema : registerSchema}
+      initialValues={
+        isNewInput ? initialValuesNewInput : initialValuesExistingInput
+      }
+      validationSchema={isNewInput ? newInputSchema : ExistingInputSchema}
     >
       {({
         values,
@@ -87,77 +128,98 @@ const TransactionForm = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {isRegister && (
+            {isNewInput && (
               <>
                 <TextField
-                  label="First Name"
+                  label="User"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
-                  name="firstName"
+                  value={values.user}
+                  name="user"
+                  error={Boolean(touched.user) && Boolean(errors.user)}
+                  helperText={touched.user && errors.user}
+                  sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                  label="Statement"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.statement}
+                  name="statement"
                   error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
+                    Boolean(touched.statement) && Boolean(errors.statement)
                   }
-                  helperText={touched.firstName && errors.firstName}
+                  helperText={touched.statement && errors.statement}
                   sx={{ gridColumn: "span 2" }}
                 />
                 <TextField
-                  label="Last Name"
+                  label="Estate"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.lastName}
-                  name="lastName"
-                  error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-                  helperText={touched.lastName && errors.lastName}
-                  sx={{ gridColumn: "span 2" }}
-                />
-                <TextField
-                  label="Username"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.username}
-                  name="username"
-                  error={Boolean(touched.username) && Boolean(errors.username)}
-                  helperText={touched.username && errors.username}
+                  value={values.estate}
+                  name="estate"
+                  error={Boolean(touched.estate) && Boolean(errors.estate)}
+                  helperText={touched.estate && errors.estate}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Box
-                  gridColumn="span 4"
-                  border={`1px solid ${palette.neutral.medium}`}
-                  borderRadius="5px"
-                  p="1rem"
-                >
-                  <Dropzone
-                    acceptedFiles=".jpg,.jpeg,.png"
-                    multiple={false}
-                    onDrop={(acceptedFiles) =>
-                      setFieldValue("picture", acceptedFiles[0])
-                    }
-                  >
-                    {({ getRootProps, getInputProps }) => (
-                      <Box
-                        {...getRootProps()}
-                        border={`2px dashed ${palette.primary.main}`}
-                        p="1rem"
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      >
-                        <input {...getInputProps()} />
-                        {!values.picture ? (
-                          <p>Add Picture Here</p>
-                        ) : (
-                          <FlexBetween>
-                            <Typography>{values.picture.name}</Typography>
-                            <EditOutlinedIcon />
-                          </FlexBetween>
-                        )}
-                      </Box>
-                    )}
-                  </Dropzone>
-                </Box>
+                <TextField
+                  label="Amount"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.amount}
+                  name="amount"
+                  error={Boolean(touched.amount) && Boolean(errors.amount)}
+                  helperText={touched.amount && errors.amount}
+                  sx={{ gridColumn: "span 4" }}
+                />
+
+                <TextField
+                  label="Month"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.month}
+                  name="month"
+                  error={Boolean(touched.month) && Boolean(errors.month)}
+                  helperText={touched.month && errors.month}
+                  sx={{ gridColumn: "span 2" }}
+                />
+
+                <TextField
+                  label="Year"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.year}
+                  name="year"
+                  error={Boolean(touched.year) && Boolean(errors.year)}
+                  helperText={touched.year && errors.year}
+                  sx={{ gridColumn: "span 2" }}
+                />
+
+                <TextField
+                  label="Detail"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.detail}
+                  name="detail"
+                  error={Boolean(touched.detail) && Boolean(errors.detail)}
+                  helperText={touched.detail && errors.detail}
+                  sx={{ gridColumn: "span 4" }}
+                />
+
+                <TextField
+                  label="Comments"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.comments}
+                  name="comments"
+                  error={Boolean(touched.comments) && Boolean(errors.comments)}
+                  helperText={touched.comments && errors.comments}
+                  sx={{ gridColumn: "span 4" }}
+                />
               </>
             )}
 
-            <TextField
+            {/* <TextField
               label="Email"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -178,7 +240,7 @@ const TransactionForm = () => {
               error={Boolean(touched.password) && Boolean(errors.password)}
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
-            />
+            /> */}
           </Box>
           {/* BUTTONS */}
           <Box>
@@ -195,7 +257,6 @@ const TransactionForm = () => {
             >
               Add
             </Button>
-
           </Box>
         </form>
       )}
