@@ -20,12 +20,12 @@ const columns = [
   {
     field: "id",
     headerName: "ID",
-    flex: 0.5,
+    flex: 0.3,
   },
   {
     field: "user.firstName",
     headerName: "User",
-    flex: 1,
+    flex: 0.5,
   },
 
   {
@@ -36,22 +36,22 @@ const columns = [
   {
     field: "estate.dep_number",
     headerName: "Estate",
-    flex: 0.7,
+    flex: 0.5,
   },
   {
     field: "amount",
     headerName: "Amount",
-    flex: 0.7,
+    flex: 0.5,
   },
   {
     field: "month",
     headerName: "Month",
-    flex: 0.7,
+    flex: 0.5,
   },
   {
     field: "year",
     headerName: "Year",
-    flex: 1,
+    flex: 0.5,
   },
   {
     field: "detail",
@@ -63,21 +63,21 @@ const columns = [
     headerName: "Comments",
     flex: 1,
   },
-  {
-    field: "createdAt",
-    headerName: "created At",
-    flex: 1,
-  },
-  {
-    field: "updatedAt",
-    headerName: "Updated At",
-    flex: 1,
-  },
+  // {
+  //   field: "createdAt",
+  //   headerName: "created At",
+  //   flex: 1,
+  // },
+  // {
+  //   field: "updatedAt",
+  //   headerName: "Updated At",
+  //   flex: 1,
+  // },
 ];
 
 const Operations = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
   console.log({ flattenedData, data });

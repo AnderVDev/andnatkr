@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-// import { useSelector } from "react-redux";
-import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
@@ -30,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
+              {/* <Route path="/" element={<Navigate to="dashboard" replace />} /> */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />
