@@ -5,17 +5,16 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import Header from "../../components/Header";
-import FlexBetween from "../../components/FlexBetween";
-import { AddCircleOutlineOutlined } from "@mui/icons-material";
-import StatBox from "../../components/StatBox";
-import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
-import ModalRealEstate from "./Modal";
-import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
+import ModalRealEstate from "./Modal";
+import { DataGrid } from "@mui/x-data-grid";
+import Header from "../../components/Header";
+// import StatBox from "../../components/StatBox";
+import FlexBetween from "../../components/FlexBetween";
+import { useGetEstateMgmtQuery } from "../../state/api";
+// import { AddCircleOutlineOutlined } from "@mui/icons-material";
 
-type Props = {};
+// type Props = {};
 
 const columns = [
   {
@@ -76,12 +75,11 @@ const columns = [
   },
 ];
 
-
-const Operations = (props: Props) => {
+const Operations = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
-  const flattenedData = data ? data.map((item) => flatten(item)) : [];
+  const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
   console.log({ flattenedData, data });
   return (
     <Box m="1.5rem 2.5rem">
@@ -100,19 +98,21 @@ const Operations = (props: Props) => {
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
+            color: theme.palette.neutral[100],
+            // color: theme.palette.,
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.background.alt,
+            // backgroundColor: theme.palette.background.alt,
+            backgroundColor: theme.palette.background.paper,
           },
           "& .MuiDataGrid-footerContainer": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
+            color: theme.palette.neutral[100],
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.secondary[200]} !important`,
+            color: `${theme.palette.neutral[200]} !important`,
           },
         }}
       >
