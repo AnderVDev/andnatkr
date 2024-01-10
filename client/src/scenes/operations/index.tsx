@@ -13,7 +13,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import ModalRealEstate from "./Modal";
 import { useGetEstateMgmtQuery } from "../../state/api";
-import { flatten } from 'flat';
+import { flatten } from "flat";
 
 type Props = {};
 
@@ -76,18 +76,14 @@ const columns = [
   },
 ];
 
-// const flattenData = (data) => {
-//   return flatten(data);
-// };
 
 const Operations = (props: Props) => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
-  // const flattenedData = flattenData(data);
-  // console.log({flattenedData});
+  const flattenedData = data ? data.map((item) => flatten(item)) : [];
+  console.log({ flattenedData, data });
   return (
-    
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Header
@@ -123,7 +119,7 @@ const Operations = (props: Props) => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          rows={data || []}
+          rows={flattenedData || []}
           columns={columns}
         />
       </Box>
