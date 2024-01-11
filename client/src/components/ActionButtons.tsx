@@ -6,19 +6,19 @@ import { Delete, SettingsOutlined } from "@mui/icons-material";
 
 type Props = {};
 
-const ActionButtons = ({ id }) => {
+const ActionButtons = ({ id, onDeleted }) => {
   const theme = useTheme();
 
   const handleDelete = async () => {
     console.log(`clicked ${id}`);
 
-
     const savedResponse = await fetch(
-        "http://localhost:8080/api/v1/management/" + id,
-        {
-          method: "DELETE",
-        }
-      );
+      "http://localhost:8080/api/v1/management/" + id,
+      {
+        method: "DELETE",
+      }
+    );
+    onDeleted();
   };
 
   return (
