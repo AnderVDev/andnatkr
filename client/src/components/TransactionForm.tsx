@@ -3,6 +3,11 @@ import {
   Box,
   Button,
   TextField,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Select,
+  MenuItem,
   useMediaQuery,
   Typography,
   useTheme,
@@ -22,7 +27,7 @@ import { unflatten } from "flat";
 // Initial Values
 const initialValuesNewInput = {
   user: "",
-  statement: "",
+  financeStatement: "",
   estate: "",
   amount: "",
   month: "",
@@ -38,7 +43,7 @@ const initialValuesExistingInput = {
 // Input Validations
 const newInputSchema = yup.object().shape({
   user: yup.string().required("required"), //user id
-  statement: yup.string().required("required"),
+  financeStatement: yup.string().required("required"),
   estate: yup.string().required("required"), //estate id
   amount: yup.number().required().positive(),
   month: yup.string().required("required"),
@@ -51,6 +56,23 @@ const ExistingInputSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
 });
+
+//Input data
+const financeStatementsData = ["Income", "Expense"];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const TransactionForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -137,18 +159,32 @@ const TransactionForm = () => {
                   helperText={touched.user && errors.user}
                   sx={{ gridColumn: "span 2" }}
                 />
+
                 <TextField
                   label="Statement"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.statement}
-                  name="statement"
+                  value={values.financeStatement}
+                  name="financeStatement"
                   error={
-                    Boolean(touched.statement) && Boolean(errors.statement)
+                    Boolean(touched.financeStatement) &&
+                    Boolean(errors.financeStatement)
                   }
-                  helperText={touched.statement && errors.statement}
+                  helperText={
+                    touched.financeStatement && errors.financeStatement
+                  }
                   sx={{ gridColumn: "span 2" }}
-                />
+                  select
+                >
+                  {/* <MenuItem value={"Income"}>Income</MenuItem>
+                  <MenuItem value={"Expense"}>Expense</MenuItem> */}
+                  {financeStatementsData.map((value) => (
+                    <MenuItem key={value} value={value}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
                 <TextField
                   label="Estate"
                   onBlur={handleBlur}
@@ -179,7 +215,14 @@ const TransactionForm = () => {
                   error={Boolean(touched.month) && Boolean(errors.month)}
                   helperText={touched.month && errors.month}
                   sx={{ gridColumn: "span 2" }}
-                />
+                  select
+                >
+                  {months.map((month) => (
+                    <MenuItem key={month} value={month}>
+                      {month}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
                 <TextField
                   label="Year"

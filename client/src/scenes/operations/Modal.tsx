@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   styled,
   Button,
@@ -24,7 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 type Props = {};
 
 const ModalRealEstate = () => {
-  const[open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,8 +62,7 @@ const ModalRealEstate = () => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-
-            <TransactionForm />
+          <TransactionForm />
         </DialogContent>
       </BootstrapDialog>
     </>
