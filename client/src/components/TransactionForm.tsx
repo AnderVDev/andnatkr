@@ -36,9 +36,8 @@ const initialValuesExistingInput = {
 };
 
 // Input Validations
-
 const newInputSchema = yup.object().shape({
-  user: yup.number().required("required"), //user id
+  user: yup.string().required("required"), //user id
   statement: yup.string().required("required"),
   estate: yup.string().required("required"), //estate id
   amount: yup.number().required().positive(),
@@ -68,35 +67,33 @@ const TransactionForm = () => {
 
   const newInput = async (values, onSubmitProps) => {
     const formData = new FormData();
-    // for (let value in values) {
-    //   formData.append(value, values[value]);
-    // }
-
-    formData.append("user.id", values["user"]);
-    formData.append("financeStatement", values["statement"]);
-    formData.append("estate.id", values["estate"]);
-    formData.append("amount", values["amount"]);
-    formData.append("month", values["month"]);
-    formData.append("year", values["year"]);
-    formData.append("detail", values["detail"]);
-    formData.append("comments", values["comments"]);
+    for (let value in values) {
+      if (value === "user") {
+        formData.append("user.id", values[value]);
+      } else if (value === "estate") {
+        formData.append("estate.id", values[value]);
+      } else {
+        formData.append(value, values[value]);
+      }
+      console.log({ value, [value]: values[value] });
+    }
 
     const formDataObject = {};
     formData.forEach((value, key) => {
       formDataObject[key] = value;
     });
-    const jsonString = unflatten(formDataObject);
+    const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    console.log(jsonString);
+    console.log(jsonData);
 
     const savedResponse = await fetch(
       "http://localhost:8080/api/v1/management",
       {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: jsonString,
+        body: jsonData,
       }
     );
   };
