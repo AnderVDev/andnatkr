@@ -7,12 +7,13 @@ import {
 } from "@mui/material";
 import { flatten } from "flat";
 import ModalRealEstate from "./Modal";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid} from "@mui/x-data-grid";
 import Header from "../../components/Header";
 // import StatBox from "../../components/StatBox";
 import FlexBetween from "../../components/FlexBetween";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import ActionButtons from "../../components/ActionButtons";
+
 
 // import { AddCircleOutlineOutlined } from "@mui/icons-material";
 
@@ -69,18 +70,8 @@ const columns = [
     field: "actions",
     headerName: "Actions",
     flex: 1,
-    renderCell: ActionButtons
+    renderCell: (params) => <ActionButtons id = {params.row.id}/>,
   },
-  // {
-  //   field: "createdAt",
-  //   headerName: "created At",
-  //   flex: 1,
-  // },
-  // {
-  //   field: "updatedAt",
-  //   headerName: "Updated At",
-  //   flex: 1,
-  // },
 ];
 
 const Operations = () => {
@@ -88,6 +79,7 @@ const Operations = () => {
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery();
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
