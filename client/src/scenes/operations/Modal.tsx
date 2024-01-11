@@ -23,7 +23,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 type Props = {};
 
-const ModalRealEstate = () => {
+const ModalRealEstate = ({ onUpdated }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -62,7 +62,7 @@ const ModalRealEstate = () => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-          <TransactionForm />
+          <TransactionForm onUpdatedCreated={onUpdated}  onClosed={handleClose}/>
         </DialogContent>
       </BootstrapDialog>
     </>

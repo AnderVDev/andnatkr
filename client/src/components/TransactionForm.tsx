@@ -74,7 +74,7 @@ const months = [
   "December",
 ];
 
-const TransactionForm = () => {
+const TransactionForm = ({onUpdatedCreated, onClosed}) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -117,7 +117,10 @@ const TransactionForm = () => {
         },
         body: jsonData,
       }
+      
     );
+    onUpdatedCreated();
+    onClosed();
   };
 
   return (
