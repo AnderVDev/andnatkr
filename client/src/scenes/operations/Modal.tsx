@@ -1,13 +1,11 @@
 import { useState } from "react";
 import {
   styled,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
-  Typography,
+  Theme,
 } from "@mui/material";
 import {
   CloseOutlined,
@@ -16,7 +14,12 @@ import {
 } from "@mui/icons-material";
 import TransactionForm from "../../components/TransactionForm";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+interface ModalRealEstateProps{
+  modalType: string;
+  row: unknown;
+}
+
+const BootstrapDialog = styled(Dialog)(({ theme } : {theme : Theme}) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -25,9 +28,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-type Props = {};
-
-const ModalRealEstate = ({ onUpdated, modalType, row }) => {
+const ModalRealEstate = ({ modalType, row } : ModalRealEstateProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -71,7 +72,6 @@ const ModalRealEstate = ({ onUpdated, modalType, row }) => {
         </IconButton>
         <DialogContent dividers>
           <TransactionForm
-            onUpdatedCreated={onUpdated}
             onClosed={handleClose}
             modalType={modalType}
             row={row}
