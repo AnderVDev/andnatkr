@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
 @RequestMapping("/api/v1/management")
 public class EstateMgmtController {
     private final EstateMgmtService service;
