@@ -3,28 +3,17 @@ import {
   Box,
   Button,
   TextField,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  Select,
   MenuItem,
   useMediaQuery,
-  Typography,
   useTheme,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogin } from "state";
-import Dropzone from "react-dropzone";
-import FlexBetween from "./FlexBetween";
-import { unflatten } from "flat";
-import { useAddEstateMgmtMutation } from "../state/api";
-
-// type Props = {};
-
+import { flatten, unflatten } from "flat";
+import {
+  useAddEstateMgmtMutation,
+  useUpdateEstateMgmtMutation,
+} from "../state/api";
 // Input Validations
 const newInputSchema = yup.object().shape({
   user: yup.string().required("required"), //user id
@@ -59,27 +48,26 @@ const months = [
   "December",
 ];
 
-const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+const TransactionForm = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [pageType, setPageType] = useState("newInput");
-  const isNewInput = pageType === "newInput";
-  const isExistingInput = pageType === "existingInput";
   const isUpdateType = modalType === "update";
   const [addInput] = useAddEstateMgmtMutation();
+  const [updateInput] = useUpdateEstateMgmtMutation();
+  const [pageType, setPageType] = useState("newInput");
+  const isExistingInput = pageType === "existingInput";
+  const isNewInput = pageType === "newInput";
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   // Initial Values
   const initialValues = {
-    user: isUpdateType ? row.user : "",
-    financeStatement: isUpdateType ? row.financeStatement : "",
-    estate: isUpdateType ? row.estate : "",
-    amount: isUpdateType ? row.amount : "",
-    month: isUpdateType ? row.month : "",
-    year: isUpdateType ? row.year : "",
-    detail: isUpdateType ? row.detail : "",
-    comments: isUpdateType ? row.comments : "",
+    user: isUpdateType ? row["user.id"] : "",
+    financeStatement: isUpdateType ? row["financeStatement"] : "",
+    estate: isUpdateType ? row["estate.id"] : "",
+    amount: isUpdateType ? row["amount"] : "",
+    month: isUpdateType ? row["month"] : "",
+    year: isUpdateType ? row["year"] : "",
+    detail: isUpdateType ? row["detail"] : "",
+    comments: isUpdateType ? row["comments"] : "",
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
@@ -88,8 +76,9 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
 
   const newInput = async (values, onSubmitProps) => {
     const formData = new FormData();
+    let id;
 
-    for (let value in values) {
+    for (const value in values) {
       if (value === "user") {
         formData.append("user.id", values[value]);
       } else if (value === "estate") {
@@ -97,29 +86,21 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
       } else {
         formData.append(value, values[value]);
       }
-      console.log({ value, [value]: values[value] });
     }
-
-    const formDataObject = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value;
-    });
-    const jsonData = JSON.stringify(unflatten(formDataObject));
-
-    addInput(jsonData);
-
-    // console.log(jsonData);
-    // const savedResponse = await fetch(
-    //   "http://localhost:8080/api/v1/management",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: jsonData,
+    // const formDataObject = {};
+    // formData.forEach((value, key) => {
+    //   formDataObject[key] = value;
+    //   if (key === "id") {
+    //     id = value;
     //   }
-    // );
-    // onUpdatedCreated();
+    // });
+
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
+    isUpdateType
+      ? updateInput({ id: row["id"], data: jsonData })
+      : addInput(jsonData);
+
     onClosed();
   };
 
@@ -158,9 +139,19 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
                   name="user"
                   error={Boolean(touched.user) && Boolean(errors.user)}
                   helperText={touched.user && errors.user}
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{ gridColumn: "span 4" }}
                 />
 
+                <TextField
+                  label="Estate"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.estate}
+                  name="estate"
+                  error={Boolean(touched.estate) && Boolean(errors.estate)}
+                  helperText={touched.estate && errors.estate}
+                  sx={{ gridColumn: "span 2" }}
+                />
                 <TextField
                   label="Statement"
                   onBlur={handleBlur}
@@ -177,8 +168,6 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
                   sx={{ gridColumn: "span 2" }}
                   select
                 >
-                  {/* <MenuItem value={"Income"}>Income</MenuItem>
-                  <MenuItem value={"Expense"}>Expense</MenuItem> */}
                   {financeStatementsData.map((value) => (
                     <MenuItem key={value} value={value}>
                       {value}
@@ -186,16 +175,6 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
                   ))}
                 </TextField>
 
-                <TextField
-                  label="Estate"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.estate}
-                  name="estate"
-                  error={Boolean(touched.estate) && Boolean(errors.estate)}
-                  helperText={touched.estate && errors.estate}
-                  sx={{ gridColumn: "span 4" }}
-                />
                 <TextField
                   label="Amount"
                   onBlur={handleBlur}
@@ -259,29 +238,6 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
                 />
               </>
             )}
-
-            {/* <TextField
-              label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
-            />
-
-            <TextField
-              label="Password"
-              type="Password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.password}
-              name="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-              sx={{ gridColumn: "span 4" }}
-            /> */}
           </Box>
           {/* BUTTONS */}
           <Box>
@@ -296,7 +252,7 @@ const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
                 "&:hover": { color: palette.primary.main },
               }}
             >
-              Add
+              {isUpdateType ? "Update" : "Add"}
             </Button>
           </Box>
         </form>
