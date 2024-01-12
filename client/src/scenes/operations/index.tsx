@@ -19,8 +19,6 @@ import { useEffect, useState } from "react";
 
 // type Props = {};
 
-
-
 const Operations = () => {
   const theme = useTheme();
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -29,17 +27,16 @@ const Operations = () => {
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
   const [triggerUpdate, setTriggerUpdate] = useState(false);
 
-  
   // useEffect(()=>{
-    //   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-    //   setGridData(flattenedData);
-    // },[data])
-    
-    useEffect(() => {
-      refetch();
-    }, [triggerUpdate]);// eslint-disable-next-line react-hooks/exhaustive-deps
+  //   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+  //   setGridData(flattenedData);
+  // },[data])
 
-    const HandledUpdate = () => setTriggerUpdate(!triggerUpdate);
+  useEffect(() => {
+    refetch();
+  }, [triggerUpdate]); // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const HandledUpdate = () => setTriggerUpdate(!triggerUpdate);
 
   // const updatedGridData = (entry) => {
   //   setGridData(() => []);
@@ -55,7 +52,7 @@ const Operations = () => {
       headerName: "User",
       flex: 0.5,
     },
-  
+
     {
       field: "financeStatement",
       headerName: "Statement",
@@ -95,7 +92,13 @@ const Operations = () => {
       field: "actions",
       headerName: "Actions",
       flex: 1,
-      renderCell: (params) => <ActionButtons id={params.row.id} onDeleted={HandledUpdate} />,
+      renderCell: (params) => (
+        <ActionButtons
+          row={params.row}
+          onUpdated={HandledUpdate}
+          modalType="update"
+        />
+      ),
     },
   ];
 
@@ -106,7 +109,7 @@ const Operations = () => {
           title="OPERTATIONS"
           subtitle="List of Real estate administration Transactions"
         />
-        <ModalRealEstate onUpdated={HandledUpdate} />
+        <ModalRealEstate onUpdated={HandledUpdate} modalType="new" id={1} />
       </FlexBetween>
       <Box
         mt="40px"

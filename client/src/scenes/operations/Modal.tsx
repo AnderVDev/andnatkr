@@ -9,7 +9,11 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+import {
+  CloseOutlined,
+  AddCircleOutlineOutlined,
+  SettingsOutlined,
+} from "@mui/icons-material";
 import TransactionForm from "../../components/TransactionForm";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -23,7 +27,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 type Props = {};
 
-const ModalRealEstate = ({ onUpdated }) => {
+const ModalRealEstate = ({ onUpdated, modalType, row }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -36,7 +40,11 @@ const ModalRealEstate = ({ onUpdated }) => {
   return (
     <>
       <IconButton onClick={handleClickOpen}>
-        <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        {modalType === "update" ? (
+          <SettingsOutlined sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        )}
       </IconButton>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
@@ -62,7 +70,12 @@ const ModalRealEstate = ({ onUpdated }) => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-          <TransactionForm onUpdatedCreated={onUpdated}  onClosed={handleClose}/>
+          <TransactionForm
+            onUpdatedCreated={onUpdated}
+            onClosed={handleClose}
+            modalType={modalType}
+            row={row}
+          />
         </DialogContent>
       </BootstrapDialog>
     </>
