@@ -21,24 +21,9 @@ import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "./FlexBetween";
 import { unflatten } from "flat";
+import { useAddEstateMgmtMutation } from "../state/api";
 
 // type Props = {};
-
-// Initial Values
-const initialValuesNewInput = {
-  user: "",
-  financeStatement: "",
-  estate: "",
-  amount: "",
-  month: "",
-  year: "",
-  detail: "",
-  comments: "",
-};
-const initialValuesExistingInput = {
-  email: "",
-  password: "",
-};
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -74,7 +59,7 @@ const months = [
   "December",
 ];
 
-const TransactionForm = ({onUpdatedCreated, onClosed}) => {
+const TransactionForm = ({ onUpdatedCreated, onClosed, modalType, row }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -82,6 +67,20 @@ const TransactionForm = ({onUpdatedCreated, onClosed}) => {
   const [pageType, setPageType] = useState("newInput");
   const isNewInput = pageType === "newInput";
   const isExistingInput = pageType === "existingInput";
+  const isUpdateType = modalType === "update";
+  const [addInput] = useAddEstateMgmtMutation();
+
+  // Initial Values
+  const initialValues = {
+    user: isUpdateType ? row.user : "",
+    financeStatement: isUpdateType ? row.financeStatement : "",
+    estate: isUpdateType ? row.estate : "",
+    amount: isUpdateType ? row.amount : "",
+    month: isUpdateType ? row.month : "",
+    year: isUpdateType ? row.year : "",
+    detail: isUpdateType ? row.detail : "",
+    comments: isUpdateType ? row.comments : "",
+  };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isNewInput) await newInput(values, onSubmitProps);
@@ -89,6 +88,7 @@ const TransactionForm = ({onUpdatedCreated, onClosed}) => {
 
   const newInput = async (values, onSubmitProps) => {
     const formData = new FormData();
+
     for (let value in values) {
       if (value === "user") {
         formData.append("user.id", values[value]);
@@ -106,29 +106,27 @@ const TransactionForm = ({onUpdatedCreated, onClosed}) => {
     });
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    console.log(jsonData);
+    addInput(jsonData);
 
-    const savedResponse = await fetch(
-      "http://localhost:8080/api/v1/management",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
-      }
-      
-    );
-    onUpdatedCreated();
+    // console.log(jsonData);
+    // const savedResponse = await fetch(
+    //   "http://localhost:8080/api/v1/management",
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: jsonData,
+    //   }
+    // );
+    // onUpdatedCreated();
     onClosed();
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={
-        isNewInput ? initialValuesNewInput : initialValuesExistingInput
-      }
+      initialValues={initialValues}
       validationSchema={isNewInput ? newInputSchema : ExistingInputSchema}
     >
       {({

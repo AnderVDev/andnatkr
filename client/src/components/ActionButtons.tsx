@@ -3,22 +3,19 @@ import React from "react";
 import FlexBetween from "./FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete, SettingsOutlined } from "@mui/icons-material";
+import ModalRealEstate from "../scenes/operations/Modal";
+import { useDeleteEstateMgmtMutation } from "../state/api";
 
 type Props = {};
 
-const ActionButtons = ({ id, onDeleted }) => {
+const ActionButtons = ({ onUpdated, modalType, row }) => {
   const theme = useTheme();
+  const [deleteInput] = useDeleteEstateMgmtMutation();
 
   const handleDelete = async () => {
-    console.log(`clicked ${id}`);
-
-    const savedResponse = await fetch(
-      "http://localhost:8080/api/v1/management/" + id,
-      {
-        method: "DELETE",
-      }
-    );
-    onDeleted();
+      deleteInput(row.id);
+    // console.log(`clicked ${row.id}`);
+    // onUpdated();
   };
 
   return (
@@ -31,9 +28,10 @@ const ActionButtons = ({ id, onDeleted }) => {
         gap: "0.5rem",
       }}
     >
-      <IconButton edge="end" aria-label="comments">
+      <ModalRealEstate onUpdated={onUpdated} modalType={modalType} row={row} />
+      {/* <IconButton >
         <SettingsOutlined />
-      </IconButton>
+      </IconButton> */}
       <IconButton onClick={handleDelete}>
         <Delete />
       </IconButton>
