@@ -1,18 +1,25 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   styled,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
-  Typography,
+  Theme,
 } from "@mui/material";
-import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
-import TransactionForm from "../../components/TransactionForm";
+import {
+  CloseOutlined,
+  AddCircleOutlineOutlined,
+  SettingsOutlined,
+} from "@mui/icons-material";
+import Form from "./Form";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+interface ModalMortgageProps {
+  modalType: string;
+  row: unknown;
+}
+
+const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -21,8 +28,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const ModalMortgages = () => {
-  const[open, setOpen] = useState(false);
+const ModalMortgages = ({ modalType, row }: ModalMortgageProps) => {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,11 +41,12 @@ const ModalMortgages = () => {
   return (
     <>
       <IconButton onClick={handleClickOpen}>
-        <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        {modalType === "update" ? (
+          <SettingsOutlined sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        )}
       </IconButton>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -60,8 +68,7 @@ const ModalMortgages = () => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-
-            <TransactionForm />
+          <Form onClosed={handleClose} modalType={modalType} row={row} />
         </DialogContent>
       </BootstrapDialog>
     </>

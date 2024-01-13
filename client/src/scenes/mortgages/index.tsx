@@ -1,20 +1,12 @@
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import Header from "../../components/Header";
-import FlexBetween from "../../components/FlexBetween";
-import { AddCircleOutlineOutlined } from "@mui/icons-material";
-import StatBox from "../../components/StatBox";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
-import ModalMortgages from "./Modal";
-import ActionButtons from "../../components/ActionButtons";
+import { Box, useTheme } from "@mui/material";
 import { flatten } from "flat";
+import ModalMortgages from "./Modal";
+import Header from "../../components/Header";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import FlexBetween from "../../components/FlexBetween";
 import { useGetMortgagesQuery } from "../../state/api";
+import ActionButtons from "./Actions";
+
 
 const Mortgages = () => {
   const theme = useTheme();
@@ -85,7 +77,7 @@ const Mortgages = () => {
           title="MORTGAGES"
           subtitle="List of Transactions of Mortgages Payments"
         />
-        <ModalMortgages />
+        <ModalMortgages modalType="new" id={1} />
       </FlexBetween>
       <Box
         mt="40px"
@@ -99,7 +91,7 @@ const Mortgages = () => {
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.background.alt,
+            backgroundColor: theme.palette.background.paper,
           },
           "& .MuiDataGrid-footerContainer": {
             backgroundColor: theme.palette.background.alt,
