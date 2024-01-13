@@ -1,7 +1,6 @@
 import FlexBetween from "../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-
 import { useDeleteMortgagesMutation } from "../../state/api";
 import ModalMortgages from "./Modal";
 
@@ -16,6 +15,7 @@ const ActionButtons = ({ modalType, row }: buttonsProps) => {
   const handleDelete = async () => {
     deleteInput(row.id);
   };
+
   return (
     <Box
       sx={{

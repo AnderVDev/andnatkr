@@ -87,7 +87,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     isUpdateType
       ? updateInput({ id: row["id"], data: jsonData })
       : addInput(jsonData);
-
     onClosed();
   };
 

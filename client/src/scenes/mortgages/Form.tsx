@@ -13,6 +13,8 @@ import { unflatten } from "flat";
 import {
   useAddMortgagesMutation,
   useUpdateMortgagesMutation,
+  useAddEstateMgmtMutation,
+  useUpdateEstateMgmtMutation,
 } from "../../state/api";
 
 // Input Validations
@@ -46,12 +48,15 @@ const months = [
 const Form = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();
   const isUpdateType = modalType === "update";
-  const [addInput] = useAddMortgagesMutation();
-  const [updateInput] = useUpdateMortgagesMutation();
+  const [addEntry] = useAddMortgagesMutation();
+  const [updateEntry] = useUpdateMortgagesMutation();
+  const [addInput] = useAddEstateMgmtMutation();
+  const [updateInput] = useUpdateEstateMgmtMutation();
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+
   //   const [pageType, setPageType] = useState("newInput");
   //   const isExistingInput = pageType === "existingInput";
   //   const isNewInput = pageType === "newInput";
-  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   // Initial Values
   const initialValues = {
@@ -67,6 +72,7 @@ const Form = ({ onClosed, modalType, row }) => {
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     await newEntry(values, onSubmitProps);
+    await newInput(values);
   };
 
   const newEntry = async (values, onSubmitProps) => {
@@ -81,6 +87,29 @@ const Form = ({ onClosed, modalType, row }) => {
         formData.append(value, values[value]);
       }
     }
+
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
+    isUpdateType
+      ? updateEntry({ id: row["id"], data: jsonData })
+      : addEntry(jsonData);
+    onClosed();
+  };
+
+  const newInput = async (values) => {
+    const formData = new FormData();
+
+    formData.append("user.id", values["user"]);
+    formData.append("estate.id", values["estate"]);
+    formData.append("financeStatement", "Expense");
+    formData.append("amount", values["clp"]);
+    formData.append("month", values["month"]);
+    formData.append("year", values["year"]);
+    formData.append(
+      "detail",
+      `Mortgage Payment, Installment#: ${values["installment_number"]}`
+    );
+    formData.append("comments", values["comments"]);
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));

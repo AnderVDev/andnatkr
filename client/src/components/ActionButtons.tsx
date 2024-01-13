@@ -15,6 +15,7 @@ const ActionButtons = ({ modalType, row }: buttonsProps) => {
   const handleDelete = async () => {
     deleteInput(row.id);
   };
+  
   return (
     <Box
       sx={{

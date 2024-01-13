@@ -56,10 +56,10 @@ export const api = createApi({
     }),
 
     addMortgages: builder.mutation({
-      query: (input) => ({
+      query: (entry) => ({
         url: `/mortgages`,
         method: "POST",
-        body: input,
+        body: entry,
       }),
       invalidatesTags: ["Mortgages"],
     }),
