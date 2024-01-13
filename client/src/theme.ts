@@ -1,3 +1,25 @@
+import { Theme, TypeBackground, Palette } from "@mui/material";
+
+
+
+
+interface CustomTheme extends Theme {
+  palette: Palette & {
+    neutral: {
+      dark: string;
+      main: string;
+      light: string;
+      mediumMain?: string;
+    };
+  };
+}
+
+
+interface CustomTypeBackground extends TypeBackground{
+  alt: string;
+
+}
+
 // color design tokens export
 export const colorTokens = {
   grey: {
@@ -30,7 +52,7 @@ export const colorTokens = {
 };
 
 // mui theme settings
-export const themeSettings = (mode: string) => {
+export const themeSettings = (mode: string): CustomTheme => {
   return {
     palette: {
       mode: mode,
@@ -49,10 +71,10 @@ export const themeSettings = (mode: string) => {
               medium: colorTokens.grey[400],
               light: colorTokens.grey[700],
             },
-            background: {
+            background:  {
               default: colorTokens.grey[900],
               alt: colorTokens.grey[800],
-            },
+            } as CustomTypeBackground,
           }
         : {
             // palette values for light mode
@@ -71,7 +93,7 @@ export const themeSettings = (mode: string) => {
             background: {
               default: colorTokens.grey[10],
               alt: colorTokens.grey[0],
-            },
+            } as CustomTypeBackground,
           }),
     },
     typography: {
