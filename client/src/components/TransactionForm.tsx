@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { flatten, unflatten } from "flat";
+import { unflatten } from "flat";
 import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
@@ -24,11 +24,6 @@ const newInputSchema = yup.object().shape({
   year: yup.number().required("required").positive(),
   detail: yup.string().nullable(),
   comments: yup.string().nullable(),
-});
-
-const ExistingInputSchema = yup.object().shape({
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
 });
 
 //Input data
@@ -76,7 +71,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
 
   const newInput = async (values, onSubmitProps) => {
     const formData = new FormData();
-    let id;
 
     for (const value in values) {
       if (value === "user") {
@@ -87,13 +81,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
         formData.append(value, values[value]);
       }
     }
-    // const formDataObject = {};
-    // formData.forEach((value, key) => {
-    //   formDataObject[key] = value;
-    //   if (key === "id") {
-    //     id = value;
-    //   }
-    // });
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));

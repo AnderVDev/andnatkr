@@ -33,7 +33,6 @@ const ModalRealEstate = ({ modalType, row }: ModalRealEstateProps) => {
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log({row})
   };
   const handleClose = () => {
     setOpen(false);
