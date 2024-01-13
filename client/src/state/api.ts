@@ -55,6 +55,33 @@ export const api = createApi({
       providesTags: ["Mortgages"],
     }),
 
+    addMortgages: builder.mutation({
+      query: (input) => ({
+        url: `/mortgages`,
+        method: "POST",
+        body: input,
+      }),
+      invalidatesTags: ["Mortgages"],
+    }),
+
+    updateMortgages: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/mortgages/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Mortgages"],
+    }),
+
+    deleteMortgages: builder.mutation({
+      query: (id) => ({
+        url: `/mortgages/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["Mortgages"],
+    }),
+
   }),
 });
 
@@ -65,4 +92,7 @@ export const {
   useAddEstateMgmtMutation,
   useGetEstateMgmtByIdQuery,
   useGetMortgagesQuery,
+  useAddMortgagesMutation,
+  useUpdateMortgagesMutation,
+  useDeleteMortgagesMutation,
 } = api;
