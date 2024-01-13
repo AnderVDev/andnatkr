@@ -12,6 +12,8 @@ import { api } from "./api.ts";
 import globalReducer from "./index.ts";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./";
+import { pageSlice } from "./pages/index.ts";
+
 
 // export const store = configureStore({
 //   reducer: {},
@@ -21,9 +23,11 @@ const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
+    page: pageSlice.reducer,
     persisted: persistedReducer,
     global: globalReducer,
     [api.reducerPath]: api.reducer,
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

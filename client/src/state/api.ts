@@ -9,11 +9,16 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "EstateMgmt"],
+  tagTypes: ["User", "EstateMgmt", "Mortgages"],
   endpoints: (builder) => ({
     getEstateMgmt: builder.query({
       query: () => "/management",
       providesTags: ["EstateMgmt"],
+    }),
+
+    getEstateMgmtById: builder.query({
+      query: (id) => `/management/${id}`,
+      providesTags: ["EstateMgmtById"],
     }),
 
     addEstateMgmt: builder.mutation({
@@ -26,10 +31,10 @@ export const api = createApi({
     }),
 
     updateEstateMgmt: builder.mutation({
-      query: (input) => ({
-        url: `/management/${input.id}`,
+      query: ({ id, data }) => ({
+        url: `/management/${id}`,
         method: "PATCH",
-        body: input,
+        body: data,
       }),
       invalidatesTags: ["EstateMgmt"],
     }),
@@ -42,6 +47,14 @@ export const api = createApi({
       }),
       invalidatesTags: ["EstateMgmt"],
     }),
+
+    // ---------MORTGAGES---------------------------
+
+    getMortgages: builder.query({
+      query: () => "/mortgages",
+      providesTags: ["Mortgages"],
+    }),
+
   }),
 });
 
@@ -50,4 +63,6 @@ export const {
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,
   useAddEstateMgmtMutation,
+  useGetEstateMgmtByIdQuery,
+  useGetMortgagesQuery,
 } = api;

@@ -1,47 +1,18 @@
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { flatten } from "flat";
 import ModalRealEstate from "./Modal";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "../../components/Header";
-// import StatBox from "../../components/StatBox";
 import FlexBetween from "../../components/FlexBetween";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import ActionButtons from "../../components/ActionButtons";
-import { useEffect, useState } from "react";
-
-// import { AddCircleOutlineOutlined } from "@mui/icons-material";
-
-// type Props = {};
 
 const Operations = () => {
   const theme = useTheme();
-  // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  // const [gridData, setGridData] = useState([]);
-  const { data, isLoading, refetch } = useGetEstateMgmtQuery();
+  const { data, isLoading } = useGetEstateMgmtQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-  const [triggerUpdate, setTriggerUpdate] = useState(false);
 
-  // useEffect(()=>{
-  //   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-  //   setGridData(flattenedData);
-  // },[data])
-
-  useEffect(() => {
-    refetch();
-  }, [triggerUpdate]); // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  const HandledUpdate = () => setTriggerUpdate(!triggerUpdate);
-
-  // const updatedGridData = (entry) => {
-  //   setGridData(() => []);
-  // };
-  const columns = [
+  const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "ID",
@@ -60,7 +31,7 @@ const Operations = () => {
     },
     {
       field: "estate.dep_number",
-      headerName: "Estate",
+      headerName: "Dep Number",
       flex: 0.5,
     },
     {
@@ -93,11 +64,7 @@ const Operations = () => {
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <ActionButtons
-          row={params.row}
-          onUpdated={HandledUpdate}
-          modalType="update"
-        />
+        <ActionButtons row={params.row} modalType="update" />
       ),
     },
   ];
@@ -106,10 +73,10 @@ const Operations = () => {
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Header
-          title="OPERTATIONS"
+          title="OPERATIONS"
           subtitle="List of Real estate administration Transactions"
         />
-        <ModalRealEstate onUpdated={HandledUpdate} modalType="new" id={1} />
+        <ModalRealEstate modalType="new" id={1} />
       </FlexBetween>
       <Box
         mt="40px"
@@ -119,8 +86,7 @@ const Operations = () => {
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.neutral[100],
-            // color: theme.palette.,
+            color: theme.palette.grey[100],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -129,7 +95,7 @@ const Operations = () => {
           },
           "& .MuiDataGrid-footerContainer": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.neutral[100],
+            color: theme.palette.grey[100],
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
@@ -140,8 +106,7 @@ const Operations = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row.id}
-          // rows={gridData}
-          rows={flattenedData || []}
+          rows={flattenedData}
           columns={columns}
         />
       </Box>

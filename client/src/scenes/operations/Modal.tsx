@@ -14,12 +14,12 @@ import {
 } from "@mui/icons-material";
 import TransactionForm from "../../components/TransactionForm";
 
-interface ModalRealEstateProps{
+interface ModalRealEstateProps {
   modalType: string;
   row: unknown;
 }
 
-const BootstrapDialog = styled(Dialog)(({ theme } : {theme : Theme}) => ({
+const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -28,11 +28,12 @@ const BootstrapDialog = styled(Dialog)(({ theme } : {theme : Theme}) => ({
   },
 }));
 
-const ModalRealEstate = ({ modalType, row } : ModalRealEstateProps) => {
+const ModalRealEstate = ({ modalType, row }: ModalRealEstateProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    console.log({row})
   };
   const handleClose = () => {
     setOpen(false);
@@ -47,9 +48,6 @@ const ModalRealEstate = ({ modalType, row } : ModalRealEstateProps) => {
           <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
         )}
       </IconButton>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

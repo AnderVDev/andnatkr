@@ -1,8 +1,9 @@
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import ModalRealEstate from "../scenes/operations/Modal";
-import { useDeleteEstateMgmtMutation } from "../state/api";
+
+import { useDeleteEstateMgmtMutation } from "../../state/api";
+import ModalMortgages from "./Modal";
 
 interface buttonsProps {
   modalType: string;
@@ -26,7 +27,7 @@ const ActionButtons = ({ modalType, row }: buttonsProps) => {
       }}
     >
       <FlexBetween>
-        <ModalRealEstate modalType={modalType} row={row} />
+        <ModalMortgages />
         <IconButton onClick={handleDelete}>
           <Delete />
         </IconButton>

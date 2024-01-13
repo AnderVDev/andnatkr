@@ -21,8 +21,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-type Props = {};
-
 const ModalMortgages = () => {
   const[open, setOpen] = useState(false);
 
