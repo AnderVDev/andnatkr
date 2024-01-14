@@ -7,7 +7,6 @@ import FlexBetween from "../../components/FlexBetween";
 import { useGetMortgagesQuery } from "../../state/api";
 import ActionButtons from "./Actions";
 
-
 const Mortgages = () => {
   const theme = useTheme();
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
