@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Button,
@@ -16,12 +15,13 @@ import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
 } from "../../state/api";
+// import { useState } from "react";
 
 // Input Validations
 const dataSchema = yup.object().shape({
   user: yup.string().required("required"), //user id
   estate: yup.string().required("required"), //estate id
-  installment_number: yup.number().required().positive(),
+  installment_number: yup.number().required("required").positive(),
   month: yup.string().required("required"),
   year: yup.number().required("required").positive(),
   uf: yup.number().required("required").positive(),
