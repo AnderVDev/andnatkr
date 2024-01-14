@@ -23,6 +23,7 @@ public class EstateMgmtDto {
     private Integer year;
     private String detail;
     private String comments;
+    private Boolean isMortgage;
     private Date createdAt;
     private Date updatedAt;
 }

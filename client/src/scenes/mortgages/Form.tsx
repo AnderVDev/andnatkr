@@ -110,6 +110,7 @@ const Form = ({ onClosed, modalType, row }) => {
       `Mortgage Payment, Installment#: ${values["installment_number"]}`
     );
     formData.append("comments", values["comments"]);
+    formData.append("isMortgage", "true");
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));

@@ -35,6 +35,9 @@ public class EstateMgmt {
     private String detail;
     private String comments;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isMortgage;
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
