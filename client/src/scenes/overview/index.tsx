@@ -19,48 +19,78 @@ import {
   PermIdentityOutlined,
 } from "@mui/icons-material";
 import StatBox from "../../components/StatBox";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
 import Modal from "../../components/Modal";
-
-type Props = {};
-const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      //   renderCell: (params) => params.value.length,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      //   renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-    },
-  ];
+import { useGetEstateMgmtQuery } from "../../state/api";
+import { flatten } from "flat";
+import ActionButtons from "../../components/ActionButtons";
 
 const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   //   const { data, isLoading } = useGetDashboardQuery();
-  const { data, isLoading } = useState(false);
+  const { data, isLoading } = useGetEstateMgmtQuery({});
+  const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
+  const columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.3,
+    },
+    {
+      field: "user.firstName",
+      headerName: "User",
+      flex: 0.5,
+    },
+
+    {
+      field: "financeStatement",
+      headerName: "Statement",
+      flex: 0.7,
+    },
+    {
+      field: "estate.dep_number",
+      headerName: "Dep Number",
+      flex: 0.5,
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      flex: 0.5,
+    },
+    {
+      field: "month",
+      headerName: "Month",
+      flex: 0.5,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      flex: 0.5,
+    },
+    {
+      field: "detail",
+      headerName: "Detail",
+      flex: 1,
+    },
+    {
+      field: "comments",
+      headerName: "Comments",
+      flex: 1,
+    },
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <ActionButtons row={params.row} modalType="update" />
+    //   ),
+    // },
+  ];
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="OVERVIEW" subtitle="Real Estate Overview" />
@@ -91,9 +121,9 @@ const Overview = () => {
           description="Since last month"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
-        
+
         {/* ROW 2 */}
-  
+
         <StatBox
           span="3"
           title="Balance"
@@ -126,7 +156,6 @@ const Overview = () => {
           description="Since last month"
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
-        
 
         {/* Row3 */}
         <Box
@@ -143,27 +172,26 @@ const Overview = () => {
             },
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
+              color: theme.palette.grey[100],
               borderBottom: "none",
             },
             "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: theme.palette.background.alt,
+              backgroundColor: theme.palette.background.paper,
             },
             "& .MuiDataGrid-footerContainer": {
               backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
+              color: theme.palette.grey[100],
               borderTop: "none",
             },
             "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.secondary[200]} !important`,
+              color: `${theme.palette.neutral[200]} !important`,
             },
           }}
         >
           <DataGrid
-            loading={false}
-            // loading={isLoading || !data}
-            getRowId={() => {}}
-            rows={(data && data.transactions) || []}
+            loading={isLoading || !data}
+            getRowId={(row) => row.id}
+            rows={flattenedData}
             columns={columns}
           />
         </Box>
@@ -180,11 +208,7 @@ const Overview = () => {
             >
               TodoList
             </Typography>
-            {/* <Dialog /> */}
             <Modal />
-            {/* <IconButton>
-              <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
-            </IconButton> */}
           </FlexBetween>
           <TodoList />
         </Box>
