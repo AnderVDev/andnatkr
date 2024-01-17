@@ -63,6 +63,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     year: isUpdateType ? row["year"] : "",
     detail: isUpdateType ? row["detail"] : "",
     comments: isUpdateType ? row["comments"] : "",
+    isMortgage: isUpdateType ? row["isMortgage"] : "false",
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
