@@ -53,6 +53,7 @@ const Form = ({ onClosed, modalType, row }) => {
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  let inputId = 0;
 
   //   const [pageType, setPageType] = useState("newInput");
   //   const isExistingInput = pageType === "existingInput";
@@ -71,29 +72,10 @@ const Form = ({ onClosed, modalType, row }) => {
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    await newEntry(values, onSubmitProps);
     await newInput(values);
-  };
-
-  const newEntry = async (values, onSubmitProps) => {
-    const formData = new FormData();
-
-    for (const value in values) {
-      if (value === "user") {
-        formData.append("user.id", values[value]);
-      } else if (value === "estate") {
-        formData.append("estate.id", values[value]);
-      } else {
-        formData.append(value, values[value]);
-      }
+    if (inputId !== 0 || isUpdateType) {
+      await newEntry(values, onSubmitProps);
     }
-
-    const formDataObject = Object.fromEntries(formData.entries());
-    const jsonData = JSON.stringify(unflatten(formDataObject));
-    isUpdateType
-      ? updateEntry({ id: row["id"], data: jsonData })
-      : addEntry(jsonData);
-    onClosed();
   };
 
   const newInput = async (values) => {
@@ -114,9 +96,42 @@ const Form = ({ onClosed, modalType, row }) => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
+    // isUpdateType
+    //   ? updateInput({ id: row["id"], data: jsonData })
+    //   : inputId = addInput(jsonData);
+
+    if (isUpdateType) {
+      updateInput({ id: row["id"], data: jsonData });
+    } else {
+      const response = await addInput(jsonData);
+      inputId = response.data.id;
+    }
+
+    console.log({ inputId });
+    onClosed();
+  };
+
+  const newEntry = async (values, onSubmitProps) => {
+    const formData = new FormData();
+
+    for (const value in values) {
+      if (value === "user") {
+        formData.append("user.id", values[value]);
+      } else if (value === "estate") {
+        formData.append("estate.id", values[value]);
+      } else {
+        formData.append(value, values[value]);
+      }
+    }
+    formData.append("mgmt_input_id", inputId);
+
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
     isUpdateType
-      ? updateInput({ id: row["id"], data: jsonData })
-      : addInput(jsonData);
+      ? updateEntry({ id: row["id"], data: jsonData })
+      : addEntry(jsonData);
+
+    inputId = 0;
     onClosed();
   };
 

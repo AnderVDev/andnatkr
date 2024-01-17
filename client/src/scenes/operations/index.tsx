@@ -63,9 +63,10 @@ const Operations = () => {
       field: "actions",
       headerName: "Actions",
       flex: 1,
-      renderCell: (params) => (
-        <ActionButtons row={params.row} modalType="update" />
-      ),
+      renderCell: (params) =>
+        !params.row.isMortgage ? (
+          <ActionButtons row={params.row} modalType="update" />
+        ) : null,
     },
   ];
 
