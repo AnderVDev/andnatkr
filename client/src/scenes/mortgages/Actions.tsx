@@ -1,19 +1,24 @@
 import FlexBetween from "../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { useDeleteMortgagesMutation } from "../../state/api";
+import {
+  useDeleteMortgagesMutation,
+  useDeleteEstateMgmtMutation,
+} from "../../state/api";
 import ModalMortgages from "./Modal";
 
 interface buttonsProps {
   modalType: string;
-  row: { id: number };
+  row: { id: number; mgmt_input_id: number };
 }
 
 const ActionButtons = ({ modalType, row }: buttonsProps) => {
-  const [deleteInput] = useDeleteMortgagesMutation();
+  const [deleteEntry] = useDeleteMortgagesMutation();
+  const [deleteInput] = useDeleteEstateMgmtMutation();
 
   const handleDelete = async () => {
-    deleteInput(row.id);
+    deleteInput(row.mgmt_input_id);
+    deleteEntry(row.id);
   };
 
   return (
