@@ -32,6 +32,7 @@ public class Mortgage {
     private Double uf;
     private Double clp;
     private String comments;
+    private Integer mgmt_input_id;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

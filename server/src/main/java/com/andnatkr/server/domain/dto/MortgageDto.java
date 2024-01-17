@@ -22,6 +22,7 @@ public class MortgageDto {
     private Double uf;
     private Double clp;
     private String comments;
+    private Integer mgmt_input_id;
     private Date createdAt;
     private Date updatedAt;
 }
