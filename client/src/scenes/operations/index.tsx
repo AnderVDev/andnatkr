@@ -52,7 +52,7 @@ const Operations = () => {
     {
       field: "detail",
       headerName: "Detail",
-      flex: 1,
+      flex: 1.8,
     },
     {
       field: "comments",
