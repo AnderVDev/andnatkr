@@ -101,7 +101,7 @@ const Form = ({ onClosed, modalType, row }) => {
     //   : inputId = addInput(jsonData);
 
     if (isUpdateType) {
-      updateInput({ id: row["id"], data: jsonData });
+      updateInput({ id: row["mgmt_input_id"], data: jsonData });
     } else {
       const response = await addInput(jsonData);
       inputId = response.data.id;
