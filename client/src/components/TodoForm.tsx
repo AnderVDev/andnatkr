@@ -63,12 +63,12 @@ const TodoForm = () => {
                   onChange={handleChange}
                   value={values.description}
                   name="description"
-                  rows={4}
+                  rows={6}
                   error={
                     Boolean(touched.description) && Boolean(errors.description)
                   }
                   helperText={touched.description && errors.description}
-                  sx={{ gridColumn: "span 12"}}
+                  sx={{ gridColumn: "span 12", gridRow: "span 6"}}
                 />
           </Box>
           <Divider />

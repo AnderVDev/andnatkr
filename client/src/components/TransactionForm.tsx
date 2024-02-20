@@ -27,6 +27,16 @@ const newInputSchema = yup.object().shape({
 });
 
 //Input data
+const estatesData = [
+  {
+    id: 1,
+    dep_number: 506,
+  },
+  {
+    id: 2,
+    dep_number: 619,
+  },
+];
 const financeStatementsData = ["Income", "Expense"];
 const months = [
   "January",
@@ -55,7 +65,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
 
   // Initial Values
   const initialValues = {
-    user: isUpdateType ? row["user.id"] : "",
+    user: isUpdateType ? row["user.email"] : "",
     financeStatement: isUpdateType ? row["financeStatement"] : "",
     estate: isUpdateType ? row["estate.id"] : "",
     amount: isUpdateType ? row["amount"] : "",
@@ -138,7 +148,14 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
                   error={Boolean(touched.estate) && Boolean(errors.estate)}
                   helperText={touched.estate && errors.estate}
                   sx={{ gridColumn: "span 2" }}
-                />
+                  select
+                >
+                  {estatesData.map((estate) => (
+                    <MenuItem key={estate.id} value={estate.id}>
+                      {estate.dep_number}
+                    </MenuItem>
+                  ))}
+                </TextField>
                 <TextField
                   label="Statement"
                   onBlur={handleBlur}
@@ -160,6 +177,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
                       {value}
                     </MenuItem>
                   ))}
+                  T
                 </TextField>
 
                 <TextField

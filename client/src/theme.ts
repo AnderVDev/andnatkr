@@ -1,8 +1,5 @@
 import { Theme, TypeBackground, Palette } from "@mui/material";
 
-
-
-
 interface CustomTheme extends Theme {
   palette: Palette & {
     neutral: {
@@ -14,10 +11,8 @@ interface CustomTheme extends Theme {
   };
 }
 
-
-interface CustomTypeBackground extends TypeBackground{
+interface CustomTypeBackground extends TypeBackground {
   alt: string;
-
 }
 
 // color design tokens export
@@ -71,7 +66,7 @@ export const themeSettings = (mode: string): CustomTheme => {
               medium: colorTokens.grey[400],
               light: colorTokens.grey[700],
             },
-            background:  {
+            background: {
               default: colorTokens.grey[900],
               alt: colorTokens.grey[800],
             } as CustomTypeBackground,

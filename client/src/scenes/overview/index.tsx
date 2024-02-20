@@ -23,17 +23,20 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
 import Modal from "../../components/Modal";
-import { useGetEstateMgmtQuery } from "../../state/api";
+import { useGetEstateMgmtQuery, useGetEstateQuery } from "../../state/api";
 import { flatten } from "flat";
 import ActionButtons from "../../components/ActionButtons";
 
 const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  //   const { data, isLoading } = useGetDashboardQuery();
   const { data, isLoading } = useGetEstateMgmtQuery({});
+  const { data: estateData, isLoading: isLoadingEstate } = useGetEstateQuery(
+    {}
+  );
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-
+  // console.log("Estate Data:", estateData);
+  // console.log("Is Loading Estate:", isLoadingEstate);
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -81,14 +84,6 @@ const Overview = () => {
       headerName: "Comments",
       flex: 1,
     },
-    // {
-    //   field: "actions",
-    //   headerName: "Actions",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <ActionButtons row={params.row} modalType="update" />
-    //   ),
-    // },
   ];
 
   return (
@@ -107,8 +102,8 @@ const Overview = () => {
         {/* ROW 1 */}
         <StatBox
           span="6"
-          title="506"
-          value="Depto. 619 (3B, 2B), Independencia, RM"
+          title={estateData[0].dep_number}
+          value="(3B, 2B), Independencia, RM"
           increase="+14%"
           description="Since last month"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
@@ -195,7 +190,7 @@ const Overview = () => {
             columns={columns}
           />
         </Box>
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 3"
           borderRadius="0.55rem"
@@ -211,7 +206,7 @@ const Overview = () => {
             <Modal />
           </FlexBetween>
           <TodoList />
-        </Box>
+        </Box> */}
       </Box>
       <Box
         mt="20px"

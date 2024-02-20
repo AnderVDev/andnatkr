@@ -111,7 +111,7 @@ const Form = () => {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-                <TextField
+                {/* <TextField
                   label="Username"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -120,7 +120,7 @@ const Form = () => {
                   error={Boolean(touched.username) && Boolean(errors.username)}
                   helperText={touched.username && errors.username}
                   sx={{ gridColumn: "span 4" }}
-                />
+                /> */}
                 <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
