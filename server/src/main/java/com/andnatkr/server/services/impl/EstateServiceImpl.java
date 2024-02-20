@@ -47,6 +47,7 @@ public class EstateServiceImpl implements EstateService {
         return repository.findById(id).map(existingEstate -> {
             Optional.ofNullable(estateEntity.getDep_number()).ifPresent(existingEstate::setDep_number);
             Optional.ofNullable(estateEntity.getDescription()).ifPresent(existingEstate::setDescription);
+            Optional.ofNullable(estateEntity.getAddress()).ifPresent(existingEstate::setAddress);
             Optional.ofNullable(estateEntity.getComments()).ifPresent(existingEstate::setComments);
             return repository.save(existingEstate);
         }).orElseThrow(() -> new RuntimeException("Estate Does not Exist"));

@@ -102,16 +102,16 @@ const Overview = () => {
         {/* ROW 1 */}
         <StatBox
           span="6"
-          title={estateData[0].dep_number}
-          value="(3B, 2B), Independencia, RM"
+          title={!isLoadingEstate ? estateData[0].dep_number : ""}
+          value={!isLoadingEstate ? estateData[0].description : ""}
           increase="+14%"
           description="Since last month"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="6"
-          title="Belisario Prats 1850"
-          value="Depto. 619 (1B, 1B), Independencia, RM"
+          title={!isLoadingEstate ? estateData[1].dep_number : ""}
+          value={!isLoadingEstate ? estateData[1].description : ""}
           increase="+14%"
           description="Since last month"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}

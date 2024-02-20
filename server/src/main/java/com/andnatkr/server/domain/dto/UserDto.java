@@ -22,6 +22,4 @@ public class UserDto {
     private String role;
     private String avatar;
     private String description;
-    private Date createdAt;
-    private Date updatedAt;
 }

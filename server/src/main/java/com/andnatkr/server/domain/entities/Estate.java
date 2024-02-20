@@ -20,8 +20,9 @@ public class Estate {
     private Integer id;
     private Integer dep_number;
     private String description;
+    private String address;
     private String comments;
 
-    @OneToMany(mappedBy = "estate")
+    @OneToMany(mappedBy = "estate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EstateMgmt> estateMgmtList;
 }
