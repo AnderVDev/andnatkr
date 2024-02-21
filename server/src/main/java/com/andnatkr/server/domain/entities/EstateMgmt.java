@@ -26,9 +26,10 @@ public class EstateMgmt {
     private User user;
     private String financeStatement;
 
-    @ManyToOne
-    @JoinColumn(name = "estate_id")
-    private Estate estate;
+//    @ManyToOne
+//    @JoinColumn(name = "estate_id")
+//    private Estate estate;
+    private String estate;
     private Integer amount;
     private String month;
     private Integer year;

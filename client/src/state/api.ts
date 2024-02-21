@@ -9,14 +9,10 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "EstateMgmt", "Mortgages", "Estate", "EstateMgmtById"],
+  tagTypes: ["User", "EstateMgmt", "Mortgages"],
 
   endpoints: (builder) => ({
-    // --------- Estates ---------------------------
-    getEstate: builder.query({
-      query: () => "/estates",
-      providesTags: ["Estate"],
-    }),
+
 
     // --------- Managements ---------------------------
     getEstateMgmt: builder.query({
@@ -93,7 +89,6 @@ export const api = createApi({
 });
 
 export const {
-  useGetEstateQuery,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,

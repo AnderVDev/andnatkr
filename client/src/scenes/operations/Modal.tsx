@@ -53,7 +53,7 @@ const ModalRealEstate = ({ modalType, row }: ModalRealEstateProps) => {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          New
+          {modalType === "update" ? "Update" : "New"}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -73,6 +73,7 @@ const ModalRealEstate = ({ modalType, row }: ModalRealEstateProps) => {
             modalType={modalType}
             row={row}
           />
+          
         </DialogContent>
       </BootstrapDialog>
     </>

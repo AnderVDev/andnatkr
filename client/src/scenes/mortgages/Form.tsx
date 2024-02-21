@@ -20,7 +20,7 @@ import {
 // Input Validations
 const dataSchema = yup.object().shape({
   user: yup.string().required("required"), //user id
-  estate: yup.string().required("required"), //estate id
+  estate: yup.string().required("required"), 
   installment_number: yup.number().required("required").positive(),
   month: yup.string().required("required"),
   year: yup.number().required("required").positive(),
@@ -30,6 +30,7 @@ const dataSchema = yup.object().shape({
 });
 
 //Input data
+const estatesData = ["506", "619"];
 const months = [
   "January",
   "February",
@@ -55,14 +56,10 @@ const Form = ({ onClosed, modalType, row }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   let inputId = 0;
 
-  //   const [pageType, setPageType] = useState("newInput");
-  //   const isExistingInput = pageType === "existingInput";
-  //   const isNewInput = pageType === "newInput";
-
   // Initial Values
   const initialValues = {
     user: isUpdateType ? row["user.id"] : "",
-    estate: isUpdateType ? row["estate.id"] : "",
+    estate: isUpdateType ? row["estate"] : "",
     installment_number: isUpdateType ? row["installment_number"] : "",
     month: isUpdateType ? row["month"] : "",
     year: isUpdateType ? row["year"] : "",
@@ -82,7 +79,7 @@ const Form = ({ onClosed, modalType, row }) => {
     const formData = new FormData();
 
     formData.append("user.id", values["user"]);
-    formData.append("estate.id", values["estate"]);
+    formData.append("estate", values["estate"]);
     formData.append("financeStatement", "Expense");
     formData.append("amount", values["clp"]);
     formData.append("month", values["month"]);
@@ -96,9 +93,6 @@ const Form = ({ onClosed, modalType, row }) => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    // isUpdateType
-    //   ? updateInput({ id: row["id"], data: jsonData })
-    //   : inputId = addInput(jsonData);
 
     if (isUpdateType) {
       updateInput({ id: row["mgmt_input_id"], data: jsonData });
@@ -106,8 +100,6 @@ const Form = ({ onClosed, modalType, row }) => {
       const response = await addInput(jsonData);
       inputId = response.data.id;
     }
-
-    console.log({ inputId });
     onClosed();
   };
 
@@ -117,8 +109,6 @@ const Form = ({ onClosed, modalType, row }) => {
     for (const value in values) {
       if (value === "user") {
         formData.append("user.id", values[value]);
-      } else if (value === "estate") {
-        formData.append("estate.id", values[value]);
       } else {
         formData.append(value, values[value]);
       }
@@ -181,7 +171,14 @@ const Form = ({ onClosed, modalType, row }) => {
                 error={Boolean(touched.estate) && Boolean(errors.estate)}
                 helperText={touched.estate && errors.estate}
                 sx={{ gridColumn: "span 2" }}
-              />
+                select
+              >
+                {estatesData.map((estate) => (
+                  <MenuItem key={estate} value={estate}>
+                    {estate}
+                  </MenuItem>
+                ))}
+              </TextField>
 
               <TextField
                 label="Installment Number"

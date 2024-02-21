@@ -23,9 +23,7 @@ public class Mortgage {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "real_estate_id")
-    private Estate estate;
+    private String estate;
     private Integer installment_number;
     private String month;
     private Integer year;

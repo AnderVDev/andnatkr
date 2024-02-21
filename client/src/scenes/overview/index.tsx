@@ -31,12 +31,8 @@ const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery({});
-  const { data: estateData, isLoading: isLoadingEstate } = useGetEstateQuery(
-    {}
-  );
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
-  // console.log("Estate Data:", estateData);
-  // console.log("Is Loading Estate:", isLoadingEstate);
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -55,7 +51,7 @@ const Overview = () => {
       flex: 0.7,
     },
     {
-      field: "estate.dep_number",
+      field: "estate",
       headerName: "Dep Number",
       flex: 0.5,
     },
@@ -102,18 +98,18 @@ const Overview = () => {
         {/* ROW 1 */}
         <StatBox
           span="6"
-          title={!isLoadingEstate ? estateData[0].dep_number : ""}
-          value={!isLoadingEstate ? estateData[0].description : ""}
-          increase="+14%"
-          description="Since last month"
+          title="Belisario Prats 1850"
+          value="unit 506 - deposit and parking lot "
+          increase="3B / 2B"
+          description="Independencia, RM - Chile"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="6"
-          title={!isLoadingEstate ? estateData[1].dep_number : ""}
-          value={!isLoadingEstate ? estateData[1].description : ""}
-          increase="+14%"
-          description="Since last month"
+          title="Belisario Prats 1850"
+          value="unit 619"
+          increase="1B / 1B"
+          description="Independencia, RM - Chile"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
 

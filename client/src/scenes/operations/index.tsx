@@ -30,7 +30,7 @@ const Operations = () => {
       flex: 0.7,
     },
     {
-      field: "estate.dep_number",
+      field: "estate",
       headerName: "Dep Number",
       flex: 0.5,
     },

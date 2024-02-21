@@ -14,29 +14,27 @@ import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
 } from "../state/api";
+
 // Input Validations
 const newInputSchema = yup.object().shape({
-  user: yup.string().required("required"), //user id
-  financeStatement: yup.string().required("required"),
-  estate: yup.string().required("required"), //estate id
-  amount: yup.number().required().positive(),
-  month: yup.string().required("required"),
-  year: yup.number().required("required").positive(),
+  user: yup.string().required("User is required"), // user id
+  financeStatement: yup.string().required("Finance Statement is required"),
+  estate: yup.string().required("Estate is required"), // estate id
+  amount: yup
+    .number()
+    .required("Amount is required")
+    .positive("Amount must be positive"),
+  month: yup.string().required("Month is required"),
+  year: yup
+    .number()
+    .required("Year is required")
+    .positive("Year must be positive"),
   detail: yup.string().nullable(),
   comments: yup.string().nullable(),
 });
 
-//Input data
-const estatesData = [
-  {
-    id: 1,
-    dep_number: 506,
-  },
-  {
-    id: 2,
-    dep_number: 619,
-  },
-];
+// Input data
+const estatesData = ["506", "619"];
 const financeStatementsData = ["Income", "Expense"];
 const months = [
   "January",
@@ -59,15 +57,13 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
   const [pageType, setPageType] = useState("newInput");
-  const isExistingInput = pageType === "existingInput";
-  const isNewInput = pageType === "newInput";
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   // Initial Values
   const initialValues = {
-    user: isUpdateType ? row["user.email"] : "",
+    user: isUpdateType ? row["user.id"] : "",
     financeStatement: isUpdateType ? row["financeStatement"] : "",
-    estate: isUpdateType ? row["estate.id"] : "",
+    estate: isUpdateType ? row["estate"] : "",
     amount: isUpdateType ? row["amount"] : "",
     month: isUpdateType ? row["month"] : "",
     year: isUpdateType ? row["year"] : "",
@@ -77,7 +73,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    if (isNewInput) await newInput(values, onSubmitProps);
+    if (pageType === "newInput") await newInput(values, onSubmitProps);
   };
 
   const newInput = async (values, onSubmitProps) => {
@@ -86,8 +82,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     for (const value in values) {
       if (value === "user") {
         formData.append("user.id", values[value]);
-      } else if (value === "estate") {
-        formData.append("estate.id", values[value]);
       } else {
         formData.append(value, values[value]);
       }
@@ -95,9 +89,12 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
+    console.log(formDataObject);
+
     isUpdateType
       ? updateInput({ id: row["id"], data: jsonData })
       : addInput(jsonData);
+
     onClosed();
   };
 
@@ -105,7 +102,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={isNewInput ? newInputSchema : ExistingInputSchema}
+      validationSchema={newInputSchema}
     >
       {({
         values,
@@ -114,8 +111,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
-        resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
           <Box
@@ -126,7 +121,7 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {isNewInput && (
+            {pageType === "newInput" && (
               <>
                 <TextField
                   label="User"
@@ -151,8 +146,8 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
                   select
                 >
                   {estatesData.map((estate) => (
-                    <MenuItem key={estate.id} value={estate.id}>
-                      {estate.dep_number}
+                    <MenuItem key={estate} value={estate}>
+                      {estate}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -177,7 +172,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
                       {value}
                     </MenuItem>
                   ))}
-                  T
                 </TextField>
 
                 <TextField

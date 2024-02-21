@@ -15,7 +15,7 @@ import java.util.Date;
 public class MortgageDto {
     private Long id;
     private UserDto user;
-    private EstateDto estate;
+    private String estate;
     private Integer installment_number;
     private String month;
     private Integer year;
