@@ -1,5 +1,5 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form.tsx";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 // type Props = {};
 
@@ -10,7 +10,7 @@ const LoginPage = () => {
     <Box>
       <Box
         width="100%"
-        backgroundColor={theme.palette.background.alt}
+        bgcolor={theme.palette.background.alt}
         p="1rem 6%"
         textAlign="center"
       >
@@ -24,7 +24,7 @@ const LoginPage = () => {
         p="2rem"
         m="2rem auto"
         borderRadius="1.5rem"
-        backgroundColor={theme.palette.background.alt}
+        bgcolor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
           Welcome to AndnaTkr a simple Finance Tracker!

@@ -1,17 +1,59 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setCredentials, setLogout } from ".";
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost:8080/api/v1",
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.token;
+    if (token) {
+      headers.set("authorization", `Bearer ${token}`);
+    }
+    headers.set("Content-Type", "application/json");
+    return headers;
+  },
+});
+const baseQueryWithReAuth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (result?.error?.status === 403) {
+    console.log("sending refresh token");
+    try {
+      const refreshResult = await baseQuery("/refresh-token", api, extraOptions);
+      console.log(refreshResult);
+
+      if (refreshResult?.data) {
+        const user = api.getState().auth.user;
+        api.dispatch(setCredentials({ ...refreshResult.data, user }));
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        api.dispatch(setLogout());
+      }
+    } catch (error) {
+      console.error("Failed to refresh token:", error);
+      api.dispatch(setLogout());
+    }
+  }
+  return result;
+};
 
 export const api = createApi({
   reducerPath: "andnatkrApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/v1",
-    prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReAuth,
+
   tagTypes: ["User", "EstateMgmt", "Mortgages", "ChileanIndicators"],
 
   endpoints: (builder) => ({
+    // --------- Authentication ---------------------------
+
+    getLogin: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/authentication",
+        method: "POST",
+        body: { credentials },
+      }),
+      providesTags: ["Credentials"],
+    }),
     // --------- Managements ---------------------------
     getEstateMgmt: builder.query({
       query: () => "/management",
@@ -83,16 +125,11 @@ export const api = createApi({
       }),
       invalidatesTags: ["Mortgages"],
     }),
-
-    // ---------CHILEAN FINANCE VALUES---------------------------
-    getChileanIndicators: builder.query({
-      query: () => "https://mindicador.cl/api",
-      providesTags: ["ChileanIndicators"],
-    }),
   }),
 });
 
 export const {
+  useGetLoginMutation,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,
@@ -102,5 +139,4 @@ export const {
   useAddMortgagesMutation,
   useUpdateMortgagesMutation,
   useDeleteMortgagesMutation,
-  useGetChileanIndicatorsQuery,
 } = api;

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:5173",maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/v1/estates")
 @RequiredArgsConstructor

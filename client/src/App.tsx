@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
@@ -14,12 +14,10 @@ import Mortgages from "./scenes/mortgages";
 import Performance from "./scenes/performance";
 import Dashboard from "./scenes/dashboard";
 
+
 function App() {
   const mode = "dark";
-  // const mode = useSelector((state) => state.mode);
-  // const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  // const isAuth = Boolean(useSelector((state) => state.token));
 
   return (
     <div className="app">
@@ -29,7 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
-              {/* <Route path="/" element={<Navigate to="dashboard" replace />} /> */}
+              <Route path="/" element={<Navigate to="dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />

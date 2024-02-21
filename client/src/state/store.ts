@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore} from "@reduxjs/toolkit";
 import {
   persistReducer,
   FLUSH,
@@ -14,10 +14,6 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./";
 import { pageSlice } from "./pages/index.ts";
 
-
-// export const store = configureStore({
-//   reducer: {},
-// });
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
 
@@ -27,6 +23,7 @@ export const store = configureStore({
     persisted: persistedReducer,
     global: globalReducer,
     [api.reducerPath]: api.reducer,
+    auth: authReducer
     
   },
   middleware: (getDefaultMiddleware) =>

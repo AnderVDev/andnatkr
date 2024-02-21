@@ -89,7 +89,6 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    console.log(formDataObject);
 
     isUpdateType
       ? updateInput({ id: row["id"], data: jsonData })

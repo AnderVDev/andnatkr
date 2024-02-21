@@ -23,12 +23,8 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
 import Modal from "../../components/Modal";
-import {
-  useGetChileanIndicatorsQuery,
-  useGetEstateMgmtQuery,
-} from "../../state/api";
+import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
-import ActionButtons from "../../components/ActionButtons";
 
 const sumAmountByStatement = (data, statement) => {
   return data.reduce((sum, entry) => {
@@ -43,8 +39,7 @@ const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery({});
-  const { data: chileanIndex, isLoading: IsloadingChilean } =
-    useGetChileanIndicatorsQuery({});
+
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
   const filterBig = data ? data.filter((entry) => entry.estate === "506") : [];
@@ -61,7 +56,7 @@ const Overview = () => {
   const incomeSumSmall =
     filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Income") : 0;
 
-  console.log(chileanIndex);
+
 
   const columns: GridColDef[] = [
     {

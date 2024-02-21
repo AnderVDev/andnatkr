@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Button,
@@ -7,14 +6,17 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Formik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { Formik } from "formik";
+import { useState } from "react";
+import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setCredentials } from "../../state/index.ts";
+import { useGetLoginMutation } from "../../state/api.ts";
 import FlexBetween from "../../components/FlexBetween.tsx";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 // type Props = {};
 
@@ -51,8 +53,6 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("required"),
 });
 
-const handleFormSubmit = () => console.log("Form Submited");
-
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
@@ -61,6 +61,67 @@ const Form = () => {
   const [pageType, setPageType] = useState("login");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
+  const [newLogin, { isLoading, isError, data }] = useGetLoginMutation();
+
+  // const register = async (values, onSubmitProps) => {
+  //   //this allows us to send form info with image
+  //   const formData = new FormData();
+
+  //   for (const value in values) {
+  //     formData.append(value, values[value]);
+  //   }
+  //   formData.append("picturePath", values.picture.name);
+
+  //   const formDataObject = Object.fromEntries(formData.entries());
+  //   const jsonData = JSON.stringify(unflatten(formDataObject));
+
+  //   const savedUserResponse = await fetch(
+  //       "http://localhost:3001/auth/register",
+  //       {
+  //           method: "POST",
+  //           body: formData,
+  //       }
+  //   );
+  //   const savedUser = await savedUserResponse.json();
+  //   onSubmitProps.resetForm();
+  //   if(savedUser){
+  //       setPageType("login");
+  //   }
+  // };
+
+  const authenticate = async (values, onSubmitProps) => {
+    const formData = new FormData();
+
+    for (const value in values) {
+      formData.append(value, values[value]);
+    }
+
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
+    console.log(jsonData);
+
+    // newLogin(jsonData);
+
+    const loggedIn = await newLogin(jsonData);
+    // console.log(loggedIn);
+    onSubmitProps.resetForm();
+    
+    if (!isError && !isLoading && loggedIn) {
+      console.log(loggedIn);
+      dispatch(
+        setCredentials({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/overview");
+    }
+  };
+
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    if (isLogin) await authenticate(values, onSubmitProps);
+    // if (isRegister) await register(values, onSubmitProps);
+  };
 
   return (
     <Formik
@@ -111,16 +172,6 @@ const Form = () => {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-                {/* <TextField
-                  label="Username"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.username}
-                  name="username"
-                  error={Boolean(touched.username) && Boolean(errors.username)}
-                  helperText={touched.username && errors.username}
-                  sx={{ gridColumn: "span 4" }}
-                /> */}
                 <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
