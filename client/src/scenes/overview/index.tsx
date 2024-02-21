@@ -23,15 +23,45 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
 import Modal from "../../components/Modal";
-import { useGetEstateMgmtQuery, useGetEstateQuery } from "../../state/api";
+import {
+  useGetChileanIndicatorsQuery,
+  useGetEstateMgmtQuery,
+} from "../../state/api";
 import { flatten } from "flat";
 import ActionButtons from "../../components/ActionButtons";
+
+const sumAmountByStatement = (data, statement) => {
+  return data.reduce((sum, entry) => {
+    if (entry.financeStatement === statement) {
+      return sum + entry.amount;
+    }
+    return sum;
+  }, 0);
+};
 
 const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery({});
+  const { data: chileanIndex, isLoading: IsloadingChilean } =
+    useGetChileanIndicatorsQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
+  const filterBig = data ? data.filter((entry) => entry.estate === "506") : [];
+  const expenseSum =
+    filterBig.length > 0 ? sumAmountByStatement(filterBig, "Expense") : 0;
+  const incomeSum =
+    filterBig.length > 0 ? sumAmountByStatement(filterBig, "Income") : 0;
+
+  const filterSmall = data
+    ? data.filter((entry) => entry.estate === "619")
+    : [];
+  const expenseSumSmall =
+    filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Expense") : 0;
+  const incomeSumSmall =
+    filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Income") : 0;
+
+  console.log(chileanIndex);
 
   const columns: GridColDef[] = [
     {
@@ -104,6 +134,7 @@ const Overview = () => {
           description="Independencia, RM - Chile"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
+
         <StatBox
           span="6"
           title="Belisario Prats 1850"
@@ -116,35 +147,43 @@ const Overview = () => {
         {/* ROW 2 */}
 
         <StatBox
-          span="3"
-          title="Balance"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
+          span="2"
+          title="Total Incomes "
+          value={incomeSum}
+          increase="506"
+          description=""
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
-          title="Assets"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
+          span="2"
+          title="Total Expenses"
+          value={expenseSum}
+          increase="506"
+          description=""
           icon={<MonetizationOnOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
+          span="2"
+          title="Current Leasing"
+          value="500.000 "
+          increase="506"
+          description="UF"
+          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
           span="3"
-          title="Liabilities"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
+          title="Total Incomes"
+          value={incomeSumSmall}
+          increase="619"
+          description=""
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="3"
-          title="Total Amount"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
+          title="Total Expenses"
+          value={expenseSumSmall}
+          increase="619"
+          description=""
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
 

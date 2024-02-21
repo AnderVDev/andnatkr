@@ -9,11 +9,9 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User", "EstateMgmt", "Mortgages"],
+  tagTypes: ["User", "EstateMgmt", "Mortgages", "ChileanIndicators"],
 
   endpoints: (builder) => ({
-
-
     // --------- Managements ---------------------------
     getEstateMgmt: builder.query({
       query: () => "/management",
@@ -85,6 +83,12 @@ export const api = createApi({
       }),
       invalidatesTags: ["Mortgages"],
     }),
+
+    // ---------CHILEAN FINANCE VALUES---------------------------
+    getChileanIndicators: builder.query({
+      query: () => "https://mindicador.cl/api",
+      providesTags: ["ChileanIndicators"],
+    }),
   }),
 });
 
@@ -98,4 +102,5 @@ export const {
   useAddMortgagesMutation,
   useUpdateMortgagesMutation,
   useDeleteMortgagesMutation,
+  useGetChileanIndicatorsQuery,
 } = api;
