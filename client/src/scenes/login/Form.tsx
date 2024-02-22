@@ -14,7 +14,7 @@ import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../../state/index.ts";
-import { useGetLoginMutation } from "../../state/api.ts";
+import { useLoginMutation } from "../../state/api.ts";
 import FlexBetween from "../../components/FlexBetween.tsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
@@ -61,7 +61,7 @@ const Form = () => {
   const [pageType, setPageType] = useState("login");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-  const [newLogin, { isLoading, isError, data }] = useGetLoginMutation();
+  const [newLogin, { isLoading, isError, data }] = useLoginMutation();
 
   // const register = async (values, onSubmitProps) => {
   //   //this allows us to send form info with image
@@ -103,15 +103,16 @@ const Form = () => {
     // newLogin(jsonData);
 
     const loggedIn = await newLogin(jsonData);
-    // console.log(loggedIn);
+    console.log({ loggedIn });
+
     onSubmitProps.resetForm();
-    
-    if (!isError && !isLoading && loggedIn) {
-      console.log(loggedIn);
+
+    if (!loggedIn.isError && !loggedIn.isLoading && loggedIn) {
+      console.log({ loggedIn });
       dispatch(
         setCredentials({
-          user: loggedIn.user,
-          token: loggedIn.token,
+          user: loggedIn.data.user,
+          token: loggedIn.data.access_token,
         })
       );
       navigate("/overview");

@@ -3,50 +3,23 @@ import { setCredentials, setLogout } from ".";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/api/v1",
-  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+    const { auth } = getState();
+    if (auth && auth.token) {
+      headers.set("Authorization", `Bearer ${auth.token}`);
     }
     headers.set("Content-Type", "application/json");
     return headers;
   },
 });
-const baseQueryWithReAuth = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
-
-  if (result?.error?.status === 403) {
-    console.log("sending refresh token");
-    try {
-      const refreshResult = await baseQuery("/refresh-token", api, extraOptions);
-      console.log(refreshResult);
-
-      if (refreshResult?.data) {
-        const user = api.getState().auth.user;
-        api.dispatch(setCredentials({ ...refreshResult.data, user }));
-        result = await baseQuery(args, api, extraOptions);
-      } else {
-        api.dispatch(setLogout());
-      }
-    } catch (error) {
-      console.error("Failed to refresh token:", error);
-      api.dispatch(setLogout());
-    }
-  }
-  return result;
-};
 
 export const api = createApi({
   reducerPath: "andnatkrApi",
-  baseQuery: baseQueryWithReAuth,
-
-  tagTypes: ["User", "EstateMgmt", "Mortgages", "ChileanIndicators"],
-
+  baseQuery,
+  tagTypes: ["User", "EstateMgmt", "Mortgages", "Credentials", "EstateMgmtById"],
   endpoints: (builder) => ({
-    // --------- Authentication ---------------------------
-
-    getLogin: builder.mutation({
+    // Authentication
+    login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/authentication",
         method: "POST",
@@ -54,7 +27,8 @@ export const api = createApi({
       }),
       providesTags: ["Credentials"],
     }),
-    // --------- Managements ---------------------------
+
+    // Estate Management
     getEstateMgmt: builder.query({
       query: () => "/management",
       providesTags: ["EstateMgmt"],
@@ -67,7 +41,7 @@ export const api = createApi({
 
     addEstateMgmt: builder.mutation({
       query: (input) => ({
-        url: `/management`,
+        url: "/management",
         method: "POST",
         body: input,
       }),
@@ -87,13 +61,11 @@ export const api = createApi({
       query: (id) => ({
         url: `/management/${id}`,
         method: "DELETE",
-        body: id,
       }),
       invalidatesTags: ["EstateMgmt"],
     }),
 
-    // ---------MORTGAGES---------------------------
-
+    // Mortgages
     getMortgages: builder.query({
       query: () => "/mortgages",
       providesTags: ["Mortgages"],
@@ -101,7 +73,7 @@ export const api = createApi({
 
     addMortgages: builder.mutation({
       query: (entry) => ({
-        url: `/mortgages`,
+        url: "/mortgages",
         method: "POST",
         body: entry,
       }),
@@ -121,7 +93,6 @@ export const api = createApi({
       query: (id) => ({
         url: `/mortgages/${id}`,
         method: "DELETE",
-        body: id,
       }),
       invalidatesTags: ["Mortgages"],
     }),
@@ -129,7 +100,7 @@ export const api = createApi({
 });
 
 export const {
-  useGetLoginMutation,
+  useLoginMutation,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,
