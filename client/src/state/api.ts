@@ -3,11 +3,13 @@ import { setCredentials, setLogout } from ".";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/api/v1",
+  // credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const { auth } = getState();
-    if (auth && auth.token) {
-      headers.set("Authorization", `Bearer ${auth.token}`);
-    }
+    headers.set(
+      "Authorization",
+      auth && auth.token ? `Bearer ${auth.token}` : ""
+    );
     headers.set("Content-Type", "application/json");
     return headers;
   },
@@ -16,15 +18,32 @@ const baseQuery = fetchBaseQuery({
 export const api = createApi({
   reducerPath: "andnatkrApi",
   baseQuery,
-  tagTypes: ["User", "EstateMgmt", "Mortgages", "Credentials", "EstateMgmtById"],
+  tagTypes: [
+    "User",
+    "EstateMgmt",
+    "Mortgages",
+    "Credentials",
+    "EstateMgmtById",
+  ],
   endpoints: (builder) => ({
     // Authentication
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/authentication",
         method: "POST",
-        body: { credentials },
+        body: credentials,
       }),
+      async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
+        const response = await queryFulfilled;
+        const { user, access_token, refresh_token } = response.data; // Assuming your server returns user and token
+        // dispatch(
+        //     setCredentials({
+        //       user: user,
+        //       token: access_token,
+        //     })
+        //   );
+        dispatch(setCredentials({ user, access_token, refresh_token }));
+      },
       providesTags: ["Credentials"],
     }),
 

@@ -98,23 +98,26 @@ const Form = () => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    console.log(jsonData);
+    // console.log(jsonData);
 
     // newLogin(jsonData);
 
     const loggedIn = await newLogin(jsonData);
-    console.log({ loggedIn });
+    // console.log(loggedIn.data.user);
+    // console.log(loggedIn.data.access_token);
 
     onSubmitProps.resetForm();
 
     if (!loggedIn.isError && !loggedIn.isLoading && loggedIn) {
-      console.log({ loggedIn });
-      dispatch(
-        setCredentials({
-          user: loggedIn.data.user,
-          token: loggedIn.data.access_token,
-        })
-      );
+      // console.log({ loggedIn });
+
+      // dispatch(
+      //   setCredentials({
+      //     user: loggedIn.data.user,
+      //     token: loggedIn.data.access_token,
+      //   })
+      // );
+
       navigate("/overview");
     }
   };
