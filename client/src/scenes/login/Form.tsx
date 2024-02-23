@@ -118,7 +118,7 @@ const Form = () => {
       //   })
       // );
 
-      navigate("/overview");
+      navigate("/dashboard");
     }
   };
 
