@@ -15,6 +15,7 @@ import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
 } from "../../state/api";
+import { useSelector } from "react-redux";
 // import { useState } from "react";
 
 // Input Validations
@@ -54,11 +55,14 @@ const Form = ({ onClosed, modalType, row }) => {
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const persisted = useSelector((state) => state.persisted);
+  const { user } = persisted;
+  const { id } = user;
   let inputId = 0;
 
   // Initial Values
   const initialValues = {
-    user: isUpdateType ? row["user.id"] : "",
+    user: isUpdateType ? row["user.id"] : id,
     estate: isUpdateType ? row["estate"] : "",
     installment_number: isUpdateType ? row["installment_number"] : "",
     month: isUpdateType ? row["month"] : "",
@@ -160,6 +164,9 @@ const Form = ({ onClosed, modalType, row }) => {
                 error={Boolean(touched.user) && Boolean(errors.user)}
                 helperText={touched.user && errors.user}
                 sx={{ gridColumn: "span 4" }}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
 
               <TextField
