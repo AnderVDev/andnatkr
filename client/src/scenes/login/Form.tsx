@@ -18,35 +18,6 @@ import { useLoginMutation, useRegisterMutation } from "../../state/api";
 import FlexBetween from "../../components/FlexBetween";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-
-
-// interface FormValuesRegister {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   password: string;
-//   // picture: File | string;
-// }
-
-// interface FormValuesLogin {
-//   email: string;
-//   password: string;
-// }
-
-// const initialValuesRegister: FormValuesRegister = {
-//   firstName: "",
-//   lastName: "",
-//   email: "",
-//   password: "",
-//   // picture: "",
-// };
-
-// const initialValuesLogin: FormValuesLogin = {
-//   email: "",
-//   password: "",
-// };
-
-
 interface FormValues {
   firstName: string;
   lastName: string;
@@ -111,9 +82,11 @@ const Form = () => {
 
   const authenticate = async (values: FormValues, onSubmitProps: any) => {
     const formData = new FormData();
-    for (const key in values) {
-      formData.append(key, values[key]);
-    }
+    // for (const key in values) {
+    //   formData.append(key, values[key]);
+    // }
+    formData.append("email", values["email"]);
+    formData.append("password", values["password"]);
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
@@ -136,11 +109,11 @@ const Form = () => {
   };
 
   const handleFormSubmit = async (
-    values: FormValuesRegister | FormValuesLogin,
+    values: FormValues,
     onSubmitProps: any
   ) => {
-    if (isLogin) await authenticate(values as FormValuesLogin, onSubmitProps);
-    if (isRegister) await register(values as FormValuesRegister, onSubmitProps);
+    if (isLogin) await authenticate(values as FormValues, onSubmitProps);
+    if (isRegister) await register(values as FormValues, onSubmitProps);
   };
 
   return (
