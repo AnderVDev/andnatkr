@@ -1,16 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, setLogout } from ".";
 
+
+
+
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/api/v1",
   // credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const { auth } = getState();
+    const { persisted } = getState();
     headers.set(
       "Authorization",
-      auth && auth.token ? `Bearer ${auth.token}` : ""
+      persisted && persisted.access_token ? `Bearer ${persisted.access_token}` : ""
     );
     headers.set("Content-Type", "application/json");
+    // headers.set("Access-Control-Allow-Origin", "*");
     return headers;
   },
 });
@@ -24,9 +28,23 @@ export const api = createApi({
     "Mortgages",
     "Credentials",
     "EstateMgmtById",
+    "Demo","Register"
   ],
   endpoints: (builder) => ({
     // Authentication
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: credentials,
+      }),
+      async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
+        const response = await queryFulfilled;
+        // const { user, access_token, refresh_token } = response.data; 
+        // dispatch(setCredentials({ user, access_token, refresh_token }));
+      },
+      providesTags: ["Register"],
+    }),
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/authentication",
@@ -35,13 +53,7 @@ export const api = createApi({
       }),
       async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
         const response = await queryFulfilled;
-        const { user, access_token, refresh_token } = response.data; // Assuming your server returns user and token
-        // dispatch(
-        //     setCredentials({
-        //       user: user,
-        //       token: access_token,
-        //     })
-        //   );
+        const { user, access_token, refresh_token } = response.data; 
         dispatch(setCredentials({ user, access_token, refresh_token }));
       },
       providesTags: ["Credentials"],
@@ -51,6 +63,11 @@ export const api = createApi({
     getEstateMgmt: builder.query({
       query: () => "/management",
       providesTags: ["EstateMgmt"],
+    }),
+
+    getDemo: builder.query({
+      query: () => "/demo-controller",
+      providesTags: ["Demo"],
     }),
 
     getEstateMgmtById: builder.query({
@@ -119,6 +136,8 @@ export const api = createApi({
 });
 
 export const {
+  useGetDemoQuery,
+  useRegisterMutation,
   useLoginMutation,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,

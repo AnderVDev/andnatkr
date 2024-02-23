@@ -9,22 +9,21 @@ import {
   REGISTER,
 } from "redux-persist";
 import { api } from "./api.ts";
-import globalReducer from "./index.ts";
+// import globalReducer from "./index.ts";
 import storage from "redux-persist/lib/storage";
-import authReducer from "./";
-import { pageSlice } from "./pages/index.ts";
+import authReducer from "./index.ts";
+// import { pageSlice } from "./pages/index.ts";
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
-    page: pageSlice.reducer,
+    // page: pageSlice.reducer,
+    // global: globalReducer,
     persisted: persistedReducer,
-    global: globalReducer,
+    auth: authReducer,
     [api.reducerPath]: api.reducer,
-    auth: authReducer
-    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

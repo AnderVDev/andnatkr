@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { useGetDemoQuery } from "../../state/api";
 
-type Props = {}
+type Props = {};
 
 const Dashboard = (props: Props) => {
-  return (
-    <div>Dashboard</div>
-  )
-}
 
-export default Dashboard
+
+  return <div>Dashboard</div>;
+};
+
+export default Dashboard;

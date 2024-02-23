@@ -1,51 +1,75 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
   TextField,
-  useMediaQuery,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import * as yup from "yup";
 import { Formik } from "formik";
-import { useState } from "react";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../../state/index.ts";
-import { useLoginMutation } from "../../state/api.ts";
-import FlexBetween from "../../components/FlexBetween.tsx";
+import { setCredentials } from "../../state/index";
+import { useLoginMutation, useRegisterMutation } from "../../state/api";
+import FlexBetween from "../../components/FlexBetween";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-// type Props = {};
 
-// Initial Values
-const initialValuesRegister = {
+
+// interface FormValuesRegister {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   password: string;
+//   // picture: File | string;
+// }
+
+// interface FormValuesLogin {
+//   email: string;
+//   password: string;
+// }
+
+// const initialValuesRegister: FormValuesRegister = {
+//   firstName: "",
+//   lastName: "",
+//   email: "",
+//   password: "",
+//   // picture: "",
+// };
+
+// const initialValuesLogin: FormValuesLogin = {
+//   email: "",
+//   password: "",
+// };
+
+
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  // picture: File | string;
+}
+
+
+const initialValues : FormValues = {
   firstName: "",
   lastName: "",
-  userName: "",
   email: "",
   password: "",
-  location: "",
-  occupation: "",
-  picture: "",
+  // picture: "",
 };
-const initialValuesLogin = {
-  email: "",
-  password: "",
-};
-
-// Input Validations
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
-  location: yup.string().required("required"),
-  occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  // picture: yup.mixed().required("required"),
 });
 
 const loginSchema = yup.object().shape({
@@ -54,84 +78,78 @@ const loginSchema = yup.object().shape({
 });
 
 const Form = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [pageType, setPageType] = useState("login");
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [pageType, setPageType] = useState<"login" | "register">("login");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-  const [newLogin, { isLoading, isError, data }] = useLoginMutation();
+  const [newLogin, { isLoading, isError }] = useLoginMutation();
+  const [
+    newRegister,
+    { isLoading: isLoadingRegister, isError: isErrorRegister },
+  ] = useRegisterMutation();
 
-  // const register = async (values, onSubmitProps) => {
-  //   //this allows us to send form info with image
-  //   const formData = new FormData();
-
-  //   for (const value in values) {
-  //     formData.append(value, values[value]);
-  //   }
-  //   formData.append("picturePath", values.picture.name);
-
-  //   const formDataObject = Object.fromEntries(formData.entries());
-  //   const jsonData = JSON.stringify(unflatten(formDataObject));
-
-  //   const savedUserResponse = await fetch(
-  //       "http://localhost:3001/auth/register",
-  //       {
-  //           method: "POST",
-  //           body: formData,
-  //       }
-  //   );
-  //   const savedUser = await savedUserResponse.json();
-  //   onSubmitProps.resetForm();
-  //   if(savedUser){
-  //       setPageType("login");
-  //   }
-  // };
-
-  const authenticate = async (values, onSubmitProps) => {
+  const register = async (values: FormValues, onSubmitProps: any) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      formData.append(value, values[value]);
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+    // formData.append("picturePath", values.picture!.name);
+
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
+
+    const response = await newRegister(jsonData);
+    onSubmitProps.resetForm();
+    if (!isErrorRegister && !isLoadingRegister && response) {
+      setPageType("login");
+    }
+  };
+
+  const authenticate = async (values: FormValues, onSubmitProps: any) => {
+    const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
     }
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    // console.log(jsonData);
 
-    // newLogin(jsonData);
-
-    const loggedIn = await newLogin(jsonData);
-    // console.log(loggedIn.data.user);
-    // console.log(loggedIn.data.access_token);
+    const response = await newLogin(jsonData);
+    const { user, access_token, refresh_token } = response.data;
 
     onSubmitProps.resetForm();
 
-    if (!loggedIn.isError && !loggedIn.isLoading && loggedIn) {
-      // console.log({ loggedIn });
-
-      // dispatch(
-      //   setCredentials({
-      //     user: loggedIn.data.user,
-      //     token: loggedIn.data.access_token,
-      //   })
-      // );
-
-      navigate("/overview");
+    if (!isError && !isLoading && response) {
+      dispatch(
+        setCredentials({
+          user: user,
+          access_token: access_token,
+          refresh_token: refresh_token,
+        })
+      );
+      navigate("/dashboard");
     }
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    if (isLogin) await authenticate(values, onSubmitProps);
-    // if (isRegister) await register(values, onSubmitProps);
+  const handleFormSubmit = async (
+    values: FormValuesRegister | FormValuesLogin,
+    onSubmitProps: any
+  ) => {
+    if (isLogin) await authenticate(values as FormValuesLogin, onSubmitProps);
+    if (isRegister) await register(values as FormValuesRegister, onSubmitProps);
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+      initialValues={initialValues}
       validationSchema={isLogin ? loginSchema : registerSchema}
+      // initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+      // validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
         values,
@@ -160,9 +178,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
-                  error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
-                  }
+                  error={touched.firstName && Boolean(errors.firstName)}
                   helperText={touched.firstName && errors.firstName}
                   sx={{ gridColumn: "span 2" }}
                 />
@@ -172,11 +188,12 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.lastName}
                   name="lastName"
-                  error={Boolean(touched.lastName) && Boolean(errors.lastName)}
+                  error={touched.lastName && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-                <Box
+
+                {/* <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
@@ -208,7 +225,8 @@ const Form = () => {
                       </Box>
                     )}
                   </Dropzone>
-                </Box>
+                </Box> */}
+
               </>
             )}
 
@@ -218,19 +236,19 @@ const Form = () => {
               onChange={handleChange}
               value={values.email}
               name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
+              error={touched.email && Boolean(errors.email)}
               helperText={touched.email && errors.email}
               sx={{ gridColumn: "span 4" }}
             />
 
             <TextField
               label="Password"
-              type="Password"
+              type="password"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.password}
               name="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
+              error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />

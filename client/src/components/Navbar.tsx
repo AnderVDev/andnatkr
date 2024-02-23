@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import {
   LightModeOutlined,
@@ -9,8 +8,8 @@ import {
   ArrowDropDownOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
-import { useDispatch } from "react-redux";
-import { setMode } from "../state";
+import { useDispatch, useSelector } from "react-redux";
+import state, { setMode } from "../state";
 // import profileImage from "../assets/profile.jpeg";
 import {
   Toolbar,
@@ -25,10 +24,10 @@ import {
   Button,
 } from "@mui/material";
 
-const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
-  const dispatch = useDispatch();
+const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  // const dispatch = useDispatch();
   const theme = useTheme();
-
+  const {id, firstName, lastName, email, role, avatar } = useSelector((state) => state.persisted.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -57,16 +56,16 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={() => dispatch(setMode())}>
+          {/* <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
             ) : (
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             )}
-          </IconButton>
-          <IconButton>
+          </IconButton> */}
+          {/* <IconButton>
             <SettingsOutlined sx={{ fontSize: "24px" }} />
-          </IconButton>
+          </IconButton> */}
 
           <FlexBetween>
             <Button
@@ -95,15 +94,15 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {/* {user.name} */}
-                  Fake User
+                  {`${firstName} ${lastName}`}
+                  {/* Fake User */}
                 </Typography>
                 <Typography
                   fontSize="0.75rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {/* {user.occupation} */}
-                  Administrator
+                  {role.toLowerCase()}
+                  {/* Administrator */}
                 </Typography>
               </Box>
               <ArrowDropDownOutlined

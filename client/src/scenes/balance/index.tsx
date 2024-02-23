@@ -193,7 +193,7 @@ const Balance = () => {
               <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
             </IconButton> */}
           </FlexBetween>
-          <TodoList />
+          {/* <TodoList /> */}
         </Box>
       </Box>
       <Box
