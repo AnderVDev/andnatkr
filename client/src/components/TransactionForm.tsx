@@ -14,6 +14,7 @@ import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
 } from "../state/api";
+import { useSelector } from "react-redux";
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -58,10 +59,13 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
   const [updateInput] = useUpdateEstateMgmtMutation();
   const [pageType, setPageType] = useState("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const persisted = useSelector((state) => state.persisted);
+  const { user } = persisted;
+  const { id } = user;
 
   // Initial Values
   const initialValues = {
-    user: isUpdateType ? row["user.id"] : "",
+    user: isUpdateType ? row["user.id"] : id,
     financeStatement: isUpdateType ? row["financeStatement"] : "",
     estate: isUpdateType ? row["estate"] : "",
     amount: isUpdateType ? row["amount"] : "",
@@ -131,6 +135,9 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
                   error={Boolean(touched.user) && Boolean(errors.user)}
                   helperText={touched.user && errors.user}
                   sx={{ gridColumn: "span 4" }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
 
                 <TextField
