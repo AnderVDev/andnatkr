@@ -11,9 +11,7 @@ import { Formik } from "formik";
 import { useState } from "react";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../../state/index.ts";
 import { useLoginMutation } from "../../state/api.ts";
 import FlexBetween from "../../components/FlexBetween.tsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -56,12 +54,11 @@ const loginSchema = yup.object().shape({
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pageType, setPageType] = useState("login");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-  const [newLogin, { isLoading, isError, data }] = useLoginMutation();
+  const [newLogin, isLoading] = useLoginMutation();
 
   // const register = async (values, onSubmitProps) => {
   //   //this allows us to send form info with image
@@ -98,28 +95,18 @@ const Form = () => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    // console.log(jsonData);
 
-    // newLogin(jsonData);
 
-    const loggedIn = await newLogin(jsonData);
-    // console.log(loggedIn.data.user);
-    // console.log(loggedIn.data.access_token);
+    const response = await newLogin(jsonData);
+    const isAuthenticated = !response.isError && !response.isLoading && response
 
     onSubmitProps.resetForm();
+    navigate( isAuthenticated &&"/dashboard");
 
-    if (!loggedIn.isError && !loggedIn.isLoading && loggedIn) {
-      // console.log({ loggedIn });
+    // if (!response.isError && !response.isLoading && response) {
 
-      // dispatch(
-      //   setCredentials({
-      //     user: loggedIn.data.user,
-      //     token: loggedIn.data.access_token,
-      //   })
-      // );
-
-      navigate("/dashboard");
-    }
+    //   navigate("/dashboard");
+    // }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
