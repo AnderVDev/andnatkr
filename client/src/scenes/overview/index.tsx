@@ -25,12 +25,14 @@ import TodoList from "../../components/TodoList";
 import Modal from "../../components/Modal";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
+import numeral from "numeral";
 
 const sumAmountByStatement = (data, statement) => {
   return data.reduce((sum, entry) => {
     if (entry.financeStatement === statement) {
-      return sum + entry.amount;
+      return  sum + entry.amount;
     }
+    // return sum;
     return sum;
   }, 0);
 };
@@ -55,8 +57,6 @@ const Overview = () => {
     filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Expense") : 0;
   const incomeSumSmall =
     filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Income") : 0;
-
-
 
   const columns: GridColDef[] = [
     {
@@ -84,6 +84,7 @@ const Overview = () => {
       field: "amount",
       headerName: "Amount",
       flex: 0.5,
+      renderCell: (params) => numeral(params.value).format("0,0"),
     },
     {
       field: "month",
@@ -122,53 +123,62 @@ const Overview = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          span="6"
+          span="4"
           title="Belisario Prats 1850"
           value="unit 506 - deposit and parking lot "
           increase="3B / 2B"
           description="Independencia, RM - Chile"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
+        <StatBox
+          span="2"
+          title="Current Leasing"
+          value="500,000 "
+          increase="506"
+          description="UF"
+          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
+        />
 
         <StatBox
-          span="6"
+          span="4"
           title="Belisario Prats 1850"
           value="unit 619"
           increase="1B / 1B"
           description="Independencia, RM - Chile"
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
+        <StatBox
+          span="2"
+          title="Current Leasing"
+          value="350,000 "
+          increase="619"
+          description="UF"
+          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
+        />
 
         {/* ROW 2 */}
 
         <StatBox
-          span="2"
+          span="3"
           title="Total Incomes "
-          value={incomeSum}
+          value={numeral(incomeSum).format('0,0')}
           increase="506"
           description=""
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="2"
+          span="3"
           title="Total Expenses"
-          value={expenseSum}
+          value={numeral(expenseSum).format('0,0')}
           increase="506"
           description=""
           icon={<MonetizationOnOutlined sx={{ fontSize: "26px" }} />}
         />
-        <StatBox
-          span="2"
-          title="Current Leasing"
-          value="500.000 "
-          increase="506"
-          description="UF"
-          icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
-        />
+        
         <StatBox
           span="3"
           title="Total Incomes"
-          value={incomeSumSmall}
+          value={numeral(incomeSumSmall).format('0,0')}
           increase="619"
           description=""
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
@@ -176,11 +186,12 @@ const Overview = () => {
         <StatBox
           span="3"
           title="Total Expenses"
-          value={expenseSumSmall}
+          value={numeral(expenseSumSmall).format('0,0')}
           increase="619"
           description=""
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
+        
 
         {/* Row3 */}
         <Box

@@ -6,6 +6,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import FlexBetween from "../../components/FlexBetween";
 import { useGetMortgagesQuery } from "../../state/api";
 import ActionButtons from "./Actions";
+import numeral from "numeral";
 
 const Mortgages = () => {
   const theme = useTheme();
@@ -53,6 +54,7 @@ const Mortgages = () => {
       field: "clp",
       headerName: "CLP",
       flex: 0.5,
+      renderCell: (params) => numeral(params.value).format("0,0"),
     },
     {
       field: "comments",

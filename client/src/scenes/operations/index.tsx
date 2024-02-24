@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import FlexBetween from "../../components/FlexBetween";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import ActionButtons from "../../components/ActionButtons";
+import numeral from "numeral";
 
 const Operations = () => {
   const theme = useTheme();
@@ -38,6 +39,7 @@ const Operations = () => {
       field: "amount",
       headerName: "Amount",
       flex: 0.5,
+      renderCell: (params) =>  numeral(params.value).format('0,0'),
     },
     {
       field: "month",
