@@ -26,23 +26,30 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../state/api";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
+  const [logout, isLoading] = useLogoutMutation();
   const persisted = useSelector((state) => state.persisted);
   const { user } = persisted;
-  const { firstName, lastName, role } = user;
+  const { firstName, lastName, role } = user || {};
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handlelogout = () => {
+  const handlelogout = async () => {
+    const response = await logout();
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
     setAnchorEl(null);
+    if (isAuthenticated) {
+      navigate("/");
+      dispatch(setLogout());
+    }
     // console.log("logout");
-    navigate("/");
-    dispatch(setLogout());
   };
 
   return (
@@ -100,14 +107,14 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {`${firstName} ${lastName}`}
+                  {user ? `${firstName} ${lastName}` : ""}
                   {/* Fake User */}
                 </Typography>
                 <Typography
                   fontSize="0.75rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {role}
+                  {user ? role : ""}
                   {/* Administrator */}
                 </Typography>
               </Box>

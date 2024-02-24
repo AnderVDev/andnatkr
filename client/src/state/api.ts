@@ -8,7 +8,9 @@ const baseQuery = fetchBaseQuery({
     const { persisted } = getState();
     headers.set(
       "Authorization",
-      persisted && persisted.access_token ? `Bearer ${persisted.access_token}` : ""
+      persisted && persisted.access_token
+        ? `Bearer ${persisted.access_token}`
+        : ""
     );
     headers.set("Content-Type", "application/json");
     return headers;
@@ -35,10 +37,16 @@ export const api = createApi({
       }),
       async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
         const response = await queryFulfilled;
-        const { user, access_token, refresh_token } = response.data; 
+        const { user, access_token, refresh_token } = response.data;
         dispatch(setCredentials({ user, access_token, refresh_token }));
       },
       providesTags: ["Credentials"],
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
     }),
 
     // Estate Management
@@ -114,6 +122,7 @@ export const api = createApi({
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,
