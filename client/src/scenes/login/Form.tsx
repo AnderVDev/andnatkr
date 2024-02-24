@@ -1,14 +1,14 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
   TextField,
-  Typography,
   useMediaQuery,
+  Typography,
   useTheme,
 } from "@mui/material";
 import * as yup from "yup";
 import { Formik } from "formik";
+import { useState } from "react";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // type Props = {};
 
 const Form = () => {
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -49,8 +50,8 @@ const Form = () => {
   const register = async (values, onSubmitProps) => {
     const formData = new FormData();
 
-    for (const key in values) {
-      formData.append(key, values[key]);
+    for (const value in values) {
+      formData.append(value, values[value]);
     }
     // formData.append("picturePath", values.picture.name);
 
@@ -133,7 +134,9 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.firstName}
                   name="firstName"
-                  error={touched.firstName && Boolean(errors.firstName)}
+                  error={
+                    Boolean(touched.firstName) && Boolean(errors.firstName)
+                  }
                   helperText={touched.firstName && errors.firstName}
                   sx={{ gridColumn: "span 2" }}
                 />
@@ -143,7 +146,7 @@ const Form = () => {
                   onChange={handleChange}
                   value={values.lastName}
                   name="lastName"
-                  error={touched.lastName && Boolean(errors.lastName)}
+                  error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
@@ -191,19 +194,19 @@ const Form = () => {
               onChange={handleChange}
               value={values.email}
               name="email"
-              error={touched.email && Boolean(errors.email)}
+              error={Boolean(touched.email) && Boolean(errors.email)}
               helperText={touched.email && errors.email}
               sx={{ gridColumn: "span 4" }}
             />
 
             <TextField
               label="Password"
-              type="password"
+              type="Password"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.password}
               name="password"
-              error={touched.password && Boolean(errors.password)}
+              error={Boolean(touched.password) && Boolean(errors.password)}
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />
