@@ -26,9 +26,18 @@ export const api = createApi({
     "Mortgages",
     "Credentials",
     "EstateMgmtById",
+    "Register",
   ],
   endpoints: (builder) => ({
     // Authentication
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: credentials,
+      }),
+      providesTags: ["Register"],
+    }),
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/authentication",
@@ -121,6 +130,7 @@ export const api = createApi({
 });
 
 export const {
+  useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
   useGetEstateMgmtQuery,

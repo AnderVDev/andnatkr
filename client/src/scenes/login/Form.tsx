@@ -12,7 +12,7 @@ import { useState } from "react";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../state/api.ts";
+import { useLoginMutation, useRegisterMutation } from "../../state/api.ts";
 import FlexBetween from "../../components/FlexBetween.tsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
@@ -25,8 +25,6 @@ const initialValuesRegister = {
   userName: "",
   email: "",
   password: "",
-  location: "",
-  occupation: "",
   picture: "",
 };
 const initialValuesLogin = {
@@ -41,9 +39,7 @@ const registerSchema = yup.object().shape({
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
-  location: yup.string().required("required"),
-  occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  // picture: yup.string().required("required"),
 });
 
 const loginSchema = yup.object().shape({
@@ -55,36 +51,35 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const [pageType, setPageType] = useState("login");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+  // const [pageType, setPageType] = useState("login");
+  // const isLogin = pageType === "login";
+  // const isRegister = pageType === "register";
+  const [isLogin, setIsLogin] = useState(true)
   const [newLogin, isLoading] = useLoginMutation();
+  const [newRegister, { isLoading: isLoadingRegister }] = useRegisterMutation();
 
-  // const register = async (values, onSubmitProps) => {
-  //   //this allows us to send form info with image
-  //   const formData = new FormData();
+  const register = async (values, onSubmitProps) => {
+    //this allows us to send form info with image
+    const formData = new FormData();
 
-  //   for (const value in values) {
-  //     formData.append(value, values[value]);
-  //   }
-  //   formData.append("picturePath", values.picture.name);
+    for (const value in values) {
+      formData.append(value, values[value]);
+    }
+    // formData.append("picturePath", values.picture.name);
 
-  //   const formDataObject = Object.fromEntries(formData.entries());
-  //   const jsonData = JSON.stringify(unflatten(formDataObject));
+    const formDataObject = Object.fromEntries(formData.entries());
+    const jsonData = JSON.stringify(unflatten(formDataObject));
 
-  //   const savedUserResponse = await fetch(
-  //       "http://localhost:3001/auth/register",
-  //       {
-  //           method: "POST",
-  //           body: formData,
-  //       }
-  //   );
-  //   const savedUser = await savedUserResponse.json();
-  //   onSubmitProps.resetForm();
-  //   if(savedUser){
-  //       setPageType("login");
-  //   }
-  // };
+    const response = await newRegister(jsonData);
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
+
+    onSubmitProps.resetForm();
+    if (isAuthenticated) {
+      // setPageType("login");
+      setPageType(true);
+    }
+  };
 
   const authenticate = async (values, onSubmitProps) => {
     const formData = new FormData();
@@ -96,12 +91,12 @@ const Form = () => {
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-
     const response = await newLogin(jsonData);
-    const isAuthenticated = !response.isError && !response.isLoading && response
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
 
     onSubmitProps.resetForm();
-    navigate( isAuthenticated &&"/dashboard");
+    navigate(isAuthenticated && "/dashboard");
 
     // if (!response.isError && !response.isLoading && response) {
 
@@ -139,7 +134,8 @@ const Form = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {isRegister && (
+            {!isLogin && (
+            // {isRegister && (
               <>
                 <TextField
                   label="First Name"
@@ -163,7 +159,8 @@ const Form = () => {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-                <Box
+
+                {/* <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
@@ -196,6 +193,7 @@ const Form = () => {
                     )}
                   </Dropzone>
                 </Box>
+                 */}
               </>
             )}
 
@@ -239,7 +237,8 @@ const Form = () => {
             </Button>
             <Typography
               onClick={() => {
-                setPageType(isLogin ? "register" : "login");
+                setIsLogin(!isLogin);
+                // setPageType(isLogin ? "register" : "login");
                 resetForm();
               }}
               sx={{
