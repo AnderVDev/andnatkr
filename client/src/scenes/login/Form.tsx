@@ -18,48 +18,36 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 // type Props = {};
 
-// Initial Values
-const initialValuesRegister = {
-  firstName: "",
-  lastName: "",
-  userName: "",
-  email: "",
-  password: "",
-  picture: "",
-};
-const initialValuesLogin = {
-  email: "",
-  password: "",
-};
-
-// Input Validations
-
-const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-  // picture: yup.string().required("required"),
-});
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-});
-
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme();
   const navigate = useNavigate();
-  // const [pageType, setPageType] = useState("login");
-  // const isLogin = pageType === "login";
-  // const isRegister = pageType === "register";
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(true);
   const [newLogin, isLoading] = useLoginMutation();
   const [newRegister, { isLoading: isLoadingRegister }] = useRegisterMutation();
 
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    // picture: "",
+  };
+
+  const schema = isLogin
+    ? yup.object().shape({
+        email: yup.string().email("invalid email").required("required"),
+        password: yup.string().required("required"),
+      })
+    : yup.object().shape({
+        firstName: yup.string().required("required"),
+        lastName: yup.string().required("required"),
+        email: yup.string().email("invalid email").required("required"),
+        password: yup.string().required("required"),
+        // picture: yup.string().required("required"),
+      });
+
   const register = async (values, onSubmitProps) => {
-    //this allows us to send form info with image
     const formData = new FormData();
 
     for (const value in values) {
@@ -76,17 +64,19 @@ const Form = () => {
 
     onSubmitProps.resetForm();
     if (isAuthenticated) {
-      // setPageType("login");
-      setPageType(true);
+      setIsLogin(true);
     }
   };
 
   const authenticate = async (values, onSubmitProps) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      formData.append(value, values[value]);
-    }
+    formData.append("email", values["email"]);
+    formData.append("password", values["password"]);
+
+    // for (const value in values) {
+    //   formData.append(value, values[value]);
+    // }
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
@@ -96,24 +86,26 @@ const Form = () => {
       !response.isError && !response.isLoading && response;
 
     onSubmitProps.resetForm();
-    navigate(isAuthenticated && "/dashboard");
-
-    // if (!response.isError && !response.isLoading && response) {
-
-    //   navigate("/dashboard");
-    // }
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    if (isLogin) await authenticate(values, onSubmitProps);
-    // if (isRegister) await register(values, onSubmitProps);
+    // if (isLogin) await authenticate(values, onSubmitProps);
+    // if (!isLogin) await register(values, onSubmitProps);
+    isLogin
+      ? await authenticate(values, onSubmitProps)
+      : await register(values, onSubmitProps);
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
-      validationSchema={isLogin ? loginSchema : registerSchema}
+      initialValues={initialValues}
+      // initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+      validationSchema={schema}
+      // validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
         values,
@@ -135,7 +127,6 @@ const Form = () => {
             }}
           >
             {!isLogin && (
-            // {isRegister && (
               <>
                 <TextField
                   label="First Name"
@@ -238,7 +229,6 @@ const Form = () => {
             <Typography
               onClick={() => {
                 setIsLogin(!isLogin);
-                // setPageType(isLogin ? "register" : "login");
                 resetForm();
               }}
               sx={{
