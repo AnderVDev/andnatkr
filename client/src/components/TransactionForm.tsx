@@ -14,7 +14,7 @@ import {
   useAddEstateMgmtMutation,
   useUpdateEstateMgmtMutation,
 } from "../state/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -59,9 +59,9 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
   const [updateInput] = useUpdateEstateMgmtMutation();
   const [pageType, setPageType] = useState("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const { id, firstName, lastName, email, role, avatar } = useSelector(
-    (state) => state.persisted.user
-  );
+  const persisted = useSelector((state) => state.persisted);
+  const { user } = persisted;
+  const { id } = user;
 
   // Initial Values
   const initialValues = {

@@ -11,7 +11,9 @@ const baseQuery = fetchBaseQuery({
     const { persisted } = getState();
     headers.set(
       "Authorization",
-      persisted && persisted.access_token ? `Bearer ${persisted.access_token}` : ""
+      persisted && persisted.access_token
+        ? `Bearer ${persisted.access_token}`
+        : ""
     );
     headers.set("Content-Type", "application/json");
     // headers.set("Access-Control-Allow-Origin", "*");
@@ -28,7 +30,7 @@ export const api = createApi({
     "Mortgages",
     "Credentials",
     "EstateMgmtById",
-    "Demo","Register"
+    "Register",
   ],
   endpoints: (builder) => ({
     // Authentication
@@ -38,11 +40,6 @@ export const api = createApi({
         method: "POST",
         body: credentials,
       }),
-      async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
-        const response = await queryFulfilled;
-        // const { user, access_token, refresh_token } = response.data; 
-        // dispatch(setCredentials({ user, access_token, refresh_token }));
-      },
       providesTags: ["Register"],
     }),
     login: builder.mutation({
@@ -53,10 +50,16 @@ export const api = createApi({
       }),
       async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
         const response = await queryFulfilled;
-        const { user, access_token, refresh_token } = response.data; 
+        const { user, access_token, refresh_token } = response.data;
         dispatch(setCredentials({ user, access_token, refresh_token }));
       },
       providesTags: ["Credentials"],
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
     }),
 
     // Estate Management
@@ -136,9 +139,9 @@ export const api = createApi({
 });
 
 export const {
-  useGetDemoQuery,
   useRegisterMutation,
   useLoginMutation,
+  useLogoutMutation,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,

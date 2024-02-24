@@ -11,117 +11,99 @@ import * as yup from "yup";
 import { Formik } from "formik";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../../state/index";
-import { useLoginMutation, useRegisterMutation } from "../../state/api";
-import FlexBetween from "../../components/FlexBetween";
+import { useLoginMutation, useRegisterMutation } from "../../state/api.ts";
+import FlexBetween from "../../components/FlexBetween.tsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  // picture: File | string;
-}
-
-
-const initialValues : FormValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  // picture: "",
-};
-
-const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-  // picture: yup.mixed().required("required"),
-});
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
-});
+// type Props = {};
 
 const Form = () => {
   const { palette } = useTheme();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const [pageType, setPageType] = useState<"login" | "register">("login");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
-  const [newLogin, { isLoading, isError }] = useLoginMutation();
-  const [
-    newRegister,
-    { isLoading: isLoadingRegister, isError: isErrorRegister },
-  ] = useRegisterMutation();
+  const [isLogin, setIsLogin] = useState(true);
+  const [newLogin, isLoading] = useLoginMutation();
+  const [newRegister, { isLoading: isLoadingRegister }] = useRegisterMutation();
 
-  const register = async (values: FormValues, onSubmitProps: any) => {
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    // picture: "",
+  };
+
+  const schema = isLogin
+    ? yup.object().shape({
+        email: yup.string().email("invalid email").required("required"),
+        password: yup.string().required("required"),
+      })
+    : yup.object().shape({
+        firstName: yup.string().required("required"),
+        lastName: yup.string().required("required"),
+        email: yup.string().email("invalid email").required("required"),
+        password: yup.string().required("required"),
+        // picture: yup.string().required("required"),
+      });
+
+  const register = async (values, onSubmitProps) => {
     const formData = new FormData();
 
     for (const key in values) {
       formData.append(key, values[key]);
     }
-    // formData.append("picturePath", values.picture!.name);
+    // formData.append("picturePath", values.picture.name);
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     const response = await newRegister(jsonData);
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
+
     onSubmitProps.resetForm();
-    if (!isErrorRegister && !isLoadingRegister && response) {
-      setPageType("login");
+    if (isAuthenticated) {
+      setIsLogin(true);
     }
   };
 
-  const authenticate = async (values: FormValues, onSubmitProps: any) => {
+  const authenticate = async (values, onSubmitProps) => {
     const formData = new FormData();
-    // for (const key in values) {
-    //   formData.append(key, values[key]);
-    // }
+
     formData.append("email", values["email"]);
     formData.append("password", values["password"]);
+
+    // for (const value in values) {
+    //   formData.append(value, values[value]);
+    // }
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     const response = await newLogin(jsonData);
-    const { user, access_token, refresh_token } = response.data;
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
 
     onSubmitProps.resetForm();
-
-    if (!isError && !isLoading && response) {
-      dispatch(
-        setCredentials({
-          user: user,
-          access_token: access_token,
-          refresh_token: refresh_token,
-        })
-      );
+    if (isAuthenticated) {
       navigate("/dashboard");
     }
   };
 
-  const handleFormSubmit = async (
-    values: FormValues,
-    onSubmitProps: any
-  ) => {
-    if (isLogin) await authenticate(values as FormValues, onSubmitProps);
-    if (isRegister) await register(values as FormValues, onSubmitProps);
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    // if (isLogin) await authenticate(values, onSubmitProps);
+    // if (!isLogin) await register(values, onSubmitProps);
+    isLogin
+      ? await authenticate(values, onSubmitProps)
+      : await register(values, onSubmitProps);
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      validationSchema={isLogin ? loginSchema : registerSchema}
       // initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+      validationSchema={schema}
       // validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
@@ -143,7 +125,7 @@ const Form = () => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {isRegister && (
+            {!isLogin && (
               <>
                 <TextField
                   label="First Name"
@@ -198,8 +180,8 @@ const Form = () => {
                       </Box>
                     )}
                   </Dropzone>
-                </Box> */}
-
+                </Box>
+                 */}
               </>
             )}
 
@@ -243,7 +225,7 @@ const Form = () => {
             </Button>
             <Typography
               onClick={() => {
-                setPageType(isLogin ? "register" : "login");
+                setIsLogin(!isLogin);
                 resetForm();
               }}
               sx={{

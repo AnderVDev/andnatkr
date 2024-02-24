@@ -6,10 +6,11 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
+  LogoutOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
-import state, { setMode } from "../state";
+import { setLogout, setMode } from "../state";
 // import profileImage from "../assets/profile.jpeg";
 import {
   Toolbar,
@@ -23,15 +24,32 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../state/api";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const theme = useTheme();
-  const {id, firstName, lastName, email, role, avatar } = useSelector((state) => state.persisted.user);
+  const navigate = useNavigate();
+  const [logout, isLoading] = useLogoutMutation();
+  const persisted = useSelector((state) => state.persisted);
+  const { user } = persisted;
+  const { firstName, lastName, role } = user || {};
+
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handlelogout = async () => {
+    const response = await logout();
+    const isAuthenticated =
+      !response.isError && !response.isLoading && response;
+    setAnchorEl(null);
+    if (isAuthenticated) {
+      navigate("/");
+      dispatch(setLogout());
+    }
+    // console.log("logout");
+  };
 
   return (
     <AppBar sx={{ position: "static", background: "none", boxShadow: "none" }}>
@@ -56,17 +74,11 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
-          {/* <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkModeOutlined sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightModeOutlined sx={{ fontSize: "25px" }} />
-            )}
-          </IconButton> */}
-          {/* <IconButton>
-            <SettingsOutlined sx={{ fontSize: "24px" }} />
-          </IconButton> */}
-
+          <IconButton onClick={handlelogout}>
+            <LogoutOutlined
+              sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
+            />
+          </IconButton>
           <FlexBetween>
             <Button
               onClick={handleClick}
@@ -94,29 +106,29 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {`${firstName} ${lastName}`}
+                  {user ? `${firstName} ${lastName}` : ""}
                   {/* Fake User */}
                 </Typography>
                 <Typography
                   fontSize="0.75rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {role.toLowerCase()}
+                  {user ? role : ""}
                   {/* Administrator */}
                 </Typography>
               </Box>
-              <ArrowDropDownOutlined
+              {/* <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
-              />
+              /> */}
             </Button>
-            <Menu
+            {/* <Menu
               anchorEl={anchorEl}
               open={isOpen}
               onClose={handleClose}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem oncClick={handleClose}>Log Out</MenuItem>
-            </Menu>
+            </Menu> */}
           </FlexBetween>
         </FlexBetween>
       </Toolbar>

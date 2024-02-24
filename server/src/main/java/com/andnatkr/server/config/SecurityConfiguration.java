@@ -32,23 +32,22 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> {
-                    cors.configurationSource(corsConfigurationSource());
-                })
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers("/api/v1/auth/**").permitAll()
-                            .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(logout -> {
-                            logout.logoutUrl("/api/v1/auth/logout")
-                                    .addLogoutHandler(logoutHandler)
-                                    .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
-                        }
-                );
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> {
+                cors.configurationSource(corsConfigurationSource());
+            })
+            .authorizeHttpRequests(req ->
+                    req.requestMatchers("/api/v1/auth/**").permitAll()
+                        .anyRequest().authenticated())
+            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .logout(logout -> {
+                        logout.logoutUrl("/api/v1/auth/logout")
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+                    }
+            );
         return http.build();
     }
 
