@@ -7,10 +7,11 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
+  LogoutOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode } from "../state";
+import { setLogout, setMode } from "../state";
 // import profileImage from "../assets/profile.jpeg";
 import {
   Toolbar,
@@ -24,10 +25,12 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const navigate = useNavigate();
   const persisted = useSelector((state) => state.persisted);
   const { user } = persisted;
   const { firstName, lastName, role } = user;
@@ -35,7 +38,12 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handlelogout = () => {
+    setAnchorEl(null);
+    // console.log("logout");
+    navigate("/");
+    dispatch(setLogout());
+  };
 
   return (
     <AppBar sx={{ position: "static", background: "none", boxShadow: "none" }}>
@@ -60,6 +68,11 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
+          <IconButton onClick={handlelogout}>
+            <LogoutOutlined
+              sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
+            />
+          </IconButton>
           <FlexBetween>
             <Button
               onClick={handleClick}
@@ -98,18 +111,18 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                   {/* Administrator */}
                 </Typography>
               </Box>
-              <ArrowDropDownOutlined
+              {/* <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
-              />
+              /> */}
             </Button>
-            <Menu
+            {/* <Menu
               anchorEl={anchorEl}
               open={isOpen}
               onClose={handleClose}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem oncClick={handleClose}>Log Out</MenuItem>
-            </Menu>
+            </Menu> */}
           </FlexBetween>
         </FlexBetween>
       </Toolbar>
