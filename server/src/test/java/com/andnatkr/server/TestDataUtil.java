@@ -1,13 +1,13 @@
 package com.andnatkr.server;
 
-import com.andnatkr.server.domain.dto.EstateDto;
-import com.andnatkr.server.domain.dto.EstateMgmtDto;
-import com.andnatkr.server.domain.dto.MortgageDto;
-import com.andnatkr.server.domain.dto.UserDto;
-import com.andnatkr.server.domain.entities.Estate;
-import com.andnatkr.server.domain.entities.EstateMgmt;
-import com.andnatkr.server.domain.entities.Mortgage;
-import com.andnatkr.server.domain.entities.User;
+import com.andnatkr.server.domain.dto.estate.EstateDto;
+import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
+import com.andnatkr.server.domain.dto.estate.MortgageDto;
+import com.andnatkr.server.domain.dto.user.UserDto;
+import com.andnatkr.server.domain.entities.estate.Estate;
+import com.andnatkr.server.domain.entities.estate.EstateMgmt;
+import com.andnatkr.server.domain.entities.estate.Mortgage;
+import com.andnatkr.server.domain.entities.user.User;
 
 import java.util.UUID;
 

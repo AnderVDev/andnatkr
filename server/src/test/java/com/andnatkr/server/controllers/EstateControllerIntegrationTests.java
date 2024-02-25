@@ -1,8 +1,8 @@
 package com.andnatkr.server.controllers;
 
 import com.andnatkr.server.TestDataUtil;
-import com.andnatkr.server.domain.dto.EstateDto;
-import com.andnatkr.server.domain.entities.Estate;
+import com.andnatkr.server.domain.dto.estate.EstateDto;
+import com.andnatkr.server.domain.entities.estate.Estate;
 import com.andnatkr.server.services.EstateService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

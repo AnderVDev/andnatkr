@@ -1,9 +1,9 @@
 package com.andnatkr.server.controllers;
 
-import com.andnatkr.server.domain.dto.MortgageDto;
-import com.andnatkr.server.domain.entities.Mortgage;
+import com.andnatkr.server.domain.dto.estate.MortgageDto;
+import com.andnatkr.server.domain.entities.estate.Mortgage;
 
-import com.andnatkr.server.mappers.impl.MortgageMapper;
+import com.andnatkr.server.mappers.impl.estate.MortgageMapper;
 import com.andnatkr.server.services.MortgageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

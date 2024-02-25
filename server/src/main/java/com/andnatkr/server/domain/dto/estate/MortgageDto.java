@@ -1,5 +1,6 @@
-package com.andnatkr.server.domain.dto;
+package com.andnatkr.server.domain.dto.estate;
 
+import com.andnatkr.server.domain.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

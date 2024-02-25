@@ -1,6 +1,6 @@
 package com.andnatkr.server.repositories;
 
-import com.andnatkr.server.domain.entities.User;
+import com.andnatkr.server.domain.entities.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

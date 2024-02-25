@@ -1,6 +1,6 @@
 package com.andnatkr.server.services.impl;
 
-import com.andnatkr.server.domain.entities.Estate;
+import com.andnatkr.server.domain.entities.estate.Estate;
 import com.andnatkr.server.repositories.EstateRepository;
 import com.andnatkr.server.services.EstateService;
 import lombok.RequiredArgsConstructor;

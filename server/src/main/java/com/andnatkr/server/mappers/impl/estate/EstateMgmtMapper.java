@@ -1,7 +1,7 @@
-package com.andnatkr.server.mappers.impl;
+package com.andnatkr.server.mappers.impl.estate;
 
-import com.andnatkr.server.domain.dto.EstateMgmtDto;
-import com.andnatkr.server.domain.entities.EstateMgmt;
+import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
+import com.andnatkr.server.domain.entities.estate.EstateMgmt;
 import com.andnatkr.server.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

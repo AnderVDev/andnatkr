@@ -1,4 +1,4 @@
-package com.andnatkr.server.domain.entities;
+package com.andnatkr.server.domain.entities.estate;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

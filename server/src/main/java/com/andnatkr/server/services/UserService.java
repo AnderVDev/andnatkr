@@ -1,6 +1,6 @@
 package com.andnatkr.server.services;
 
-import com.andnatkr.server.domain.entities.User;
+import com.andnatkr.server.domain.entities.user.User;
 
 import java.util.List;
 import java.util.Optional;

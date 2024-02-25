@@ -1,7 +1,7 @@
-package com.andnatkr.server.mappers.impl;
+package com.andnatkr.server.mappers.impl.estate;
 
-import com.andnatkr.server.domain.dto.MortgageDto;
-import com.andnatkr.server.domain.entities.Mortgage;
+import com.andnatkr.server.domain.dto.estate.MortgageDto;
+import com.andnatkr.server.domain.entities.estate.Mortgage;
 import com.andnatkr.server.mappers.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

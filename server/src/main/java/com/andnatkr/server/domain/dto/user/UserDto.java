@@ -1,4 +1,4 @@
-package com.andnatkr.server.domain.dto;
+package com.andnatkr.server.domain.dto.user;
 
 //import com.andnatkr.server.domain.entities.RoleOld;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Data

@@ -1,8 +1,8 @@
 package com.andnatkr.server.controllers;
 
-import com.andnatkr.server.domain.dto.EstateMgmtDto;
-import com.andnatkr.server.domain.entities.EstateMgmt;
-import com.andnatkr.server.mappers.impl.EstateMgmtMapper;
+import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
+import com.andnatkr.server.domain.entities.estate.EstateMgmt;
+import com.andnatkr.server.mappers.impl.estate.EstateMgmtMapper;
 import com.andnatkr.server.services.EstateMgmtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.andnatkr.server.domain.auth;
 
-import com.andnatkr.server.domain.dto.UserDto;
+import com.andnatkr.server.domain.dto.user.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

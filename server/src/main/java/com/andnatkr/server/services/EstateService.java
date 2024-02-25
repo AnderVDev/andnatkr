@@ -1,6 +1,6 @@
 package com.andnatkr.server.services;
 
-import com.andnatkr.server.domain.entities.Estate;
+import com.andnatkr.server.domain.entities.estate.Estate;
 
 import java.util.List;
 import java.util.Optional;

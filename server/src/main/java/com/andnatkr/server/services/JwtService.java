@@ -1,6 +1,5 @@
 package com.andnatkr.server.services;
 
-import com.andnatkr.server.domain.entities.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
