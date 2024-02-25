@@ -3,7 +3,7 @@ package com.andnatkr.server.controllers;
 import com.andnatkr.server.TestDataUtil;
 import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
 import com.andnatkr.server.domain.entities.estate.EstateMgmt;
-import com.andnatkr.server.services.EstateMgmtService;
+import com.andnatkr.server.services.estate.EstateMgmtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

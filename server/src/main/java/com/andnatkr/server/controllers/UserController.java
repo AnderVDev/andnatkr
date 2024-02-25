@@ -3,7 +3,7 @@ package com.andnatkr.server.controllers;
 import com.andnatkr.server.domain.dto.user.UserDto;
 import com.andnatkr.server.domain.entities.user.User;
 import com.andnatkr.server.mappers.impl.user.UserMapper;
-import com.andnatkr.server.services.UserService;
+import com.andnatkr.server.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

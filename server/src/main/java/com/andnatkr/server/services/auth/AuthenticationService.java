@@ -1,4 +1,4 @@
-package com.andnatkr.server.services;
+package com.andnatkr.server.services.auth;
 
 import com.andnatkr.server.domain.auth.AuthenticationRequest;
 import com.andnatkr.server.domain.auth.AuthenticationResponse;

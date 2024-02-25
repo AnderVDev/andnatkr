@@ -1,4 +1,4 @@
-package com.andnatkr.server.services;
+package com.andnatkr.server.services.user;
 
 import com.andnatkr.server.domain.entities.user.User;
 

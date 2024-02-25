@@ -3,7 +3,7 @@ package com.andnatkr.server.controllers;
 import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
 import com.andnatkr.server.domain.entities.estate.EstateMgmt;
 import com.andnatkr.server.mappers.impl.estate.EstateMgmtMapper;
-import com.andnatkr.server.services.EstateMgmtService;
+import com.andnatkr.server.services.estate.EstateMgmtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

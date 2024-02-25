@@ -4,7 +4,7 @@ import com.andnatkr.server.domain.dto.estate.MortgageDto;
 import com.andnatkr.server.domain.entities.estate.Mortgage;
 
 import com.andnatkr.server.mappers.impl.estate.MortgageMapper;
-import com.andnatkr.server.services.MortgageService;
+import com.andnatkr.server.services.estate.MortgageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

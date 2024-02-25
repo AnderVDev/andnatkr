@@ -1,4 +1,4 @@
-package com.andnatkr.server.services;
+package com.andnatkr.server.services.auth;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;

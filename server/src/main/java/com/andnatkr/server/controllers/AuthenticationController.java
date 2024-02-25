@@ -3,7 +3,7 @@ package com.andnatkr.server.controllers;
 import com.andnatkr.server.domain.auth.AuthenticationRequest;
 import com.andnatkr.server.domain.auth.AuthenticationResponse;
 import com.andnatkr.server.domain.auth.RegisterRequest;
-import com.andnatkr.server.services.AuthenticationService;
+import com.andnatkr.server.services.auth.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.andnatkr.server.services.impl;
+package com.andnatkr.server.services.auth.impl;
 
 import com.andnatkr.server.repositories.auth.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

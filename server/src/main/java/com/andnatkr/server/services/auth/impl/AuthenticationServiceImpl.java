@@ -1,4 +1,4 @@
-package com.andnatkr.server.services.impl;
+package com.andnatkr.server.services.auth.impl;
 
 import com.andnatkr.server.domain.auth.AuthenticationRequest;
 import com.andnatkr.server.domain.auth.AuthenticationResponse;
@@ -11,8 +11,8 @@ import com.andnatkr.server.domain.entities.user.User;
 import com.andnatkr.server.mappers.impl.user.UserMapper;
 import com.andnatkr.server.repositories.auth.TokenRepository;
 import com.andnatkr.server.repositories.user.UserRepository;
-import com.andnatkr.server.services.AuthenticationService;
-import com.andnatkr.server.services.JwtService;
+import com.andnatkr.server.services.auth.AuthenticationService;
+import com.andnatkr.server.services.auth.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;

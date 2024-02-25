@@ -1,4 +1,4 @@
-package com.andnatkr.server.services;
+package com.andnatkr.server.services.estate;
 
 import com.andnatkr.server.domain.entities.estate.EstateMgmt;
 

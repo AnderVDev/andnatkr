@@ -1,6 +1,6 @@
-package com.andnatkr.server.services.impl;
+package com.andnatkr.server.services.auth.impl;
 
-import com.andnatkr.server.services.JwtService;
+import com.andnatkr.server.services.auth.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

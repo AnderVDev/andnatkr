@@ -3,7 +3,7 @@ package com.andnatkr.server.controllers;
 import com.andnatkr.server.TestDataUtil;
 import com.andnatkr.server.domain.dto.user.UserDto;
 import com.andnatkr.server.domain.entities.user.User;
-import com.andnatkr.server.services.UserService;
+import com.andnatkr.server.services.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

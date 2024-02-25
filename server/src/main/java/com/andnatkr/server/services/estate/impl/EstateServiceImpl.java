@@ -1,8 +1,8 @@
-package com.andnatkr.server.services.impl;
+package com.andnatkr.server.services.estate.impl;
 
 import com.andnatkr.server.domain.entities.estate.Estate;
 import com.andnatkr.server.repositories.estate.EstateRepository;
-import com.andnatkr.server.services.EstateService;
+import com.andnatkr.server.services.estate.EstateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

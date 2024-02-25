@@ -1,6 +1,6 @@
 package com.andnatkr.server.domain.dto.user;
 
-//import com.andnatkr.server.domain.entities.RoleOld;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
