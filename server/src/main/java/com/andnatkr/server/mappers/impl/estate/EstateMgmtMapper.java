@@ -21,6 +21,7 @@ public class EstateMgmtMapper implements Mapper<EstateMgmt, EstateMgmtDto> {
 
     @Override
     public EstateMgmt mapFrom(EstateMgmtDto estateMgmtDto) {
+
         return modelMapper.map(estateMgmtDto, EstateMgmt.class);
     }
 }
