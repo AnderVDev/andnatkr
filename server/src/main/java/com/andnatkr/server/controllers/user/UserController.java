@@ -1,4 +1,4 @@
-package com.andnatkr.server.controllers;
+package com.andnatkr.server.controllers.user;
 
 import com.andnatkr.server.domain.dto.user.UserDto;
 import com.andnatkr.server.domain.entities.user.User;

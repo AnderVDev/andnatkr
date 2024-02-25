@@ -1,4 +1,4 @@
-package com.andnatkr.server.controllers;
+package com.andnatkr.server.controllers.estate;
 
 import com.andnatkr.server.domain.dto.estate.EstateDto;
 import com.andnatkr.server.domain.entities.estate.Estate;
