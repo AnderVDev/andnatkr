@@ -1,7 +1,7 @@
 package com.andnatkr.server.services.impl;
 
 import com.andnatkr.server.domain.entities.estate.Mortgage;
-import com.andnatkr.server.repositories.MortgageRepository;
+import com.andnatkr.server.repositories.estate.MortgageRepository;
 import com.andnatkr.server.services.MortgageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

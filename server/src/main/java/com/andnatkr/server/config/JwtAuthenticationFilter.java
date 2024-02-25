@@ -1,6 +1,6 @@
 package com.andnatkr.server.config;
 
-import com.andnatkr.server.repositories.TokenRepository;
+import com.andnatkr.server.repositories.auth.TokenRepository;
 import com.andnatkr.server.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

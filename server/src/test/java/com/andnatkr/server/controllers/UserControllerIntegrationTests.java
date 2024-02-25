@@ -126,8 +126,6 @@ public class UserControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath(".role").value(testUser.getRole())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".avatar").value(testUser.getAvatar())
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath(".description").value(testUser.getDescription())
         );
     }
 
@@ -196,8 +194,6 @@ public class UserControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath(".role").value(userDto.getRole())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".avatar").value(userDto.getAvatar())
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath(".description").value(userDto.getDescription())
         );
     }
 
@@ -239,13 +235,9 @@ public class UserControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".email").value(userDto.getEmail())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath(".password").value(userDto.getPassword())
-        ).andExpect(
                 MockMvcResultMatchers.jsonPath(".role").value(userDto.getRole())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath(".avatar").value(userDto.getAvatar())
-        ).andExpect(
-                MockMvcResultMatchers.jsonPath(".description").value(userDto.getDescription())
         );
     }
 

@@ -1,4 +1,4 @@
-package com.andnatkr.server.repositories;
+package com.andnatkr.server.repositories.auth;
 
 import com.andnatkr.server.domain.auth.Token;
 import org.springframework.data.jpa.repository.JpaRepository;

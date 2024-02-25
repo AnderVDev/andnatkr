@@ -1,4 +1,4 @@
-package com.andnatkr.server.repositories;
+package com.andnatkr.server.repositories.user;
 
 import com.andnatkr.server.domain.entities.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

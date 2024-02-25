@@ -1,7 +1,7 @@
 package com.andnatkr.server.services.impl;
 
 import com.andnatkr.server.domain.entities.user.User;
-import com.andnatkr.server.repositories.UserRepository;
+import com.andnatkr.server.repositories.user.UserRepository;
 import com.andnatkr.server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

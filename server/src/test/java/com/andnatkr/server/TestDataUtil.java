@@ -23,9 +23,8 @@ public class TestDataUtil {
                 .lastName("Esteban")
                 .email("fake@email.com")
                 .password("test")
-                .role("admin")
+//                .role("admin")
                 .avatar("avatar.jpg")
-                .description("Test user data A")
                 .build();
     }
     public static UserDto createdTestUserDtoA(){
@@ -34,10 +33,8 @@ public class TestDataUtil {
                 .firstName("Carlos")
                 .lastName("Esteban")
                 .email("fake@email.com")
-                .password("test")
                 .role("admin")
                 .avatar("avatar.jpg")
-                .description("Test user data A")
                 .build();
     }
 
@@ -48,9 +45,8 @@ public class TestDataUtil {
                 .lastName("Doe")
                 .email("john.doe@example.com")
                 .password("password123")
-                .role("read only")
+//                .role("USER")
                 .avatar("https://example.com/avatar.jpg")
-                .description("A brief description about John Doe.")
                 .build();
     }
     public static User createdTestUserC(){
@@ -59,9 +55,8 @@ public class TestDataUtil {
                 .lastName("Johnson")
                 .email("emily.johnson@example.com")
                 .password("password123")
-                .role("admin")
+//                .role("admin")
                 .avatar("https://example.com/avatar.jpg")
-                .description("Enthusiastic about community engagement and discussions.")
                 .build();
     }
 
