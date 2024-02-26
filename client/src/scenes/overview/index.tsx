@@ -26,37 +26,64 @@ import Modal from "../../components/Modal";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
+import { accumulatorByAmount } from "../../utility";
 
 const sumAmountByStatement = (data, statement) => {
   return data.reduce((sum, entry) => {
     if (entry.financeStatement === statement) {
-      return  sum + entry.amount;
+      return sum + entry.amount;
     }
-    // return sum;
     return sum;
   }, 0);
 };
+
+const filterDetails = [
+  {
+    key: "estate",
+    value: "506",
+    accumulator: {
+      key: "financeStatement",
+      value: "Income",
+    },
+  },
+  {
+    key: "estate",
+    value: "506",
+    accumulator: {
+      key: "financeStatement",
+      value: "Expense",
+    },
+  },
+  {
+    key: "estate",
+    value: "619",
+    accumulator: {
+      key: "financeStatement",
+      value: "Income",
+    },
+  },
+  {
+    key: "estate",
+    value: "619",
+    accumulator: {
+      key: "financeStatement",
+      value: "Expense",
+    },
+  },
+];
 
 const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetEstateMgmtQuery({});
-
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
-  const filterBig = data ? data.filter((entry) => entry.estate === "506") : [];
-  const expenseSum =
-    filterBig.length > 0 ? sumAmountByStatement(filterBig, "Expense") : 0;
-  const incomeSum =
-    filterBig.length > 0 ? sumAmountByStatement(filterBig, "Income") : 0;
+  const incomeSum = accumulatorByAmount(flattenedData, filterDetails[0]);
+  const expenseSum = accumulatorByAmount(flattenedData, filterDetails[1]);
 
-  const filterSmall = data
-    ? data.filter((entry) => entry.estate === "619")
-    : [];
-  const expenseSumSmall =
-    filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Expense") : 0;
-  const incomeSumSmall =
-    filterSmall.length > 0 ? sumAmountByStatement(filterSmall, "Income") : 0;
+  const incomeSumSmall = accumulatorByAmount(flattenedData, filterDetails[2]);
+  const expenseSumSmall =accumulatorByAmount(flattenedData, filterDetails[3]);
+
 
   const columns: GridColDef[] = [
     {
@@ -162,7 +189,7 @@ const Overview = () => {
         <StatBox
           span="3"
           title="Total Incomes "
-          value={numeral(incomeSum).format('0,0')}
+          value={numeral(incomeSum).format("0,0")}
           increase="506"
           description=""
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
@@ -170,16 +197,16 @@ const Overview = () => {
         <StatBox
           span="3"
           title="Total Expenses"
-          value={numeral(expenseSum).format('0,0')}
+          value={numeral(expenseSum).format("0,0")}
           increase="506"
           description=""
           icon={<MonetizationOnOutlined sx={{ fontSize: "26px" }} />}
         />
-        
+
         <StatBox
           span="3"
           title="Total Incomes"
-          value={numeral(incomeSumSmall).format('0,0')}
+          value={numeral(incomeSumSmall).format("0,0")}
           increase="619"
           description=""
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
@@ -187,12 +214,11 @@ const Overview = () => {
         <StatBox
           span="3"
           title="Total Expenses"
-          value={numeral(expenseSumSmall).format('0,0')}
+          value={numeral(expenseSumSmall).format("0,0")}
           increase="619"
           description=""
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
-        
 
         {/* Row3 */}
         <Box

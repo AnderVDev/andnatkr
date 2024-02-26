@@ -15,6 +15,10 @@ import {
   AccountBalanceWalletOutlined,
   MonetizationOnOutlined,
   ManOutlined,
+  AttachMoneyOutlined,
+  CurrencyExchangeOutlined,
+  AccountBalanceOutlined,
+  PaymentsOutlined,  
   Person3Outlined,
   PermIdentityOutlined,
 } from "@mui/icons-material";
@@ -45,6 +49,8 @@ const Balance = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
+  //Calculate values
 
   const columns: GridColDef[] = [
     {
@@ -103,20 +109,38 @@ const Balance = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          span="6"
+          span="4"
           title="Anderson"
           value="1000"
-          increase="+14%"
-          description="Since last month"
+          increase=""
+          description=""
           icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="6"
+          span="2"
+          title="Balance"
+          value="1000"
+          increase=""
+          description="Current month"
+          icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
+        />
+
+
+        <StatBox
+          span="4"
           title="Ana"
           value="1000"
           increase="+14%"
-          description="Since last month"
+          description=""
           icon={<Person3Outlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="2"
+          title="Balance"
+          value="1000"
+          increase=""
+          description="Current month"
+          icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
 
         
@@ -127,19 +151,19 @@ const Balance = () => {
           value="1000"
           increase="+14%"
           description="Since last month"
-          icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
+          icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="3"
-          title="Assets"
+          title="Savings"
           value="1000"
           increase="+14%"
           description="Since last month"
-          icon={<MonetizationOnOutlined sx={{ fontSize: "26px" }} />}
+          icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="3"
-          title="Liabilities"
+          title="Incomes"
           value="1000"
           increase="+14%"
           description="Since last month"
@@ -147,11 +171,11 @@ const Balance = () => {
         />
         <StatBox
           span="3"
-          title="Total Amount"
+          title="Expenses"
           value="1000"
           increase="+14%"
           description="Since last month"
-          icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
+          icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
         />
 
         {/* Row3 */}

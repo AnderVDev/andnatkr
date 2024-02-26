@@ -15,20 +15,12 @@ import {
 
 import {
   AccountBalanceOutlined,
-  SettingsOutlined,
+  SyncAltOutlined,
   ChevronLeft,
   ChevronRightOutlined,
-  HomeOutlined,
-  ShoppingCartOutlined,
-  Groups2Outlined,
-  ReceiptLongOutlined,
-  PublicOutlined,
-  TodayOutlined,
-  CalendarMonthOutlined,
-  AdminPanelSettingsOutlined,
+  EqualizerOutlined,
   TrendingUpOutlined,
   AccountBalanceWalletOutlined,
-  PieChartOutlined,
   HomeWorkOutlined,
   MuseumOutlined,
 } from "@mui/icons-material";
@@ -47,11 +39,11 @@ const navItems = [
   },
   {
     text: "Transactions",
-    icon: <ReceiptLongOutlined />,
+    icon: <SyncAltOutlined />,
   },
   {
     text: "Dashboard",
-    icon: <PieChartOutlined />,
+    icon: <EqualizerOutlined />,
   },
   {
     text: "Real Estate",
@@ -71,7 +63,7 @@ const navItems = [
   },
   // {
   //   text: "Breakdown",
-  //   icon: <PieChartOutlined />,
+  //   icon: <AccountBalanceOutlined />,
   // },
   {
     text: "Performance",
