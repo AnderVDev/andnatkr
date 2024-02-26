@@ -16,6 +16,7 @@ public class TransactionDto {
 
     private Long id;
     private UserDto user;
+    private String financeStatement;
     private String month;
     private Integer year;
     private String detail;

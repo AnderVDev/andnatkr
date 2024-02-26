@@ -13,3 +13,19 @@ export const accumulatorByAmount = (data, filter) => {
     return accumulator + entry.amount;
   }, 0);
 };
+
+
+export const accumulatorByTotalAmount = (data, key, value) => {
+    const filteredData = data
+      ? filterByKey(data, key, value)
+      : [];
+    return filteredData.reduce((accumulator, entry) => {
+      return accumulator + entry.amount;
+    }, 0);
+  };
+
+  export const accumulatorByTotalBalance = (data) => {
+    return data.reduce((accumulator, entry) => {
+      return accumulator + entry.amount;
+    }, 0);
+  };

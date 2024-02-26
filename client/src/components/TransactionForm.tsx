@@ -15,6 +15,7 @@ import {
   useUpdateEstateMgmtMutation,
 } from "../state/api";
 import { useSelector } from "react-redux";
+import { months, currentMonth, currentYear } from "../dataUtil";
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -37,20 +38,20 @@ const newInputSchema = yup.object().shape({
 // Input data
 const estatesData = ["506", "619"];
 const financeStatementsData = ["Income", "Expense"];
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+// const months = [
+//   "January",
+//   "February",
+//   "March",
+//   "April",
+//   "May",
+//   "June",
+//   "July",
+//   "August",
+//   "September",
+//   "October",
+//   "November",
+//   "December",
+// ];
 
 const TransactionForm = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();
@@ -69,8 +70,8 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     financeStatement: isUpdateType ? row["financeStatement"] : "",
     estate: isUpdateType ? row["estate"] : "",
     amount: isUpdateType ? row["amount"] : "",
-    month: isUpdateType ? row["month"] : "",
-    year: isUpdateType ? row["year"] : "",
+    month: isUpdateType ? row["month"] : currentMonth,
+    year: isUpdateType ? row["year"] : currentYear,
     detail: isUpdateType ? row["detail"] : "",
     comments: isUpdateType ? row["comments"] : "",
     isMortgage: isUpdateType ? row["isMortgage"] : "false",

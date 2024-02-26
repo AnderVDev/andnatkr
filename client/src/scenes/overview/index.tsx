@@ -28,14 +28,14 @@ import { flatten } from "flat";
 import numeral from "numeral";
 import { accumulatorByAmount } from "../../utility";
 
-const sumAmountByStatement = (data, statement) => {
-  return data.reduce((sum, entry) => {
-    if (entry.financeStatement === statement) {
-      return sum + entry.amount;
-    }
-    return sum;
-  }, 0);
-};
+// const sumAmountByStatement = (data, statement) => {
+//   return data.reduce((sum, entry) => {
+//     if (entry.financeStatement === statement) {
+//       return sum + entry.amount;
+//     }
+//     return sum;
+//   }, 0);
+// };
 
 const filterDetails = [
   {

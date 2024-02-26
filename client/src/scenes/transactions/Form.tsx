@@ -15,10 +15,17 @@ import {
   useUpdateTransactionMutation,
 } from "../../state/api";
 import { useSelector } from "react-redux";
-
+import {
+  months,
+  currentMonth,
+  currentYear,
+  financeStatementsData,
+  details,
+} from "../../dataUtil";
 // Input Validations
 const newInputSchema = yup.object().shape({
   user: yup.string().required("User is required"), // user id
+  financeStatement: yup.string().required("Finance Statement is required"),
   amount: yup
     .number()
     .required("Amount is required")
@@ -31,24 +38,6 @@ const newInputSchema = yup.object().shape({
   detail: yup.string().nullable(),
   comments: yup.string().nullable(),
 });
-
-// Input data
-// const estatesData = ["506", "619"];
-// const financeStatementsData = ["Income", "Expense"];
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 const Form = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();
@@ -64,9 +53,10 @@ const Form = ({ onClosed, modalType, row }) => {
   // Initial Values
   const initialValues = {
     user: isUpdateType ? row["user.id"] : id,
+    financeStatement: isUpdateType ? row["financeStatement"] : "",
     amount: isUpdateType ? row["amount"] : "",
-    month: isUpdateType ? row["month"] : "",
-    year: isUpdateType ? row["year"] : "",
+    month: isUpdateType ? row["month"] : currentMonth,
+    year: isUpdateType ? row["year"] : currentYear,
     detail: isUpdateType ? row["detail"] : "",
     comments: isUpdateType ? row["comments"] : "",
   };
@@ -136,6 +126,29 @@ const Form = ({ onClosed, modalType, row }) => {
                 />
 
                 <TextField
+                  label="Statement"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.financeStatement}
+                  name="financeStatement"
+                  error={
+                    Boolean(touched.financeStatement) &&
+                    Boolean(errors.financeStatement)
+                  }
+                  helperText={
+                    touched.financeStatement && errors.financeStatement
+                  }
+                  sx={{ gridColumn: "span 2" }}
+                  select
+                >
+                  {financeStatementsData.map((value) => (
+                    <MenuItem key={value} value={value}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
                   label="Detail"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -144,7 +157,23 @@ const Form = ({ onClosed, modalType, row }) => {
                   error={Boolean(touched.detail) && Boolean(errors.detail)}
                   helperText={touched.detail && errors.detail}
                   sx={{ gridColumn: "span 2" }}
-                />
+                  select
+                  disabled={!values.financeStatement}
+                  SelectProps={{
+                    displayEmpty: true,
+                    renderValue: (value) => value || "",
+                  }}
+                >
+                  {values.financeStatement ? (
+                    details[values.financeStatement].map((value) => (
+                      <MenuItem key={value} value={value}>
+                        {value}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem />
+                  )}
+                </TextField>
 
                 <TextField
                   label="Amount"
@@ -154,7 +183,7 @@ const Form = ({ onClosed, modalType, row }) => {
                   name="amount"
                   error={Boolean(touched.amount) && Boolean(errors.amount)}
                   helperText={touched.amount && errors.amount}
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{ gridColumn: "span 4" }}
                 />
 
                 <TextField

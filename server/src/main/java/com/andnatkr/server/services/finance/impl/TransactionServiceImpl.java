@@ -47,6 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
         inputEntity.setId(id);
         return repository.findById(id).map(existingInput -> {
             Optional.ofNullable(inputEntity.getUser()).ifPresent(existingInput::setUser);
+            Optional.ofNullable(inputEntity.getFinanceStatement()).ifPresent(existingInput::setFinanceStatement);
             Optional.ofNullable(inputEntity.getMonth()).ifPresent(existingInput::setMonth);
             Optional.ofNullable(inputEntity.getYear()).ifPresent(existingInput::setYear);
             Optional.ofNullable(inputEntity.getDetail()).ifPresent(existingInput::setDetail);

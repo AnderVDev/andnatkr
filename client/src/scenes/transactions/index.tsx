@@ -8,7 +8,6 @@ import { useGetTransactionQuery } from "../../state/api";
 import ActionButtons from "./ActionButtons";
 import numeral from "numeral";
 
-
 const Transactions = () => {
   const theme = useTheme();
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -24,6 +23,11 @@ const Transactions = () => {
     {
       field: "user.firstName",
       headerName: "User",
+      flex: 0.7,
+    },
+    {
+      field: "financeStatement",
+      headerName: "Statement",
       flex: 0.7,
     },
     {

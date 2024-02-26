@@ -26,6 +26,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    private String financeStatement;
     private String month;
     private Integer year;
     private String detail;

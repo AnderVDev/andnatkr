@@ -18,7 +18,7 @@ import {
   AttachMoneyOutlined,
   CurrencyExchangeOutlined,
   AccountBalanceOutlined,
-  PaymentsOutlined,  
+  PaymentsOutlined,
   Person3Outlined,
   PermIdentityOutlined,
 } from "@mui/icons-material";
@@ -31,24 +31,87 @@ import Modal from "../../components/Modal";
 import { useGetTransactionQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
-
+import {
+  filterByKey,
+  accumulatorByAmount,
+  accumulatorByTotalAmount,
+} from "../../utility";
 type Props = {};
 
-const sumAmountByStatement = (data, statement) => {
-  return data.reduce((sum, entry) => {
-    if (entry.financeStatement === statement) {
-      return sum + entry.amount;
-    }
-    // return sum;
-    return sum;
-  }, 0);
-};
+// const filterTotalDetails = [
+//   {
+//     key: "detail",
+//     value: "saving",
+//   },
+//   {
+//     key: "financeStatement",
+//     value: "Incomes",
+//   },
+//   {
+//     key: "detail",
+//     value: "Expenses",
+//   },
+// ];
+
+const filterDetails = [
+  {
+    key: "user.firstName",
+    value: "Fake",
+    accumulator: {
+      key: "financeStatement",
+      value: "Income",
+    },
+  },
+  {
+    key: "estate",
+    value: "506",
+    accumulator: {
+      key: "financeStatement",
+      value: "Expense",
+    },
+  },
+  {
+    key: "estate",
+    value: "619",
+    accumulator: {
+      key: "user.firstName",
+      value: "Income",
+    },
+  },
+  {
+    key: "estate",
+    value: "619",
+    accumulator: {
+      key: "financeStatement",
+      value: "Expense",
+    },
+  },
+];
+
+
 
 const Balance = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
+  const totalIncomes = accumulatorByTotalAmount(
+    flattenedData,
+    "financeStatement",
+    "Income"
+  );
+  const totalExpenses = accumulatorByTotalAmount(
+    flattenedData,
+    "financeStatement",
+    "Expense"
+  );
+  const totalSavings = accumulatorByTotalAmount(
+    flattenedData,
+    "detail",
+    "Saving"
+  );
+  const totalBalance = totalIncomes - totalExpenses;
 
   //Calculate values
 
@@ -61,6 +124,11 @@ const Balance = () => {
     {
       field: "user.firstName",
       headerName: "User",
+      flex: 0.7,
+    },
+    {
+      field: "financeStatement",
+      headerName: "Statement",
       flex: 0.7,
     },
     {
@@ -125,7 +193,6 @@ const Balance = () => {
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
 
-
         <StatBox
           span="4"
           title="Ana"
@@ -137,18 +204,17 @@ const Balance = () => {
         <StatBox
           span="2"
           title="Balance"
-          value="1000"
+          value="1500"
           increase=""
           description="Current month"
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
 
-        
         {/* ROW 2 */}
         <StatBox
           span="3"
           title="Balance"
-          value="1000"
+          value={numeral(totalBalance).format("0,0.00")}
           increase="+14%"
           description="Since last month"
           icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
@@ -156,7 +222,7 @@ const Balance = () => {
         <StatBox
           span="3"
           title="Savings"
-          value="1000"
+          value={numeral(totalSavings).format("0,0.00")}
           increase="+14%"
           description="Since last month"
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
@@ -164,7 +230,7 @@ const Balance = () => {
         <StatBox
           span="3"
           title="Incomes"
-          value="1000"
+          value={numeral(totalIncomes).format("0,0.00")}
           increase="+14%"
           description="Since last month"
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
@@ -172,7 +238,7 @@ const Balance = () => {
         <StatBox
           span="3"
           title="Expenses"
-          value="1000"
+          value={numeral(totalExpenses).format("0,0.00")}
           increase="+14%"
           description="Since last month"
           icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
