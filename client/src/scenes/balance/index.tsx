@@ -19,60 +19,77 @@ import {
   PermIdentityOutlined,
 } from "@mui/icons-material";
 import StatBox from "../../components/StatBox";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
 // import Dialog from "../../components/Dialog";
 import Modal from "../../components/Modal";
+import { useGetTransactionQuery } from "../../state/api";
+import { flatten } from "flat";
+import numeral from "numeral";
 
 type Props = {};
+
+const sumAmountByStatement = (data, statement) => {
+  return data.reduce((sum, entry) => {
+    if (entry.financeStatement === statement) {
+      return sum + entry.amount;
+    }
+    // return sum;
+    return sum;
+  }, 0);
+};
 
 const Balance = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  //   const { data, isLoading } = useGetDashboardQuery();
-  const { data, isLoading } = useState(false);
+  const { data, isLoading } = useGetTransactionQuery({});
+  const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
-      field: "_id",
+      field: "id",
       headerName: "ID",
-      flex: 1,
+      flex: 0.3,
     },
     {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
+      field: "user.firstName",
+      headerName: "User",
+      flex: 0.7,
     },
     {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
+      field: "detail",
+      headerName: "Detail",
+      flex: 0.7,
     },
     {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      //   renderCell: (params) => params.value.length,
+      field: "amount",
+      headerName: "Amount",
+      flex: 0.7,
+      renderCell: (params) => numeral(params.value).format("0,0.00"),
     },
     {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      //   renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
+      field: "month",
+      headerName: "Month",
+      flex: 0.7,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      flex: 0.7,
+    },
+
+    {
+      field: "comments",
+      headerName: "Comments",
+      flex: 1.5,
     },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="BALANCE" subtitle="Managing er" />
-      {/* <FlexBetween>
+      <Header title="BALANCE" subtitle="Managing Finance Home Transactions" />
 
-        <IconButton sx={{ mr: "1.5rem" }}>
-          <AddCircleOutlineOutlined sx={{ fontSize: "2rem" }} />
-        </IconButton>
-      </FlexBetween> */}
       {/* Main Grid */}
       <Box
         mt="20px"
@@ -85,6 +102,25 @@ const Balance = () => {
         }}
       >
         {/* ROW 1 */}
+        <StatBox
+          span="6"
+          title="Anderson"
+          value="1000"
+          increase="+14%"
+          description="Since last month"
+          icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="6"
+          title="Ana"
+          value="1000"
+          increase="+14%"
+          description="Since last month"
+          icon={<Person3Outlined sx={{ fontSize: "26px" }} />}
+        />
+
+        
+        {/* ROW 2 */}
         <StatBox
           span="3"
           title="Balance"
@@ -117,23 +153,6 @@ const Balance = () => {
           description="Since last month"
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
-        {/* ROW 2 */}
-        <StatBox
-          span="6"
-          title="Anderson"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
-          icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
-        />
-        <StatBox
-          span="6"
-          title="Ana"
-          value="1000"
-          increase="+14%"
-          description="Since last month"
-          icon={<Person3Outlined sx={{ fontSize: "26px" }} />}
-        />
 
         {/* Row3 */}
         <Box
@@ -150,27 +169,26 @@ const Balance = () => {
             },
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
+              color: theme.palette.grey[100],
               borderBottom: "none",
             },
             "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: theme.palette.background.alt,
+              backgroundColor: theme.palette.background.paper,
             },
             "& .MuiDataGrid-footerContainer": {
               backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
+              color: theme.palette.grey[100],
               borderTop: "none",
             },
             "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.secondary[200]} !important`,
+              color: `${theme.palette.neutral[200]} !important`,
             },
           }}
         >
           <DataGrid
-            loading={false}
-            // loading={isLoading || !data}
-            getRowId={() => {}}
-            rows={(data && data.transactions) || []}
+            loading={isLoading || !data}
+            getRowId={(row) => row.id}
+            rows={flattenedData}
             columns={columns}
           />
         </Box>

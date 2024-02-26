@@ -22,6 +22,8 @@ export const api = createApi({
   baseQuery,
   tagTypes: [
     "User",
+    "Transaction",
+    "TransactionById",
     "EstateMgmt",
     "Mortgages",
     "Credentials",
@@ -57,6 +59,50 @@ export const api = createApi({
         method: "POST",
       }),
     }),
+
+    // Finance Transactions
+    getTransaction: builder.query({
+      query: () => "/transaction",
+      providesTags: ["Transaction"],
+    }),
+
+    getTransactionById: builder.query({
+      query: (id) => `/transaction/${id}`,
+      providesTags: ["TransactionById"],
+    }),
+
+    addTransaction: builder.mutation({
+      query: (input) => ({
+        url: "/transaction",
+        method: "POST",
+        body: input,
+      }),
+      invalidatesTags: ["Transaction"],
+    }),
+
+    updateTransaction: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/transaction/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Transaction"],
+    }),
+
+    deleteTransaction: builder.mutation({
+      query: (id) => ({
+        url: `/transaction/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Transaction"],
+    }),
+
+
+
+
+
+
+
 
     // Estate Management
     getEstateMgmt: builder.query({
@@ -133,6 +179,11 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
+  useGetTransactionQuery,
+  useUpdateTransactionMutation,
+  useDeleteTransactionMutation,
+  useAddTransactionMutation,
+  useGetTransactionByIdQuery,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,

@@ -1,20 +1,25 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   styled,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
-  Typography,
+  Theme,
 } from "@mui/material";
-import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
-import TransactionForm from "../../components/TransactionForm";
+import {
+  CloseOutlined,
+  AddCircleOutlineOutlined,
+  SettingsOutlined,
+} from "@mui/icons-material";
+import Form from "./Form";
 
+interface ModalTransactionProps {
+  modalType: string;
+  row: unknown;
+}
 
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -23,10 +28,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-type Props = {};
-
-const ModalTransactions = () => {
-  const[open, setOpen] = useState(false);
+const ModalTransaction = ({ modalType, row }: ModalTransactionProps) => {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,18 +41,19 @@ const ModalTransactions = () => {
   return (
     <>
       <IconButton onClick={handleClickOpen}>
-        <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        {modalType === "update" ? (
+          <SettingsOutlined sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        )}
       </IconButton>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          New
+          {modalType === "update" ? "Update" : "New"}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -64,12 +68,16 @@ const ModalTransactions = () => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-
-            <TransactionForm />
+          <Form
+            onClosed={handleClose}
+            modalType={modalType}
+            row={row}
+          />
+          
         </DialogContent>
       </BootstrapDialog>
     </>
   );
 };
 
-export default ModalTransactions;
+export default ModalTransaction;

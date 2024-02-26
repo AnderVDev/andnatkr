@@ -38,10 +38,6 @@ import FlexBetween from "./FlexBetween";
 
 const navItems = [
   {
-    text: "Dashboard",
-    icon: <HomeOutlined />,
-  },
-  {
     text: "Housing",
     icon: null,
   },
@@ -52,6 +48,10 @@ const navItems = [
   {
     text: "Transactions",
     icon: <ReceiptLongOutlined />,
+  },
+  {
+    text: "Dashboard",
+    icon: <PieChartOutlined />,
   },
   {
     text: "Real Estate",
@@ -105,7 +105,7 @@ const Sidebar = ({
           sx={{
             width: drawerWidth,
             "& .MuiDrawer-paper": {
-              color: theme.palette.secondary[200],
+              color: theme.palette.grey[200],
               backgroundColor: theme.palette.background.default[700],
               boxSizing: "border-box",
               borderWidth: isNonMobile ? 0 : "2px",
@@ -130,6 +130,13 @@ const Sidebar = ({
             </Box>
             <List>
               {navItems.map(({ text, icon }) => {
+                if (!icon && text === "Housing") {
+                  return (
+                    <Typography key={text} sx={{ m: "0.5rem 0 1rem 3rem" }}>
+                      {text}
+                    </Typography>
+                  );
+                }
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
@@ -149,12 +156,12 @@ const Sidebar = ({
                       sx={{
                         backgroundColor:
                           active === lowerText
-                            ? theme.palette.secondary[300]
+                            ? theme.palette.grey[800]
                             : "transparent",
                         color:
                           active === lowerText
-                            ? theme.palette.primary[600]
-                            : theme.palette.secondary[100],
+                            ? theme.palette.grey[400]
+                            : theme.palette.grey[100],
                       }}
                     >
                       <ListItemIcon
@@ -162,8 +169,8 @@ const Sidebar = ({
                           ml: "2rem",
                           color:
                             active === lowerText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                              ? theme.palette.grey[400]
+                              : theme.palette.grey[200],
                         }}
                       >
                         {icon}

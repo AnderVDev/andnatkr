@@ -50,7 +50,6 @@ const TodoList = () => {
           disablePadding
         >
           <ListItemButton
-            roleOld={undefined}
             onClick={handleToggle(task.id)}
             dense
           >

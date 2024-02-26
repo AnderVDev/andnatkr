@@ -1,72 +1,73 @@
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, useTheme } from "@mui/material";
+import { flatten } from "flat";
+import ModalTransaction from "./Modal";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Header from "../../components/Header";
 import FlexBetween from "../../components/FlexBetween";
-import { AddCircleOutlineOutlined } from "@mui/icons-material";
-import StatBox from "../../components/StatBox";
-import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
-import ModalTransactions from "./Modal";
+import { useGetTransactionQuery } from "../../state/api";
+import ActionButtons from "./ActionButtons";
+import numeral from "numeral";
 
-type Props = {};
 
 const Transactions = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  //   const { data, isLoading } = useGetDashboardQuery();
-  const { data, isLoading } = useState(false);
+  // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const { data, isLoading } = useGetTransactionQuery({});
+  const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
-      field: "_id",
+      field: "id",
       headerName: "ID",
+      flex: 0.3,
+    },
+    {
+      field: "user.firstName",
+      headerName: "User",
+      flex: 0.7,
+    },
+    {
+      field: "detail",
+      headerName: "Detail",
+      flex: 0.7,
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      flex: 0.7,
+      renderCell: (params) => numeral(params.value).format("0,0.00"),
+    },
+    {
+      field: "month",
+      headerName: "Month",
+      flex: 0.7,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      flex: 0.7,
+    },
+
+    {
+      field: "comments",
+      headerName: "Comments",
+      flex: 1.5,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
       flex: 1,
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 0.5,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "phoneNumber",
-      headerName: "Phone Number",
-      flex: 0.5,
-      renderCell: (params) => {
-        return params.value.replace(/^(\d{3})(\d{3})(\d{4})/, "($1)$2-$3");
-      },
-    },
-    {
-      field: "country",
-      headerName: "Country",
-      flex: 0.4,
-    },
-    {
-      field: "occupation",
-      headerName: "Occupation",
-      flex: 1,
-    },
-    {
-      field: "roleOld",
-      headerName: "Role",
-      flex: 0.5,
+      renderCell: (params) => (
+        <ActionButtons row={params.row} modalType="update" />
+      ),
     },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
-       <FlexBetween>
-      <Header title="TRANSACTIONS" subtitle="List of Transactions" />
-      <ModalTransactions />
+      <FlexBetween>
+        <Header title="TRANSACTIONS" subtitle="List of Transactions" />
+        <ModalTransaction modalType="new" id={1} />
       </FlexBetween>
       <Box
         mt="40px"
@@ -76,27 +77,26 @@ const Transactions = () => {
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderBottom: "none"
+            color: theme.palette.grey[100],
+            borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.background.alt,
+            backgroundColor: theme.palette.background.paper,
           },
           "& .MuiDataGrid-footerContainer": {
             backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderTop: "none"
+            color: theme.palette.grey[100],
+            borderTop: "none",
           },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text":{
-            color: `${theme.palette.secondary[200]} !important`,
-          }
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${theme.palette.neutral[200]} !important`,
+          },
         }}
       >
         <DataGrid
-          loading={false}
-        //   loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={data || []}
+          loading={isLoading || !data}
+          getRowId={(row) => row.id}
+          rows={flattenedData}
           columns={columns}
         />
       </Box>

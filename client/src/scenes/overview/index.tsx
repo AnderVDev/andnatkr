@@ -111,6 +111,7 @@ const Overview = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="OVERVIEW" subtitle="Real Estate Overview" />
+      {/* Main Grid */}
       <Box
         mt="20px"
         display="grid"
