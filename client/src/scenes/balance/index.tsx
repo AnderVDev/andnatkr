@@ -26,7 +26,6 @@ import StatBox from "../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import TodoList from "../../components/TodoList";
-// import Dialog from "../../components/Dialog";
 import Modal from "../../components/Modal";
 import { useGetTransactionQuery } from "../../state/api";
 import { flatten } from "flat";
@@ -35,60 +34,47 @@ import {
   filterByKey,
   accumulatorByAmount,
   accumulatorByTotalAmount,
+  accumulatorUserByCurrentMonth,
+  accumulatorCurrentMonthByStatement,
+  accumulatorPreviousMonthByStatement,
 } from "../../utility";
+
 type Props = {};
 
-// const filterTotalDetails = [
+// const filterDetails = [
 //   {
-//     key: "detail",
-//     value: "saving",
+//     key: "user.firstName",
+//     value: "Fake",
+//     accumulator: {
+//       key: "financeStatement",
+//       value: "Income",
+//     },
 //   },
 //   {
-//     key: "financeStatement",
-//     value: "Incomes",
+//     key: "estate",
+//     value: "506",
+//     accumulator: {
+//       key: "financeStatement",
+//       value: "Expense",
+//     },
 //   },
 //   {
-//     key: "detail",
-//     value: "Expenses",
+//     key: "estate",
+//     value: "619",
+//     accumulator: {
+//       key: "user.firstName",
+//       value: "Income",
+//     },
+//   },
+//   {
+//     key: "estate",
+//     value: "619",
+//     accumulator: {
+//       key: "financeStatement",
+//       value: "Expense",
+//     },
 //   },
 // ];
-
-const filterDetails = [
-  {
-    key: "user.firstName",
-    value: "Fake",
-    accumulator: {
-      key: "financeStatement",
-      value: "Income",
-    },
-  },
-  {
-    key: "estate",
-    value: "506",
-    accumulator: {
-      key: "financeStatement",
-      value: "Expense",
-    },
-  },
-  {
-    key: "estate",
-    value: "619",
-    accumulator: {
-      key: "user.firstName",
-      value: "Income",
-    },
-  },
-  {
-    key: "estate",
-    value: "619",
-    accumulator: {
-      key: "financeStatement",
-      value: "Expense",
-    },
-  },
-];
-
-
 
 const Balance = () => {
   const theme = useTheme();
@@ -96,6 +82,7 @@ const Balance = () => {
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
+  //Total data
   const totalIncomes = accumulatorByTotalAmount(
     flattenedData,
     "financeStatement",
@@ -113,7 +100,43 @@ const Balance = () => {
   );
   const totalBalance = totalIncomes - totalExpenses;
 
-  //Calculate values
+  //Current Month data
+
+  const incomesByCurrentMonth = accumulatorCurrentMonthByStatement(
+    flattenedData,
+    "Income"
+  );
+
+  const expensesByCurrentMonth = accumulatorCurrentMonthByStatement(
+    flattenedData,
+    "Expense"
+  );
+  const balanceByCurrentMonth = incomesByCurrentMonth - expensesByCurrentMonth;
+
+  //Previous Month data
+
+  const incomesByPreviousMonth = accumulatorPreviousMonthByStatement(
+    flattenedData,
+    "Income"
+  );
+
+  const expensesByPreviousMonth = accumulatorPreviousMonthByStatement(
+    flattenedData,
+    "Expense"
+  );
+
+  const userIncomeByCurrentMonth = accumulatorUserByCurrentMonth(flattenedData, "Fake")
+  const user2IncomeByCurrentMonth = accumulatorUserByCurrentMonth(flattenedData, "Test")
+
+  // Percentages data
+
+  const incomesPercentage =
+    ((incomesByCurrentMonth - incomesByPreviousMonth) * 100) /
+    incomesByPreviousMonth;
+
+  const expensesPercentage =
+    ((expensesByCurrentMonth - expensesByPreviousMonth) * 100) /
+    expensesByPreviousMonth;
 
   const columns: GridColDef[] = [
     {
@@ -177,69 +200,78 @@ const Balance = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          span="4"
-          title="Anderson"
-          value="1000"
+          span="3"
+          title="Total Balance"
+          value={numeral(totalBalance).format("0,0.00")}
           increase=""
           description=""
-          icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
+          icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
+          span="3"
+          title="Total Savings"
+          value={numeral(totalSavings).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="3"
+          title="Total Incomes"
+          value={numeral(totalIncomes).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="3"
+          title="Total Expenses"
+          value={numeral(totalExpenses).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
+        />
+
+        {/* ROW 2 */}
+        <StatBox
           span="2"
-          title="Balance"
-          value="1000"
+          title="Anderson"
+          value={numeral(userIncomeByCurrentMonth).format("0,0.00")}
           increase=""
           description="Current month"
-          icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
+          icon={<PermIdentityOutlined sx={{ fontSize: "26px" }} />}
         />
 
         <StatBox
-          span="4"
+          span="2"
           title="Ana"
-          value="1000"
-          increase="+14%"
-          description=""
+          value={numeral(user2IncomeByCurrentMonth).format("0,0.00")}
+          increase=""
+          description="Current month"
           icon={<Person3Outlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="2"
           title="Balance"
-          value="1500"
+          value={numeral(balanceByCurrentMonth).format("0,0.00")}
           increase=""
           description="Current month"
           icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
         />
 
-        {/* ROW 2 */}
-        <StatBox
-          span="3"
-          title="Balance"
-          value={numeral(totalBalance).format("0,0.00")}
-          increase="+14%"
-          description="Since last month"
-          icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
-        />
-        <StatBox
-          span="3"
-          title="Savings"
-          value={numeral(totalSavings).format("0,0.00")}
-          increase="+14%"
-          description="Since last month"
-          icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
-        />
         <StatBox
           span="3"
           title="Incomes"
-          value={numeral(totalIncomes).format("0,0.00")}
-          increase="+14%"
+          value={numeral(incomesByCurrentMonth).format("0,0.00")}
+          increase={`${numeral(incomesPercentage).format("0,0.00")} %`}
           description="Since last month"
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="3"
           title="Expenses"
-          value={numeral(totalExpenses).format("0,0.00")}
-          increase="+14%"
+          value={numeral(expensesByCurrentMonth).format("0,0.00")}
+          increase={`${numeral(expensesPercentage).format("0,0.00")} %`}
           description="Since last month"
           icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
         />

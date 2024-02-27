@@ -1,7 +1,6 @@
 package com.andnatkr.server.controllers.finance;
 
-import com.andnatkr.server.domain.dto.estate.EstateMgmtDto;
-import com.andnatkr.server.domain.entities.estate.EstateMgmt;
+
 import com.andnatkr.server.domain.dto.finance.TransactionDto;
 import com.andnatkr.server.domain.entities.finance.Transaction;
 import com.andnatkr.server.mappers.impl.finance.TransactionMapper;

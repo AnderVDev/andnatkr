@@ -27,15 +27,7 @@ import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
 import { accumulatorByAmount } from "../../utility";
-
-// const sumAmountByStatement = (data, statement) => {
-//   return data.reduce((sum, entry) => {
-//     if (entry.financeStatement === statement) {
-//       return sum + entry.amount;
-//     }
-//     return sum;
-//   }, 0);
-// };
+import { chileanIndex } from "../../state/publicApi";
 
 const filterDetails = [
   {
@@ -82,8 +74,13 @@ const Overview = () => {
   const expenseSum = accumulatorByAmount(flattenedData, filterDetails[1]);
 
   const incomeSumSmall = accumulatorByAmount(flattenedData, filterDetails[2]);
-  const expenseSumSmall =accumulatorByAmount(flattenedData, filterDetails[3]);
+  const expenseSumSmall = accumulatorByAmount(flattenedData, filterDetails[3]);
 
+  const { exchangeData, loading } = chileanIndex();
+
+  const currentUfValue= exchangeData?.uf.valor
+
+  const currentUfLease = 500000/ currentUfValue;
 
   const columns: GridColDef[] = [
     {
@@ -163,7 +160,7 @@ const Overview = () => {
           title="Current Leasing"
           value="500,000 "
           increase="506"
-          description="UF"
+          description={`${numeral(currentUfLease).format("0,0.00")} UF`}
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
 
@@ -180,7 +177,7 @@ const Overview = () => {
           title="Current Leasing"
           value="350,000 "
           increase="619"
-          description="UF"
+          description={`${numeral(currentUfLease).format("0,0.00")} UF`}
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
 

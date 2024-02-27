@@ -12,6 +12,8 @@ import { api } from "./api.ts";
 import globalReducer from "./index.ts";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./";
+// import rateReducer from "./rateSlice.ts";
+
 
 
 const persistConfig = { key: "root", storage, version: 1 };
@@ -21,7 +23,8 @@ export const store = configureStore({
   reducer: {    
     persisted: persistedReducer,
     [api.reducerPath]: api.reducer,
-    auth: authReducer
+    auth: authReducer,
+    // exchangeRates: rateReducer,
     
   },
   middleware: (getDefaultMiddleware) =>

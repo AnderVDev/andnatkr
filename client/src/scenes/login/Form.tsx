@@ -23,8 +23,8 @@ const Form = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  const [newLogin, isLoading] = useLoginMutation();
-  const [newRegister, { isLoading: isLoadingRegister }] = useRegisterMutation();
+  const [newLogin, {isLoading, isError, isSuccess, data}] = useLoginMutation();
+  const [newRegister, { isLoading: isLoadingRegister, isError: isErrorRegister, isSuccess: isSuccessRegister }] = useRegisterMutation();
 
   const initialValues = {
     firstName: "",
@@ -60,7 +60,7 @@ const Form = () => {
 
     const response = await newRegister(jsonData);
     const isAuthenticated =
-      !response.isError && !response.isLoading && response;
+      !isErrorRegister && !isLoadingRegister && isSuccessRegister;
 
     onSubmitProps.resetForm();
     if (isAuthenticated) {
@@ -83,11 +83,11 @@ const Form = () => {
 
     const response = await newLogin(jsonData);
     const isAuthenticated =
-      !response.isError && !response.isLoading && response;
+      !isError && !isLoading;
 
     onSubmitProps.resetForm();
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/balance");
     }
   };
 

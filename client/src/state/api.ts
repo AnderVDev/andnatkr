@@ -96,14 +96,6 @@ export const api = createApi({
       }),
       invalidatesTags: ["Transaction"],
     }),
-
-
-
-
-
-
-
-
     // Estate Management
     getEstateMgmt: builder.query({
       query: () => "/management",
@@ -164,7 +156,6 @@ export const api = createApi({
       }),
       invalidatesTags: ["Mortgages"],
     }),
-
     deleteMortgages: builder.mutation({
       query: (id) => ({
         url: `/mortgages/${id}`,
@@ -172,6 +163,8 @@ export const api = createApi({
       }),
       invalidatesTags: ["Mortgages"],
     }),
+
+
   }),
 });
 
