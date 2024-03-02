@@ -25,8 +25,8 @@ import {
 import StatBox from "../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import TodoList from "../../components/TodoList";
-import Modal from "../../components/Modal";
+import TodoList from "./TodoList";
+import Modal from "./Modal";
 import { useGetTransactionQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
@@ -125,8 +125,14 @@ const Balance = () => {
     "Expense"
   );
 
-  const userIncomeByCurrentMonth = accumulatorUserByCurrentMonth(flattenedData, "Fake")
-  const user2IncomeByCurrentMonth = accumulatorUserByCurrentMonth(flattenedData, "Test")
+  const userIncomeByCurrentMonth = accumulatorUserByCurrentMonth(
+    flattenedData,
+    "Fake"
+  );
+  const user2IncomeByCurrentMonth = accumulatorUserByCurrentMonth(
+    flattenedData,
+    "Test"
+  );
 
   // Percentages data
 
@@ -325,13 +331,9 @@ const Balance = () => {
               variant="h6"
               sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
             >
-              TodoList
+              Todo List
             </Typography>
-            {/* <Dialog /> */}
             <Modal />
-            {/* <IconButton>
-              <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
-            </IconButton> */}
           </FlexBetween>
           <TodoList />
         </Box>

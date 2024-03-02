@@ -1,4 +1,5 @@
 export const financeStatementsData = ["Income", "Expense"];
+export const years = ["2023", "2024","2025","2026","2027", "2028", "2029", "2030"];
 export const currentYear = new Date().getFullYear();
 export const numberCurrentMonth = new Date().getMonth();
 export const months = [

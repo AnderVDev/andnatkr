@@ -21,6 +21,7 @@ import {
   currentYear,
   financeStatementsData,
   details,
+  years,
 } from "../../dataUtil";
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -194,12 +195,12 @@ const Form = ({ onClosed, modalType, row }) => {
                   name="month"
                   error={Boolean(touched.month) && Boolean(errors.month)}
                   helperText={touched.month && errors.month}
-                  sx={{ gridColumn: "span 2" }}
                   select
+                  sx={{ gridColumn: "span 2" }}
                 >
-                  {months.map((month) => (
-                    <MenuItem key={month} value={month}>
-                      {month}
+                  {months.map((value) => (
+                    <MenuItem key={value} value={value}>
+                      {value}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -213,7 +214,32 @@ const Form = ({ onClosed, modalType, row }) => {
                   error={Boolean(touched.year) && Boolean(errors.year)}
                   helperText={touched.year && errors.year}
                   sx={{ gridColumn: "span 2" }}
-                />
+                  // select
+                >
+                  {years.map((value) => (
+                    <MenuItem key={value} value={value}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                {/* <TextField
+                  label="Year"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.year}
+                  name="year"
+                  error={Boolean(touched.year) && Boolean(errors.year)}
+                  helperText={touched.year && errors.year}
+                  sx={{ gridColumn: "span 2" }}
+                  select
+                >
+                  {years.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </TextField> */}
 
                 <TextField
                   label="Comments"
