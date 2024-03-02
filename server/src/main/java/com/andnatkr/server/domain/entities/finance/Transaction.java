@@ -33,7 +33,6 @@ public class Transaction {
     private Double amount;
     private String comments;
 
-
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

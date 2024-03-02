@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-
 public class TransactionMapper implements Mapper<Transaction, TransactionDto> {
 
     private final ModelMapper modelMapper;
 
     @Override
     public TransactionDto mapTo(Transaction transaction) {
+
         return modelMapper.map(transaction, TransactionDto.class);
     }
 
