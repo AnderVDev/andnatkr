@@ -17,7 +17,7 @@ public class TodoDto {
     private Long id;
     private UserDto user;
     private String description;
-    private Integer isChecked;
+    private Boolean isChecked;
     private String type;
     private Date createdAt;
     private Date updatedAt;

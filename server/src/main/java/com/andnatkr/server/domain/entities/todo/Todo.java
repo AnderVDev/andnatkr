@@ -26,7 +26,7 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
     private String description;
-    private Integer isChecked;
+    private Boolean isChecked;
     private String type;
 
     @Temporal(TemporalType.TIMESTAMP)

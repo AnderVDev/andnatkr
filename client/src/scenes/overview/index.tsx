@@ -21,8 +21,8 @@ import {
 import StatBox from "../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import TodoList from "../../components/TodoList";
-import Modal from "../../components/Modal";
+import TodoList from "./TodoList";
+import Modal from "./Modal";
 import { useGetEstateMgmtQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
@@ -255,7 +255,7 @@ const Overview = () => {
             columns={columns}
           />
         </Box>
-        {/* <Box
+        <Box
           gridColumn="span 4"
           gridRow="span 3"
           borderRadius="0.55rem"
@@ -271,7 +271,7 @@ const Overview = () => {
             <Modal />
           </FlexBetween>
           <TodoList />
-        </Box> */}
+        </Box>
       </Box>
       <Box
         mt="20px"

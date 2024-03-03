@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { chileanIndex } from "../../state/publicApi";
-import {
-  currentYear,
-  numberCurrentMonth,
-  currentMonth,
-  previousYear,
-  previousMonth,
-  // testPreviousMonth,
-  // testPreviousYear
-} from '../../dataUtil'; // Make sure to replace 'yourFile' with the actual file path
-
+import { useGetTodoQuery } from "../../state/api";
+import CircularProgressWithLabel from "../../components/CircularProgress";
 
 // type Props = {}
 
 const Dashboard = (props: Props) => {
+  const { data, isLoading } = useGetTodoQuery({});
+  console.log(data);
 
-
-  return <div>Dashboard</div>;
+  return (
+    <>
+      Dashboard
+      <CircularProgressWithLabel value={70} />
+    </>
+  );
 };
 
 export default Dashboard;

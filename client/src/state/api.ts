@@ -29,6 +29,8 @@ export const api = createApi({
     "Credentials",
     "EstateMgmtById",
     "Register",
+    "Todo",
+    "TodoById",
   ],
   endpoints: (builder) => ({
     // Authentication
@@ -96,6 +98,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["Transaction"],
     }),
+
     // Estate Management
     getEstateMgmt: builder.query({
       query: () => "/management",
@@ -164,6 +167,42 @@ export const api = createApi({
       invalidatesTags: ["Mortgages"],
     }),
 
+    // Todo Transactions
+    getTodo: builder.query({
+      query: () => "/todo",
+      providesTags: ["Todo"],
+    }),
+
+    getTodoById: builder.query({
+      query: (id) => `/todo/${id}`,
+      providesTags: ["TodoById"],
+    }),
+
+    addTodo: builder.mutation({
+      query: (input) => ({
+        url: "/todo",
+        method: "POST",
+        body: input,
+      }),
+      invalidatesTags: ["Todo"],
+    }),
+
+    updateTodo: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/todo/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Todo"],
+    }),
+
+    deleteTodo: builder.mutation({
+      query: (id) => ({
+        url: `/todo/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Todo"],
+    }),
 
   }),
 });
@@ -186,4 +225,9 @@ export const {
   useAddMortgagesMutation,
   useUpdateMortgagesMutation,
   useDeleteMortgagesMutation,
+  useGetTodoQuery,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+  useAddTodoMutation,
+  useGetTodoByIdQuery,
 } = api;

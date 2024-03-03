@@ -25,8 +25,8 @@ import {
 import StatBox from "../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import TodoList from "./TodoList";
-import Modal from "./Modal";
+import TodoList from "./todos/TodoList";
+import Modal from "./todos/Modal";
 import { useGetTransactionQuery } from "../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
@@ -40,41 +40,6 @@ import {
 } from "../../utility";
 
 type Props = {};
-
-// const filterDetails = [
-//   {
-//     key: "user.firstName",
-//     value: "Fake",
-//     accumulator: {
-//       key: "financeStatement",
-//       value: "Income",
-//     },
-//   },
-//   {
-//     key: "estate",
-//     value: "506",
-//     accumulator: {
-//       key: "financeStatement",
-//       value: "Expense",
-//     },
-//   },
-//   {
-//     key: "estate",
-//     value: "619",
-//     accumulator: {
-//       key: "user.firstName",
-//       value: "Income",
-//     },
-//   },
-//   {
-//     key: "estate",
-//     value: "619",
-//     accumulator: {
-//       key: "financeStatement",
-//       value: "Expense",
-//     },
-//   },
-// ];
 
 const Balance = () => {
   const theme = useTheme();
