@@ -6,13 +6,13 @@ import { themeSettings } from "./theme";
 import LoginPage from "./scenes/login/index";
 import Home from "./scenes/home/index";
 import Layout from "./scenes/layout";
-import Balance from "./scenes/balance";
-import Transactions from "./scenes/transactions";
-import Overview from "./scenes/overview";
-import Operations from "./scenes/operations";
-import Mortgages from "./scenes/mortgages";
-import Performance from "./scenes/performance";
-import Dashboard from "./scenes/dashboard";
+import Balance from "./scenes/Finances/balance";
+import Transactions from "./scenes/Finances/transactions";
+import Overview from "./scenes/estates/overview";
+import Operations from "./scenes/estates/operations";
+import Mortgages from "./scenes/estates/mortgages";
+import Performance from "./scenes/estates/performance";
+import Dashboard from "./scenes/Finances/dashboard";
 
 
 function App() {

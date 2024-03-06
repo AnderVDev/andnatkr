@@ -1,7 +1,7 @@
 import FlexBetween from "./FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import ModalRealEstate from "../scenes/operations/Modal";
+import ModalRealEstate from "../scenes/estates/operations/Modal";
 import { useDeleteEstateMgmtMutation } from "../state/api";
 
 interface buttonsProps {
