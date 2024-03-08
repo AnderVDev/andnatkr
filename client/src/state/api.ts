@@ -31,6 +31,8 @@ export const api = createApi({
     "Register",
     "Todo",
     "TodoById",
+    "Goal",
+    "GoalById",
   ],
   endpoints: (builder) => ({
     // Authentication
@@ -204,6 +206,43 @@ export const api = createApi({
       invalidatesTags: ["Todo"],
     }),
 
+    //Goals Endpoints
+    getGoal: builder.query({
+      query: () => "/goal",
+      providesTags: ["Goal"],
+    }),
+
+    getGoalById: builder.query({
+      query: (id) => `/Goal/${id}`,
+      providesTags: ["GoalById"],
+    }),
+
+    addGoal: builder.mutation({
+      query: (input) => ({
+        url: "/goal",
+        method: "POST",
+        body: input,
+      }),
+      invalidatesTags: ["Goal"],
+    }),
+
+    updateGoal: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/goal/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Goal"],
+    }),
+
+    deleteGoal: builder.mutation({
+      query: (id) => ({
+        url: `/goal/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Goal"],
+    }),
+
   }),
 });
 
@@ -230,4 +269,9 @@ export const {
   useDeleteTodoMutation,
   useAddTodoMutation,
   useGetTodoByIdQuery,
+  useGetGoalQuery,
+  useUpdateGoalMutation,
+  useDeleteGoalMutation,
+  useAddGoalMutation,
+  useGetGoalByIdQuery,
 } = api;
