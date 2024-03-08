@@ -1,22 +1,10 @@
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Header from "../../../components/Header";
 import FlexBetween from "../../../components/FlexBetween";
 import {
-  AddCircleOutlineOutlined,
-  Email,
   PaidOutlined,
   SavingsOutlined,
   AccountBalanceWalletOutlined,
-  MonetizationOnOutlined,
-  ManOutlined,
-  AttachMoneyOutlined,
-  CurrencyExchangeOutlined,
   AccountBalanceOutlined,
   PaymentsOutlined,
   Person3Outlined,
@@ -24,22 +12,19 @@ import {
 } from "@mui/icons-material";
 import StatBox from "../../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
 import TodoList from "./TodoList";
 import Modal from "./Modal";
 import { useGetTransactionQuery } from "../../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
 import {
-  filterByKey,
-  accumulatorByAmount,
   accumulatorByTotalAmount,
   accumulatorUserByCurrentMonth,
   accumulatorCurrentMonthByStatement,
   accumulatorPreviousMonthByStatement,
 } from "../../../utility";
 
-type Props = {};
+// type Props = {};
 
 const Balance = () => {
   const theme = useTheme();
