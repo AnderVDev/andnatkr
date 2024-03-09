@@ -1,7 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import CircularProgressWithLabel from "../../../components/CircularProgress";
-import { useState } from "react";
 import { flatten } from "flat";
 import numeral from "numeral";
 import Header from "../../../components/Header";
@@ -16,14 +15,17 @@ import {
   PermIdentityOutlined,
   Person3Outlined,
   SavingsOutlined,
+
 } from "@mui/icons-material";
-import ActionButtons from "../transactions/ActionButtons";
+import ActionButtons from "./ActionButtons";
+import { useGetGoalQuery } from "../../../state/api";
+
 // type Props = {}
 
 const Dashboard = (props: Props) => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data, isLoading } = useState({});
+  const { data, isLoading } = useGetGoalQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
   const columns: GridColDef[] = [
@@ -53,7 +55,7 @@ const Dashboard = (props: Props) => {
       field: "progress",
       headerName: "Progress",
       flex: 0.4,
-      renderCell: (params) => <CircularProgressWithLabel value={70} />,
+      renderCell: (params) => <CircularProgressWithLabel value={(params.row.current/params.row.target) * 100} />,
     },
     {
       field: "actions",
@@ -114,7 +116,6 @@ const Dashboard = (props: Props) => {
         />
 
         {/* ROW 2 */}
-        
 
         {/* Row3 */}
         <Box
@@ -158,7 +159,7 @@ const Dashboard = (props: Props) => {
                 variant="h6"
                 sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
               >
-                Todo List
+                Goals List
               </Typography>
               <Modal />
             </FlexBetween>

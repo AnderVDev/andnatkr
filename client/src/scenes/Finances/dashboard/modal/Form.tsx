@@ -11,40 +11,27 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { unflatten } from "flat";
 import {
-  useAddTransactionMutation,
-  useUpdateTransactionMutation,
+  useAddGoalMutation,
+  useUpdateGoalMutation,
 } from "../../../../state/api";
 import { useSelector } from "react-redux";
-import {
-  months,
-  currentMonth,
-  currentYear,
-  financeStatementsData,
-  details,
-  years,
-} from "../../../../dataUtil";
+import numeral from "numeral";
+
 // Input Validations
 const newInputSchema = yup.object().shape({
   user: yup.string().required("User is required"), // user id
-  financeStatement: yup.string().required("Finance Statement is required"),
-  amount: yup
+  objective: yup.string().required("Objective description is required"),
+  target: yup
     .number()
-    .required("Amount is required")
-    .positive("Amount must be positive"),
-  month: yup.string().required("Month is required"),
-  year: yup
-    .number()
-    .required("Year is required")
-    .positive("Year must be positive"),
-  detail: yup.string().nullable(),
-  comments: yup.string().nullable(),
+    .required("target value is required")
+    .positive("target value must be positive"),
 });
 
 const Form = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();
   const isUpdateType = modalType === "update";
-  const [addInput] = useAddTransactionMutation();
-  const [updateInput] = useUpdateTransactionMutation();
+  const [addGoal, { isLoading, isError }] = useAddGoalMutation();
+  const [updateInput] = useUpdateGoalMutation();
   const [pageType, setPageType] = useState("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const persisted = useSelector((state) => state.persisted);
@@ -54,36 +41,36 @@ const Form = ({ onClosed, modalType, row }) => {
   // Initial Values
   const initialValues = {
     user: isUpdateType ? row["user.id"] : id,
-    financeStatement: isUpdateType ? row["financeStatement"] : "",
-    amount: isUpdateType ? row["amount"] : "",
-    month: isUpdateType ? row["month"] : currentMonth,
-    year: isUpdateType ? row["year"] : currentYear,
-    detail: isUpdateType ? row["detail"] : "",
-    comments: isUpdateType ? row["comments"] : "",
+    objective: isUpdateType ? row["objective"] : "",
+    target: isUpdateType ? row["target"] : "",
+    current: "",
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    if (pageType === "newInput") await newInput(values, onSubmitProps);
+    await newInput(values, onSubmitProps);
   };
 
   const newInput = async (values, onSubmitProps) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      if (value === "user") {
-        formData.append("user.id", values[value]);
-      } else {
-        formData.append(value, values[value]);
-      }
-    }
+    formData.append("user.id", id);
+    formData.append("objective", values["objective"]);
+    formData.append("target", values["target"]);
+    formData.append(
+      "current",
+      isUpdateType
+        ? numeral(row["current"]).value() + numeral(values["current"]).value()
+        : "0"
+    );
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    isUpdateType
+    const response = isUpdateType
       ? updateInput({ id: row["id"], data: jsonData })
-      : addInput(jsonData);
-
+      : await addGoal(jsonData);
+    const isAdded = !isError && !isLoading;
+    onSubmitProps.resetForm();
     onClosed();
   };
 
@@ -110,7 +97,7 @@ const Form = ({ onClosed, modalType, row }) => {
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
-            {pageType === "newInput" && (
+            {!isUpdateType ? (
               <>
                 <TextField
                   label="User"
@@ -120,138 +107,49 @@ const Form = ({ onClosed, modalType, row }) => {
                   name="user"
                   error={Boolean(touched.user) && Boolean(errors.user)}
                   helperText={touched.user && errors.user}
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 12" }}
                   InputProps={{
                     readOnly: true,
                   }}
                 />
 
                 <TextField
-                  label="Statement"
+                  label="Objective"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.financeStatement}
-                  name="financeStatement"
+                  value={values.objective}
+                  name="objective"
+                  rows={4}
                   error={
-                    Boolean(touched.financeStatement) &&
-                    Boolean(errors.financeStatement)
+                    Boolean(touched.objective) && Boolean(errors.objective)
                   }
-                  helperText={
-                    touched.financeStatement && errors.financeStatement
-                  }
-                  sx={{ gridColumn: "span 2" }}
-                  select
-                >
-                  {financeStatementsData.map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                <TextField
-                  label="Detail"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.detail}
-                  name="detail"
-                  error={Boolean(touched.detail) && Boolean(errors.detail)}
-                  helperText={touched.detail && errors.detail}
-                  sx={{ gridColumn: "span 2" }}
-                  select
-                  disabled={!values.financeStatement}
-                  SelectProps={{
-                    displayEmpty: true,
-                    renderValue: (value) => value || "",
-                  }}
-                >
-                  {values.financeStatement ? (
-                    details[values.financeStatement].map((value) => (
-                      <MenuItem key={value} value={value}>
-                        {value}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem />
-                  )}
-                </TextField>
-
-                <TextField
-                  label="Amount"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.amount}
-                  name="amount"
-                  error={Boolean(touched.amount) && Boolean(errors.amount)}
-                  helperText={touched.amount && errors.amount}
-                  sx={{ gridColumn: "span 4" }}
+                  helperText={touched.objective && errors.objective}
+                  sx={{ gridColumn: "span 12" }}
+                  multiline
                 />
 
                 <TextField
-                  label="Month"
+                  label="Target"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.month}
-                  name="month"
-                  error={Boolean(touched.month) && Boolean(errors.month)}
-                  helperText={touched.month && errors.month}
-                  select
-                  sx={{ gridColumn: "span 2" }}
-                >
-                  {months.map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                <TextField
-                  label="Year"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.year}
-                  name="year"
-                  error={Boolean(touched.year) && Boolean(errors.year)}
-                  helperText={touched.year && errors.year}
-                  sx={{ gridColumn: "span 2" }}
-                  // select
-                >
-                  {years.map((value) => (
-                    <MenuItem key={value} value={value}>
-                      {value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                {/* <TextField
-                  label="Year"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.year}
-                  name="year"
-                  error={Boolean(touched.year) && Boolean(errors.year)}
-                  helperText={touched.year && errors.year}
-                  sx={{ gridColumn: "span 2" }}
-                  select
-                >
-                  {years.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-                </TextField> */}
-
-                <TextField
-                  label="Comments"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.comments}
-                  name="comments"
-                  error={Boolean(touched.comments) && Boolean(errors.comments)}
-                  helperText={touched.comments && errors.comments}
-                  sx={{ gridColumn: "span 4" }}
+                  value={values.target}
+                  name="target"
+                  error={Boolean(touched.target) && Boolean(errors.target)}
+                  helperText={touched.target && errors.target}
+                  sx={{ gridColumn: "span 12" }}
                 />
               </>
+            ) : (
+              <TextField
+                label="Add Money"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.current}
+                name="current"
+                error={Boolean(touched.current) && Boolean(errors.current)}
+                helperText={touched.current && errors.current}
+                sx={{ gridColumn: "span 12" }}
+              />
             )}
           </Box>
           {/* BUTTONS */}

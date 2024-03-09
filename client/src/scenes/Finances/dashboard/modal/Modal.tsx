@@ -1,19 +1,26 @@
-import {useState} from "react";
+import { useState } from "react";
 import {
   styled,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
-  Typography,
+  Theme,
 } from "@mui/material";
-import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+import {
+  CloseOutlined,
+  AddCircleOutlineOutlined,
+  SettingsOutlined,
+  AddCardOutlined,
+} from "@mui/icons-material";
 import Form from "./Form";
 
+interface ModalProps {
+  modalType: string;
+  row: unknown;
+}
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -22,10 +29,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-type Props = {};
-
-const Modal = () => {
-  const[open, setOpen] = useState(false);
+const Modal = ({ modalType, row }: ModalProps) => {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,7 +42,11 @@ const Modal = () => {
   return (
     <>
       <IconButton onClick={handleClickOpen}>
-        <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        {modalType === "update" ? (
+          <AddCardOutlined sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <AddCircleOutlineOutlined sx={{ fontSize: "1.5rem" }} />
+        )}
       </IconButton>
       <BootstrapDialog
         onClose={handleClose}
@@ -45,7 +54,7 @@ const Modal = () => {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Add new task
+          {modalType === "update" ? "Update" : "New"}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -60,7 +69,12 @@ const Modal = () => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-            <Form />
+          <Form
+            onClosed={handleClose}
+            modalType={modalType}
+            row={row}
+          />
+          
         </DialogContent>
       </BootstrapDialog>
     </>
