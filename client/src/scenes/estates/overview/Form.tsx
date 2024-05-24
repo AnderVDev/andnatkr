@@ -93,7 +93,6 @@ const Form = () => {
               helperText={touched.description && errors.description}
               sx={{ gridColumn: "span 12" }}
               multiline
-              rows={4}
             />
           </Box>
           <Divider />

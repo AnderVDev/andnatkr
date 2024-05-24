@@ -39,7 +39,7 @@ const Form = () => {
     lastName: "",
     email: "",
     password: "",
-    // picture: "",
+    picture: "",
   };
 
   const schema = isLogin
@@ -52,16 +52,23 @@ const Form = () => {
         lastName: yup.string().required("required"),
         email: yup.string().email("invalid email").required("required"),
         password: yup.string().required("required"),
-        // picture: yup.string().required("required"),
+        picture: yup.string().required("required"),
       });
 
   const register = async (values, onSubmitProps) => {
     const formData = new FormData();
 
     for (const value in values) {
-      formData.append(value, values[value]);
+      if (value === 'picture') {
+        formData.append('avatar', values[value].name);
+      } else {
+        formData.append(value, values[value]);
+      }
     }
-    // formData.append("picturePath", values.picture.name);
+    // for (const value in values) {
+    //   formData.append(value, values[value]);
+    // }
+    // formData.append("avatar", values['picture']);
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
@@ -157,7 +164,7 @@ const Form = () => {
                   sx={{ gridColumn: "span 2" }}
                 />
 
-                {/* <Box
+                <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
@@ -190,7 +197,7 @@ const Form = () => {
                     )}
                   </Dropzone>
                 </Box>
-                 */}
+                
               </>
             )}
 

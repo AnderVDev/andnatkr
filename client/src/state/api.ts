@@ -4,14 +4,20 @@ import { setCredentials, setLogout } from ".";
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/api/v1",
   // credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers, { getState, endpoint }) => {
     const { persisted } = getState();
+
+    // Check if the request method is one of the authentication methods
+    const isAuthEndpoint = endpoint.includes("/auth/");
+
+    //Set authorization header
     headers.set(
       "Authorization",
-      persisted && persisted.access_token
+      !isAuthEndpoint && persisted && persisted.access_token
         ? `Bearer ${persisted.access_token}`
         : ""
     );
+
     headers.set("Content-Type", "application/json");
     return headers;
   },
@@ -242,7 +248,6 @@ export const api = createApi({
       }),
       invalidatesTags: ["Goal"],
     }),
-
   }),
 });
 

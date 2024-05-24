@@ -94,7 +94,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <Box
                 component="img"
                 alt="profile"
-                // src={profileImage}
+                // src={`http://localhost:5173/client/src/assets/${user ? avatar:"#" }`}
                 src="#"
                 height="32px"
                 width="32px"
