@@ -27,6 +27,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../state/api";
+import avatar1 from "../assets/avatar1.jpg"
+import avatar2 from "../assets/avatar2.jpg"
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -35,7 +37,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [logout, isLoading] = useLogoutMutation();
   const persisted = useSelector((state) => state.persisted);
   const { user } = persisted;
-  const { firstName, lastName, role } = user || {};
+  const { firstName, lastName, role, avatar } = user || {};
+  const selectedAvatar = avatar;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
@@ -94,8 +97,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <Box
                 component="img"
                 alt="profile"
-                // src={`http://localhost:5173/client/src/assets/${user ? avatar:"#" }`}
-                src="#"
+                // src={`http://localhost:5173/client/src/assets/${avatar}`}
+                src={avatar1}
                 height="32px"
                 width="32px"
                 borderRadius="50%"

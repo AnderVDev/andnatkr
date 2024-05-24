@@ -59,8 +59,8 @@ const Form = () => {
     const formData = new FormData();
 
     for (const value in values) {
-      if (value === 'picture') {
-        formData.append('avatar', values[value].name);
+      if (value === "picture") {
+        formData.append("avatar", values[value].name);
       } else {
         formData.append(value, values[value]);
       }
@@ -197,7 +197,6 @@ const Form = () => {
                     )}
                   </Dropzone>
                 </Box>
-                
               </>
             )}
 
