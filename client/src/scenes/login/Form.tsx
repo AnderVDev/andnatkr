@@ -23,7 +23,7 @@ const Form = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  const [newLogin, { isLoading, isError, isSuccess, data }] =
+  const [newLogin, { isLoading: isLoidingLogin, isError: isErrorLogin }] =
     useLoginMutation();
   const [
     newRegister,
@@ -44,15 +44,15 @@ const Form = () => {
 
   const schema = isLogin
     ? yup.object().shape({
-        email: yup.string().email("invalid email").required("required"),
-        password: yup.string().required("required"),
+        email: yup.string().email("invalid email").required("Required"),
+        password: yup.string().required("Required"),
       })
     : yup.object().shape({
-        firstName: yup.string().required("required"),
-        lastName: yup.string().required("required"),
-        email: yup.string().email("invalid email").required("required"),
-        password: yup.string().required("required"),
-        picture: yup.string().required("required"),
+        firstName: yup.string().required("Required"),
+        lastName: yup.string().required("Required"),
+        email: yup.string().email("invalid email").required("Required"),
+        password: yup.string().required("Required"),
+        picture: yup.mixed().required("Required"),
       });
 
   const register = async (values, onSubmitProps) => {
@@ -65,19 +65,15 @@ const Form = () => {
         formData.append(value, values[value]);
       }
     }
-    // for (const value in values) {
-    //   formData.append(value, values[value]);
-    // }
-    // formData.append("avatar", values['picture']);
-
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     const response = await newRegister(jsonData);
-    const isAuthenticated = !isErrorRegister && !isLoadingRegister;
+    // const isRegistered = !isErrorRegister && !isLoadingRegister;
+    const isRegistered = response && !response.error;
 
     onSubmitProps.resetForm();
-    if (isAuthenticated) {
+    if (isRegistered) {
       setIsLogin(true);
     }
   };
@@ -88,25 +84,19 @@ const Form = () => {
     formData.append("email", values["email"]);
     formData.append("password", values["password"]);
 
-    // for (const value in values) {
-    //   formData.append(value, values[value]);
-    // }
-
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     const response = await newLogin(jsonData);
-    const isAuthenticated = !isError && !isLoading;
+    const isSuccess = response && !response.error;
 
     onSubmitProps.resetForm();
-    if (isAuthenticated) {
+    if (isSuccess) {
       navigate("/balance");
     }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    // if (isLogin) await authenticate(values, onSubmitProps);
-    // if (!isLogin) await register(values, onSubmitProps);
     isLogin
       ? await authenticate(values, onSubmitProps)
       : await register(values, onSubmitProps);
@@ -116,9 +106,7 @@ const Form = () => {
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValues}
-      // initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
       validationSchema={schema}
-      // validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
         values,
