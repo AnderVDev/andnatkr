@@ -19,8 +19,6 @@ export const months = [
 export const currentMonth = months[numberCurrentMonth];
 export const previousMonth = numberCurrentMonth != 0 ? months[numberCurrentMonth -1] : months[11];
 export const previousYear = numberCurrentMonth != 0 ? currentYear : currentYear - 1;
-// export const testPreviousMonth = false ? months[numberCurrentMonth -1] : months[11];
-// export const testPreviousYear = false? currentYear : currentYear - 1;
 
 export const details = {
   Income: ["Salary", "Other"],

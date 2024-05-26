@@ -1,32 +1,26 @@
-import {
-  Box,
-  IconButton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Header from "../../../components/Header";
 import FlexBetween from "../../../components/FlexBetween";
 import {
-  AddCircleOutlineOutlined,
   ApartmentOutlined,
   PaidOutlined,
   SavingsOutlined,
   AccountBalanceWalletOutlined,
   MonetizationOnOutlined,
-  ManOutlined,
-  Person3Outlined,
-  PermIdentityOutlined,
 } from "@mui/icons-material";
 import StatBox from "../../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
 import TodoList from "./TodoList";
 import Modal from "./Modal";
-import { useGetEstateMgmtQuery } from "../../../state/api";
+import { useGetEstateMgmtQuery, useGetEstateQuery } from "../../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
-import { accumulatorByAmount } from "../../../utility";
+import {
+  accumulatorByAmount,
+  dataByDeptNumber,
+  filterByKey,
+  leaseByDeptNumber,
+} from "../../../utility";
 import { chileanIndex } from "../../../state/publicApi";
 
 const filterDetails = [
@@ -67,20 +61,33 @@ const filterDetails = [
 const Overview = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const { data: dataEstate, isLoading: isLoadingEstate } = useGetEstateQuery(
+    {}
+  );
   const { data, isLoading } = useGetEstateMgmtQuery({});
+  const flattenedDataEstate = dataEstate
+    ? dataEstate.map((item: JSON) => flatten(item))
+    : [];
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
+  const bigDepto = dataByDeptNumber(flattenedDataEstate, 506);
+  const smallDepto = dataByDeptNumber(flattenedDataEstate, 619);
+  const { exchangeData } = chileanIndex();
+
+  const currentUfValue = exchangeData?.uf.valor;
+
+  const currentBigUfLease = bigDepto
+    ? bigDepto.leasing_price / currentUfValue
+    : 0;
+  const currentSmallUfLease = smallDepto
+    ? smallDepto.leasing_price / currentUfValue
+    : 0;
+    console.log({currentUfValue})
   const incomeSum = accumulatorByAmount(flattenedData, filterDetails[0]);
   const expenseSum = accumulatorByAmount(flattenedData, filterDetails[1]);
 
   const incomeSumSmall = accumulatorByAmount(flattenedData, filterDetails[2]);
   const expenseSumSmall = accumulatorByAmount(flattenedData, filterDetails[3]);
-
-  const { exchangeData, loading } = chileanIndex();
-
-  const currentUfValue= exchangeData?.uf.valor
-
-  const currentUfLease = 500000/ currentUfValue;
 
   const columns: GridColDef[] = [
     {
@@ -158,9 +165,11 @@ const Overview = () => {
         <StatBox
           span="2"
           title="Current Leasing"
-          value="500,000 "
+          value={numeral(bigDepto ? bigDepto.leasing_price : 1).format(
+            "0,0"
+          )}
           increase="506"
-          description={`${numeral(currentUfLease).format("0,0.00")} UF`}
+          description={`${numeral(currentBigUfLease).format("0,0.00")} UF`}
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
 
@@ -175,9 +184,11 @@ const Overview = () => {
         <StatBox
           span="2"
           title="Current Leasing"
-          value="350,000 "
+          value={numeral(smallDepto ? smallDepto.leasing_price : 1).format(
+            "0,0"
+          )}
           increase="619"
-          description={`${numeral(currentUfLease).format("0,0.00")} UF`}
+          description={`${numeral(currentSmallUfLease).format("0,0.00")} UF`}
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
         />
 

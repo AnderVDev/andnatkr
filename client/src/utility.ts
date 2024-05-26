@@ -67,3 +67,12 @@ export const accumulatorPreviousMonthByStatement = (data, value) => {
     : [];
   return accumulatorByTotalBalance(filteredData);
 };
+
+export const leaseByDeptNumber = (data, deptNumber) => {
+  const element = data.find(item => item.dep_number === deptNumber);
+  return element ? element.leasing_price : null ;
+};
+export const dataByDeptNumber = (data, deptNumber) => {
+  const element = data.find(item => item.dep_number === deptNumber);
+  return element ? element : null ;
+};

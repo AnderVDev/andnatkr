@@ -1,22 +1,33 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCredentials, setLogout } from ".";
+import { setCredentials } from ".";
+
+interface RootState {
+  persisted: {
+    access_token: string;
+    // Add other properties if needed
+  };
+  // Add other slices of your state if needed
+}
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/api/v1",
-  // credentials: 'include',
   prepareHeaders: (headers, { getState, endpoint }) => {
-    const { persisted } = getState();
+    const { persisted } = getState() as RootState;
 
     // Check if the request method is one of the authentication methods
-    const isAuthEndpoint = endpoint.includes("/auth/");
+    const isAuthEndpoint = endpoint == "register" || endpoint == "login" ;
+    const isNotAuthEndpoint = !isAuthEndpoint && persisted && persisted.access_token
 
     //Set authorization header
-    headers.set(
-      "Authorization",
-      !isAuthEndpoint && persisted && persisted.access_token
-        ? `Bearer ${persisted.access_token}`
-        : ""
-    );
+    if(isNotAuthEndpoint){
+      headers.set("Authorization", `Bearer ${persisted.access_token}`);
+    }
+    // headers.set(
+    //   "Authorization",
+    //   !isAuthEndpoint && persisted && persisted.access_token
+    //     ? `Bearer ${persisted.access_token}`
+    //     : ""
+    // );
 
     headers.set("Content-Type", "application/json");
     return headers;
@@ -30,11 +41,10 @@ export const api = createApi({
     "User",
     "Transaction",
     "TransactionById",
+    "Estates",
     "EstateMgmt",
     "Mortgages",
-    "Credentials",
     "EstateMgmtById",
-    "Register",
     "Todo",
     "TodoById",
     "Goal",
@@ -48,7 +58,7 @@ export const api = createApi({
         method: "POST",
         body: credentials,
       }),
-      providesTags: ["Register"],
+
     }),
     login: builder.mutation({
       query: (credentials) => ({
@@ -61,7 +71,6 @@ export const api = createApi({
         const { user, access_token, refresh_token } = response.data;
         dispatch(setCredentials({ user, access_token, refresh_token }));
       },
-      providesTags: ["Credentials"],
     }),
     logout: builder.mutation({
       query: () => ({
@@ -105,6 +114,12 @@ export const api = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["Transaction"],
+    }),
+
+    // Estates
+    getEstate: builder.query({
+      query: () => "/estates",
+      providesTags: ["Estates"],
     }),
 
     // Estate Management
@@ -260,6 +275,7 @@ export const {
   useDeleteTransactionMutation,
   useAddTransactionMutation,
   useGetTransactionByIdQuery,
+  useGetEstateQuery,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,
   useDeleteEstateMgmtMutation,

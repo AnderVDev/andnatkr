@@ -19,9 +19,10 @@ public class Estate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer dep_number;
+    private Double leasing_price;
     private String description;
     private String address;
-    private String comments;
+    private List<String> comments;
 
     @OneToMany(mappedBy = "estate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EstateMgmt> estateMgmtList;

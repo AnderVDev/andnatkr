@@ -77,22 +77,22 @@ const Balance = () => {
 
   const userIncomeByCurrentMonth = accumulatorUserByCurrentMonth(
     flattenedData,
-    "Fake"
+    "Avatar"
   );
   const user2IncomeByCurrentMonth = accumulatorUserByCurrentMonth(
     flattenedData,
-    "Test"
+    "Fake"
   );
 
   // Percentages data
 
-  const incomesPercentage =
+  const incomesPercentage = incomesByPreviousMonth > 0 ? 
     ((incomesByCurrentMonth - incomesByPreviousMonth) * 100) /
-    incomesByPreviousMonth;
+    incomesByPreviousMonth : 100;
 
-  const expensesPercentage =
+  const expensesPercentage = expensesByPreviousMonth > 0 ?
     ((expensesByCurrentMonth - expensesByPreviousMonth) * 100) /
-    expensesByPreviousMonth;
+    expensesByPreviousMonth : 100;
 
   const columns: GridColDef[] = [
     {
@@ -156,7 +156,7 @@ const Balance = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          span="3"
+          span="2"
           title="Total Balance"
           value={numeral(totalBalance).format("0,0.00")}
           increase=""
@@ -164,7 +164,7 @@ const Balance = () => {
           icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
+          span="2"
           title="Total Savings"
           value={numeral(totalSavings).format("0,0.00")}
           increase=""
@@ -172,7 +172,7 @@ const Balance = () => {
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
+          span="2"
           title="Total Incomes"
           value={numeral(totalIncomes).format("0,0.00")}
           increase=""
@@ -180,7 +180,7 @@ const Balance = () => {
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
+          span="2"
           title="Total Expenses"
           value={numeral(totalExpenses).format("0,0.00")}
           increase=""
