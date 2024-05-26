@@ -156,7 +156,7 @@ const Balance = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          span="2"
+          span="3"
           title="Total Balance"
           value={numeral(totalBalance).format("0,0.00")}
           increase=""
@@ -164,7 +164,7 @@ const Balance = () => {
           icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="2"
+          span="3"
           title="Total Savings"
           value={numeral(totalSavings).format("0,0.00")}
           increase=""
@@ -172,7 +172,7 @@ const Balance = () => {
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="2"
+          span="3"
           title="Total Incomes"
           value={numeral(totalIncomes).format("0,0.00")}
           increase=""
@@ -180,7 +180,7 @@ const Balance = () => {
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="2"
+          span="3"
           title="Total Expenses"
           value={numeral(totalExpenses).format("0,0.00")}
           increase=""

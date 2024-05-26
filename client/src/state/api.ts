@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from ".";
 
+// Define a type for your Redux state
 interface RootState {
   persisted: {
     access_token: string;
-    // Add other properties if needed
   };
-  // Add other slices of your state if needed
 }
 
 const baseQuery = fetchBaseQuery({
@@ -22,13 +21,6 @@ const baseQuery = fetchBaseQuery({
     if(isNotAuthEndpoint){
       headers.set("Authorization", `Bearer ${persisted.access_token}`);
     }
-    // headers.set(
-    //   "Authorization",
-    //   !isAuthEndpoint && persisted && persisted.access_token
-    //     ? `Bearer ${persisted.access_token}`
-    //     : ""
-    // );
-
     headers.set("Content-Type", "application/json");
     return headers;
   },

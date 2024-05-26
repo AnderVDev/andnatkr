@@ -1,4 +1,5 @@
-import { Theme, TypeBackground, Palette } from "@mui/material";
+import { Theme, TypeBackground, Palette, PaletteMode } from "@mui/material";
+import createPalette, { PaletteOptions } from "@mui/material/styles/createPalette";
 
 interface CustomTheme extends Theme {
   palette: Palette & {
@@ -7,10 +8,12 @@ interface CustomTheme extends Theme {
       main: string;
       light: string;
       mediumMain?: string;
+      medium: string;
     };
   };
 }
 
+// Define a custom interface extending TypeBackground
 interface CustomTypeBackground extends TypeBackground {
   alt: string;
 }
@@ -47,10 +50,13 @@ export const colorTokens = {
 };
 
 // mui theme settings
-export const themeSettings = (mode: string): CustomTheme => {
+export const themeSettings = (mode: PaletteMode): CustomTheme => {
+  const paletteOptions: PaletteOptions = {
+    mode: mode,
+  };
   return {
     palette: {
-      mode: mode,
+      ...createPalette(paletteOptions), // Use MUI's createPalette to create a Palette object
       ...(mode === "dark"
         ? {
             // palette values for dark mode
@@ -58,6 +64,7 @@ export const themeSettings = (mode: string): CustomTheme => {
               dark: colorTokens.primary[200],
               main: colorTokens.primary[500],
               light: colorTokens.primary[800],
+              contrastText: '#FFFFFF', // Example contrastText
             },
             neutral: {
               dark: colorTokens.grey[100],
@@ -66,10 +73,6 @@ export const themeSettings = (mode: string): CustomTheme => {
               medium: colorTokens.grey[400],
               light: colorTokens.grey[700],
             },
-            background: {
-              default: colorTokens.grey[900],
-              alt: colorTokens.grey[800],
-            } as CustomTypeBackground,
           }
         : {
             // palette values for light mode
@@ -77,6 +80,7 @@ export const themeSettings = (mode: string): CustomTheme => {
               dark: colorTokens.primary[700],
               main: colorTokens.primary[500],
               light: colorTokens.primary[50],
+              contrastText: '#FFFFFF', // Example contrastText
             },
             neutral: {
               dark: colorTokens.grey[700],
@@ -85,11 +89,11 @@ export const themeSettings = (mode: string): CustomTheme => {
               medium: colorTokens.grey[300],
               light: colorTokens.grey[50],
             },
-            background: {
-              default: colorTokens.grey[10],
-              alt: colorTokens.grey[0],
-            } as CustomTypeBackground,
           }),
+      background: {
+        default: mode === "dark" ? colorTokens.grey[900] : colorTokens.grey[10],
+        alt: mode === "dark" ? colorTokens.grey[800] : colorTokens.grey[0],
+      } as CustomTypeBackground,
     },
     typography: {
       fontFamily: ["Rubik", "sans-serif"].join(","),

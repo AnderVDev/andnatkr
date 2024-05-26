@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+// import { useMemo } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
@@ -14,10 +14,10 @@ import Mortgages from "./scenes/estates/mortgages";
 import Performance from "./scenes/estates/performance";
 import Dashboard from "./scenes/Finances/dashboard";
 
-
 function App() {
-  const mode = "dark";
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  // const mode = "dark";
+  // const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = createTheme(themeSettings("dark"));
 
   return (
     <div className="app">
