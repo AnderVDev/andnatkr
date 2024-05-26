@@ -1,7 +1,12 @@
 import { Theme, TypeBackground, Palette, PaletteMode } from "@mui/material";
-import createPalette, { PaletteOptions } from "@mui/material/styles/createPalette";
+import createPalette, {
+  PaletteOptions,
+} from "@mui/material/styles/createPalette";
 
-interface CustomTheme extends Theme {
+interface CustomTypeBackground extends TypeBackground {
+  alt: string;
+}
+export interface CustomTheme extends Theme {
   palette: Palette & {
     neutral: {
       dark: string;
@@ -10,12 +15,8 @@ interface CustomTheme extends Theme {
       mediumMain?: string;
       medium: string;
     };
+    background: CustomTypeBackground; // Use CustomTypeBackground here
   };
-}
-
-// Define a custom interface extending TypeBackground
-interface CustomTypeBackground extends TypeBackground {
-  alt: string;
 }
 
 // color design tokens export
@@ -64,7 +65,7 @@ export const themeSettings = (mode: PaletteMode): CustomTheme => {
               dark: colorTokens.primary[200],
               main: colorTokens.primary[500],
               light: colorTokens.primary[800],
-              contrastText: '#FFFFFF', // Example contrastText
+              contrastText: "#FFFFFF", // Example contrastText
             },
             neutral: {
               dark: colorTokens.grey[100],
@@ -80,7 +81,7 @@ export const themeSettings = (mode: PaletteMode): CustomTheme => {
               dark: colorTokens.primary[700],
               main: colorTokens.primary[500],
               light: colorTokens.primary[50],
-              contrastText: '#FFFFFF', // Example contrastText
+              contrastText: "#FFFFFF", // Example contrastText
             },
             neutral: {
               dark: colorTokens.grey[700],
@@ -122,6 +123,19 @@ export const themeSettings = (mode: PaletteMode): CustomTheme => {
         fontFamily: ["Rubik", "sans-serif"].join(","),
         fontSize: 14,
       },
+      // subtitle1: {},
+      // subtitle2: {},
+      // body1: {},
+      // body2: {},
+      // caption: {},
+      // button: {},
+      // overline: {},
+      // fontWeightLight: undefined,
+      // fontWeightRegular: undefined,
+      // fontWeightMedium: undefined,
+      // fontWeightBold: undefined,
+      // htmlFontSize: 0,
+      // pxToRem: (px: number) => `${px / 16}rem`
     },
   };
 };

@@ -9,21 +9,18 @@ import Modal from "./modal/Modal";
 import StatBox from "../../../components/StatBox";
 import {
   AccountBalanceOutlined,
-  AccountBalanceWalletOutlined,
   PaidOutlined,
   PaymentsOutlined,
-  PermIdentityOutlined,
-  Person3Outlined,
   SavingsOutlined,
 
 } from "@mui/icons-material";
 import ActionButtons from "./ActionButtons";
 import { useGetGoalQuery } from "../../../state/api";
-
+import { CustomTheme } from "../../../theme";
 // type Props = {}
 
-const Dashboard = (props: Props) => {
-  const theme = useTheme();
+const Dashboard = () => {
+  const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetGoalQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
@@ -144,7 +141,7 @@ const Dashboard = (props: Props) => {
               borderTop: "none",
             },
             "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.neutral[200]} !important`,
+              color: `${theme.palette.neutral.main} !important`,
             },
           }}
         >
@@ -157,7 +154,7 @@ const Dashboard = (props: Props) => {
             <FlexBetween>
               <Typography
                 variant="h6"
-                sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
+                sx={{ ml: "1rem" }}
               >
                 Goals List
               </Typography>

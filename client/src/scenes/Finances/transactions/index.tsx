@@ -7,9 +7,9 @@ import FlexBetween from "../../../components/FlexBetween";
 import { useGetTransactionQuery } from "../../../state/api";
 import ActionButtons from "./ActionButtons";
 import numeral from "numeral";
-
+import { CustomTheme } from "../../../theme";
 const Transactions = () => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];

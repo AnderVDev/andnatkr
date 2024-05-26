@@ -2,7 +2,7 @@ import FlexBetween from "../../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import Modal from "./modal/Modal";
-import { useDeleteGoalMutation, useUpdateGoalMutation } from "../../../state/api";
+import { useDeleteGoalMutation } from "../../../state/api";
 
 interface buttonsProps {
   modalType: string;

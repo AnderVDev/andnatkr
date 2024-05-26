@@ -3,7 +3,6 @@ import {
   Button,
   TextField,
   useMediaQuery,
-  Typography,
   useTheme,
   Divider,
 } from "@mui/material";
@@ -22,7 +21,7 @@ const todoSchema = yup.object().shape({
   description: yup.string().required("required"),
 });
 
-type Props = {};
+
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");

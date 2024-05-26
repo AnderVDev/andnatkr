@@ -23,11 +23,11 @@ import {
   accumulatorCurrentMonthByStatement,
   accumulatorPreviousMonthByStatement,
 } from "../../../utility";
+import { CustomTheme } from "../../../theme";
 
-// type Props = {};
 
 const Balance = () => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
@@ -259,7 +259,7 @@ const Balance = () => {
               borderTop: "none",
             },
             "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.neutral[200]} !important`,
+              color: `${theme.palette.neutral.main} !important`,
             },
           }}
         >
@@ -279,7 +279,7 @@ const Balance = () => {
           <FlexBetween>
             <Typography
               variant="h6"
-              sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
+              sx={{ ml: "1rem" }}
             >
               Todo List
             </Typography>

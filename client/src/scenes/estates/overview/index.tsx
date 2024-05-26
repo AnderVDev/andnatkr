@@ -22,6 +22,7 @@ import {
   leaseByDeptNumber,
 } from "../../../utility";
 import { chileanIndex } from "../../../state/publicApi";
+import { CustomTheme } from "../../../theme";
 
 const filterDetails = [
   {
@@ -59,7 +60,7 @@ const filterDetails = [
 ];
 
 const Overview = () => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data: dataEstate, isLoading: isLoadingEstate } = useGetEstateQuery(
     {}
@@ -255,7 +256,7 @@ const Overview = () => {
               borderTop: "none",
             },
             "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.neutral[200]} !important`,
+              color: `${theme.palette.neutral.main} !important`,
             },
           }}
         >
