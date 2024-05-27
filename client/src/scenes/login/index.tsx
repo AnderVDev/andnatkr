@@ -1,10 +1,10 @@
 import Form from "./Form.tsx";
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-
+import { CustomTheme } from "../../theme.ts";
 // type Props = {};
 
 const LoginPage = () => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   return (
     <Box>

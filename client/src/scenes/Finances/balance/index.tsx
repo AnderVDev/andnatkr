@@ -77,11 +77,11 @@ const Balance = () => {
 
   const userIncomeByCurrentMonth = accumulatorUserByCurrentMonth(
     flattenedData,
-    "Avatar"
+    "Anderson"
   );
   const user2IncomeByCurrentMonth = accumulatorUserByCurrentMonth(
     flattenedData,
-    "Fake"
+    "Ana"
   );
 
   // Percentages data

@@ -83,7 +83,7 @@ const Overview = () => {
   const currentSmallUfLease = smallDepto
     ? smallDepto.leasing_price / currentUfValue
     : 0;
-    console.log({currentUfValue})
+  
   const incomeSum = accumulatorByAmount(flattenedData, filterDetails[0]);
   const expenseSum = accumulatorByAmount(flattenedData, filterDetails[1]);
 

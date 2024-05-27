@@ -25,7 +25,7 @@ const TodoList = () => {
   const [updateTask] = useUpdateTodoMutation();
 
   const handleToggle = async (task) => {
-    console.log(task);
+  
     const updatedTask = { ...task, isChecked: !task.isChecked };
     updateTask({ id: task.id, data: updatedTask });
   };

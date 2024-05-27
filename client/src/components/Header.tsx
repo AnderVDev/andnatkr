@@ -1,9 +1,12 @@
 import { Typography, Box, useTheme } from "@mui/material";
+import { CustomTheme } from "../theme";
+interface Props {
+  title: string;
+  subtitle: string;
+}
 
-type Props = {};
-
-const Header = ({ title, subtitle }) => {
-  const theme = useTheme();
+const Header = ({ title, subtitle }: Props) => {
+  const theme = useTheme<CustomTheme>();
   return (
     <Box>
       <Typography

@@ -149,7 +149,6 @@ const Dashboard = () => {
             gridColumn="span 4"
             gridRow="span 3"
             borderRadius="0.55rem"
-            // sx={{ backgroundColor: theme.palette.background.alt }}
           >
             <FlexBetween>
               <Typography

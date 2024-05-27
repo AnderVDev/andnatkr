@@ -48,7 +48,6 @@ const Form = () => {
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
-    console.log(jsonData);
 
     const response = await addTodo(jsonData);
     const isAdded = !isError && !isLoading;

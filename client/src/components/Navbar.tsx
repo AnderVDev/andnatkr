@@ -1,17 +1,12 @@
-/* eslint-disable react/prop-types */
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import {
-  LightModeOutlined,
-  DarkModeOutlined,
   Menu as MenuIcon,
   Search,
-  SettingsOutlined,
-  ArrowDropDownOutlined,
   LogoutOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogout, setMode } from "../state";
+import { setLogout } from "../state";
 // import profileImage from "../assets/profile.jpeg";
 import {
   Toolbar,
@@ -21,18 +16,17 @@ import {
   InputBase,
   Box,
   Typography,
-  Menu,
-  MenuItem,
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../state/api";
 import avatar1 from "../assets/avatar1.jpg"
 import avatar2 from "../assets/avatar2.jpg"
+import { CustomTheme } from "../theme";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   const navigate = useNavigate();
   const [logout, isLoading] = useLogoutMutation();
   const persisted = useSelector((state) => state.persisted);
@@ -42,9 +36,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClick = (event: { currentTarget: SetStateAction<null>; }) => setAnchorEl(event.currentTarget);
   const handlelogout = async () => {
-    const response = await logout();
+    const response = await logout({});
     const isAuthenticated =
       !response.isError && !response.isLoading && response;
     setAnchorEl(null);
@@ -52,7 +46,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
       navigate("/");
       dispatch(setLogout());
     }
-    // console.log("logout");
   };
 
   return (
@@ -108,31 +101,20 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                 <Typography
                   fontWeight="bold"
                   fontSize="0.85rem"
-                  sx={{ color: theme.palette.secondary[100] }}
+                  // sx={{ color: theme.palette.secondary[100] }}
                 >
                   {user ? `${firstName} ${lastName}` : ""}
                   {/* Fake User */}
                 </Typography>
                 <Typography
                   fontSize="0.75rem"
-                  sx={{ color: theme.palette.secondary[200] }}
+                  // sx={{ color: theme.palette.secondary[200] }}
                 >
                   {user ? role : ""}
                   {/* Administrator */}
                 </Typography>
               </Box>
-              {/* <ArrowDropDownOutlined
-                sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
-              /> */}
             </Button>
-            {/* <Menu
-              anchorEl={anchorEl}
-              open={isOpen}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            >
-              <MenuItem oncClick={handleClose}>Log Out</MenuItem>
-            </Menu> */}
           </FlexBetween>
         </FlexBetween>
       </Toolbar>

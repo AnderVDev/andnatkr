@@ -1,13 +1,10 @@
 import {useState} from "react";
 import {
   styled,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
-  Typography,
 } from "@mui/material";
 import { CloseOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 import TodoForm from "./TodoForm";
@@ -21,8 +18,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
-
-type Props = {};
 
 const Modal = () => {
   const[open, setOpen] = useState(false);

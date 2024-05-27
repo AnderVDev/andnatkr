@@ -38,20 +38,6 @@ const newInputSchema = yup.object().shape({
 // Input data
 const estatesData = ["506", "619"];
 const financeStatementsData = ["Income", "Expense"];
-// const months = [
-//   "January",
-//   "February",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-//   "August",
-//   "September",
-//   "October",
-//   "November",
-//   "December",
-// ];
 
 const TransactionForm = ({ onClosed, modalType, row }) => {
   const { palette } = useTheme();

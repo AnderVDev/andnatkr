@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,

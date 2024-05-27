@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   Button,
@@ -15,12 +16,12 @@ import { useNavigate } from "react-router-dom";
 import { useLoginMutation, useRegisterMutation } from "../../state/api.ts";
 import FlexBetween from "../../components/FlexBetween.tsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
+import { CustomTheme } from "../../theme.ts";
 // type Props = {};
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const { palette } = useTheme();
+  const { palette } = useTheme<CustomTheme>();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [newLogin, { isLoading: isLoidingLogin, isError: isErrorLogin }] =
@@ -69,7 +70,6 @@ const Form = () => {
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     const response = await newRegister(jsonData);
-    // const isRegistered = !isErrorRegister && !isLoadingRegister;
     const isRegistered = response && !response.error;
 
     onSubmitProps.resetForm();
