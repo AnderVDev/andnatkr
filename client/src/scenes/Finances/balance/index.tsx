@@ -25,7 +25,6 @@ import {
 } from "../../../utility";
 import { CustomTheme } from "../../../theme";
 
-
 const Balance = () => {
   const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -86,13 +85,17 @@ const Balance = () => {
 
   // Percentages data
 
-  const incomesPercentage = incomesByPreviousMonth > 0 ? 
-    ((incomesByCurrentMonth - incomesByPreviousMonth) * 100) /
-    incomesByPreviousMonth : 100;
+  const incomesPercentage =
+    incomesByPreviousMonth > 0
+      ? ((incomesByCurrentMonth - incomesByPreviousMonth) * 100) /
+        incomesByPreviousMonth
+      : 100;
 
-  const expensesPercentage = expensesByPreviousMonth > 0 ?
-    ((expensesByCurrentMonth - expensesByPreviousMonth) * 100) /
-    expensesByPreviousMonth : 100;
+  const expensesPercentage =
+    expensesByPreviousMonth > 0
+      ? ((expensesByCurrentMonth - expensesByPreviousMonth) * 100) /
+        expensesByPreviousMonth
+      : 100;
 
   const columns: GridColDef[] = [
     {
@@ -264,6 +267,11 @@ const Balance = () => {
           }}
         >
           <DataGrid
+            initialState={{
+              sorting: {
+                sortModel: [{ field: "id", sort: "desc" }],
+              },
+            }}
             loading={isLoading || !data}
             getRowId={(row) => row.id}
             rows={flattenedData}
@@ -277,10 +285,7 @@ const Balance = () => {
           sx={{ backgroundColor: theme.palette.background.alt }}
         >
           <FlexBetween>
-            <Typography
-              variant="h6"
-              sx={{ ml: "1rem" }}
-            >
+            <Typography variant="h6" sx={{ ml: "1rem" }}>
               Todo List
             </Typography>
             <Modal />

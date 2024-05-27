@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FlexBetween from "../../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
@@ -6,7 +7,8 @@ import { useDeleteTransactionMutation } from "../../../state/api";
 
 interface buttonsProps {
   modalType: string;
-  row: { id: number };
+  row: any;
+  // row: { id: number };
 }
 
 const ActionButtons = ({ modalType, row }: buttonsProps) => {

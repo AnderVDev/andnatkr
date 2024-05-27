@@ -4,7 +4,6 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import LoginPage from "./scenes/login/index";
-import Home from "./scenes/home/index";
 import Layout from "./scenes/layout";
 import Balance from "./scenes/Finances/balance";
 import Transactions from "./scenes/Finances/transactions";
@@ -15,8 +14,6 @@ import Performance from "./scenes/estates/performance";
 import Dashboard from "./scenes/Finances/dashboard";
 
 function App() {
-  // const mode = "dark";
-  // const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const theme = createTheme(themeSettings("dark"));
 
   return (
@@ -29,7 +26,6 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/home" element={<Home />} />
               <Route path="/balance" element={<Balance />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/overview" element={<Overview />} />

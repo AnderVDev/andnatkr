@@ -1,8 +1,18 @@
-export const financeStatementsData = ["Income", "Expense"];
-export const years = ["2023", "2024","2025","2026","2027", "2028", "2029", "2030"];
-export const currentYear = new Date().getFullYear();
-export const numberCurrentMonth = new Date().getMonth();
-export const months = [
+export const financeStatementsData: string[] = ["Income", "Expense"];
+export const years: string[] = [
+  "2023",
+  "2024",
+  "2025",
+  "2026",
+  "2027",
+  "2028",
+  "2029",
+  "2030",
+];
+const currentDate: Date = new Date();
+export const currentYear: number = currentDate.getFullYear();
+export const numberCurrentMonth: number = currentDate.getMonth();
+export const months: string[] = [
   "January",
   "February",
   "March",
@@ -16,11 +26,13 @@ export const months = [
   "November",
   "December",
 ];
-export const currentMonth = months[numberCurrentMonth];
-export const previousMonth = numberCurrentMonth != 0 ? months[numberCurrentMonth -1] : months[11];
-export const previousYear = numberCurrentMonth != 0 ? currentYear : currentYear - 1;
+export const currentMonth: string = months[numberCurrentMonth];
+export const previousMonth: string =
+  numberCurrentMonth != 0 ? months[numberCurrentMonth - 1] : months[11];
+export const previousYear: number =
+  numberCurrentMonth != 0 ? currentYear : currentYear - 1;
 
-export const details = {
+export const details: { [key: string]: string[] } = {
   Income: ["Salary", "Other"],
   Expense: [
     "Entertainment",

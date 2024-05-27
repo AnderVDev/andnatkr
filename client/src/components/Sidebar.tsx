@@ -73,7 +73,7 @@ const navItems: NavItem[] = [
   },
 ];
 interface SidebarProps {
-  drawerWidth: number;
+  drawerWidth: string;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (isOpen: boolean) => void;
   isNonMobile: boolean;

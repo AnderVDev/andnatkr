@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Box,
@@ -7,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { unflatten } from "flat";
 import {
@@ -23,6 +25,37 @@ import {
   details,
   years,
 } from "../../../dataUtil";
+import { CustomTheme } from "../../../theme";
+import { RootState } from "../../../state/store";
+
+interface Row {
+  id: string;
+  user: {
+    id: string;
+  };
+  financeStatement: string;
+  amount: number;
+  month: string;
+  year: number;
+  detail: string;
+  comments: string;
+}
+interface FormProps {
+  onClosed: () => void;
+  modalType: string;
+  row: Row;
+}
+
+interface FormValues {
+  user: string;
+  financeStatement: string;
+  amount: number | string;
+  month: string;
+  year: number | string;
+  detail: string;
+  comments: string | null;
+}
+
 // Input Validations
 const newInputSchema = yup.object().shape({
   user: yup.string().required("User is required"), // user id
@@ -40,19 +73,21 @@ const newInputSchema = yup.object().shape({
   comments: yup.string().nullable(),
 });
 
-const Form = ({ onClosed, modalType, row }) => {
-  const { palette } = useTheme();
-  const isUpdateType = modalType === "update";
+const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
+  const { palette } = useTheme<CustomTheme>();
+  const isUpdateType: boolean = modalType === "update";
   const [addInput] = useAddTransactionMutation();
   const [updateInput] = useUpdateTransactionMutation();
-  const [pageType, setPageType] = useState("newInput");
+  const [pageType, setPageType] = useState<string>("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const persisted = useSelector((state) => state.persisted);
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
-  const { id } = user;
+  const id = user ? user.id : "";
+  // const { id } = user;
 
   // Initial Values
   const initialValues = {
+    
     user: isUpdateType ? row["user.id"] : id,
     financeStatement: isUpdateType ? row["financeStatement"] : "",
     amount: isUpdateType ? row["amount"] : "",
@@ -62,18 +97,24 @@ const Form = ({ onClosed, modalType, row }) => {
     comments: isUpdateType ? row["comments"] : "",
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     if (pageType === "newInput") await newInput(values, onSubmitProps);
   };
 
-  const newInput = async (values, onSubmitProps) => {
+  const newInput = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
     for (const value in values) {
       if (value === "user") {
         formData.append("user.id", values[value]);
       } else {
-        formData.append(value, values[value]);
+        formData.append(value, values[value] as string);
       }
     }
 
@@ -81,9 +122,10 @@ const Form = ({ onClosed, modalType, row }) => {
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     isUpdateType
-      ? updateInput({ id: row["id"], data: jsonData })
-      : addInput(jsonData);
+      ? await updateInput({ id: row["id"], data: jsonData })
+      : await addInput(jsonData);
 
+    onSubmitProps.resetForm();
     onClosed();
   };
 
@@ -162,7 +204,7 @@ const Form = ({ onClosed, modalType, row }) => {
                   disabled={!values.financeStatement}
                   SelectProps={{
                     displayEmpty: true,
-                    renderValue: (value) => value || "",
+                    renderValue: (value: any) => value || "",
                   }}
                 >
                   {values.financeStatement ? (
@@ -222,24 +264,6 @@ const Form = ({ onClosed, modalType, row }) => {
                     </MenuItem>
                   ))}
                 </TextField>
-
-                {/* <TextField
-                  label="Year"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.year}
-                  name="year"
-                  error={Boolean(touched.year) && Boolean(errors.year)}
-                  helperText={touched.year && errors.year}
-                  sx={{ gridColumn: "span 2" }}
-                  select
-                >
-                  {years.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-                </TextField> */}
 
                 <TextField
                   label="Comments"

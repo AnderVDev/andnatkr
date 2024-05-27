@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-// import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAddTodoMutation } from "../../../../state/api";
 import { unflatten } from "flat";
@@ -33,7 +32,7 @@ const Form = () => {
   const [addTodo] = useAddTodoMutation();
   const persisted = useSelector((state: RootState) => state.persisted);
   const { user  } = persisted;
-  const id = user?.id || '';
+  const id = user ? user.id : '';
 
   const handleFormSubmit = async (
     values: FormValues,
@@ -45,7 +44,7 @@ const Form = () => {
       // Handle form submission error
       console.error("Form submission error:", error);
     }
-    // await newTask(values, onSubmitProps);
+
   };
 
   const newTask = async (
@@ -64,8 +63,7 @@ const Form = () => {
       const jsonData = JSON.stringify(unflatten(formDataObject));
 
       await addTodo(jsonData);
-      // const response = await addTodo(jsonData);
-      // const isAdded = !isError && !isLoading;
+
       onSubmitProps.resetForm();
     } catch (error) {
       // Handle async function error

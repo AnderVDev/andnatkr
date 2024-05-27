@@ -8,9 +8,9 @@ import { useGetTransactionQuery } from "../../../state/api";
 import ActionButtons from "./ActionButtons";
 import numeral from "numeral";
 import { CustomTheme } from "../../../theme";
+
 const Transactions = () => {
   const theme = useTheme<CustomTheme>();
-  // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetTransactionQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
@@ -71,7 +71,7 @@ const Transactions = () => {
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
         <Header title="TRANSACTIONS" subtitle="List of Transactions" />
-        <ModalTransaction modalType="new" id={1} />
+        <ModalTransaction modalType="new" row={undefined}  />
       </FlexBetween>
       <Box
         mt="40px"
@@ -93,12 +93,16 @@ const Transactions = () => {
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            // color: `${theme.palette.neutral[200]} !important`,
             color: `${theme.palette.neutral.main} !important`,
           },
         }}
       >
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [{ field: "id", sort: "desc" }],
+            },
+          }}
           loading={isLoading || !data}
           getRowId={(row) => row.id}
           rows={flattenedData}
