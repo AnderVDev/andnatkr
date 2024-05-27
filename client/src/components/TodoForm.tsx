@@ -1,21 +1,23 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {
   Box,
   Button,
   TextField,
   useMediaQuery,
-  Typography,
   useTheme,
   Divider,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Formik } from "formik";
+import { Formik,FormikHelpers } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { CustomTheme } from "../theme";
 
-const initialValues = {
+interface FormValues {
+  description: string;
+}
+const initialValues: FormValues = {
   description: "",
 };
 
@@ -23,13 +25,11 @@ const todoSchema = yup.object().shape({
   description: yup.string().required("required"),
 });
 
-type Props = {};
+const handleFormSubmit = () => console.log("Form Submitted");
 
-const handleFormSubmit = () => console.log("Form Submited");
-
-const TodoForm = () => {
+const TodoForm: React.FC = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const { palette } = useTheme();
+  const { palette } = useTheme<CustomTheme>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
@@ -45,10 +45,8 @@ const TodoForm = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
-        resetForm,
       }) => (
-        <form>
+        <form onSubmit={handleSubmit}>
           <Box
             display="grid"
             gap="30px"
@@ -63,6 +61,7 @@ const TodoForm = () => {
                   onChange={handleChange}
                   value={values.description}
                   name="description"
+                  multiline
                   rows={6}
                   error={
                     Boolean(touched.description) && Boolean(errors.description)
@@ -71,7 +70,7 @@ const TodoForm = () => {
                   sx={{ gridColumn: "span 12", gridRow: "span 6"}}
                 />
           </Box>
-          <Divider />
+          <Divider sx={{ my: 2 }} />
             <Button
               fullWidth
               type="submit"

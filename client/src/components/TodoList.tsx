@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import {
   List,
@@ -8,13 +9,10 @@ import {
   Checkbox,
   IconButton,
   useTheme,
-  Box,
-  Divider,
 } from "@mui/material";
 
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 
-type Props = {};
 
 const todoList = [
   { id: 1, description: "Buy groceries", isChecked: false },

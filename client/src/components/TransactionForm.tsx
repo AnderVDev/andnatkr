@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Box,
@@ -7,7 +9,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, FormikHelpers} from "formik";
 import * as yup from "yup";
 import { unflatten } from "flat";
 import {
@@ -16,6 +18,8 @@ import {
 } from "../state/api";
 import { useSelector } from "react-redux";
 import { months, currentMonth, currentYear } from "../dataUtil";
+import { CustomTheme } from "../theme";
+import { RootState } from "../state/store";
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -39,42 +43,67 @@ const newInputSchema = yup.object().shape({
 const estatesData = ["506", "619"];
 const financeStatementsData = ["Income", "Expense"];
 
-const TransactionForm = ({ onClosed, modalType, row }) => {
-  const { palette } = useTheme();
+interface TransactionFormProps {
+  onClosed: () => void;
+  modalType: "newInput" | "update";
+  row?: Record<string, any>;
+}
+
+interface FormValues {
+  user: string;
+  financeStatement: string;
+  estate: string;
+  amount: string;
+  month: string;
+  year: number;
+  detail: string;
+  comments: string;
+  isMortgage: string;
+}
+const TransactionForm: React.FC<TransactionFormProps>  = ({ onClosed, modalType, row }) => {
+  const { palette } = useTheme<CustomTheme>();
   const isUpdateType = modalType === "update";
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
-  const [pageType, setPageType] = useState("newInput");
+  const [pageType, setPageType] = useState<"newInput" | "update">("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const persisted = useSelector((state) => state.persisted);
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
   const { id } = user;
 
   // Initial Values
-  const initialValues = {
-    user: isUpdateType ? row["user.id"] : id,
-    financeStatement: isUpdateType ? row["financeStatement"] : "",
-    estate: isUpdateType ? row["estate"] : "",
-    amount: isUpdateType ? row["amount"] : "",
-    month: isUpdateType ? row["month"] : currentMonth,
-    year: isUpdateType ? row["year"] : currentYear,
-    detail: isUpdateType ? row["detail"] : "",
-    comments: isUpdateType ? row["comments"] : "",
-    isMortgage: isUpdateType ? row["isMortgage"] : "false",
+  const initialValues: FormValues = {
+    user: isUpdateType ? row?.["user.id"] || id : id,
+    financeStatement: isUpdateType ? row?.["financeStatement"] || "" : "",
+    estate: isUpdateType ? row?.["estate"] || "" : "",
+    amount: isUpdateType ? row?.["amount"] || "" : "",
+    month: isUpdateType ? row?.["month"] || currentMonth : currentMonth,
+    year: isUpdateType ? row?.["year"] || currentYear : currentYear,
+    detail: isUpdateType ? row?.["detail"] || "" : "",
+    comments: isUpdateType ? row?.["comments"] || "" : "",
+    isMortgage: isUpdateType ? row?.["isMortgage"] || "false" : "false",
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (values: FormValues, onSubmitProps: FormikHelpers<FormValues>) => {
     if (pageType === "newInput") await newInput(values, onSubmitProps);
   };
 
-  const newInput = async (values, onSubmitProps) => {
+  const newInput = async (values: FormValues, onSubmitProps: FormikHelpers<FormValues>) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      if (value === "user") {
-        formData.append("user.id", values[value]);
+    // for (const value in values) {
+    //   if (value === "user") {
+    //     formData.append("user.id", values[value]);
+    //   } else {
+    //     formData.append(value, values[value]);
+    //   }
+    // }
+
+    for (const [key, value] of Object.entries(values)) {
+      if (key === "user") {
+        formData.append("user.id", value);
       } else {
-        formData.append(value, values[value]);
+        formData.append(key, value);
       }
     }
 
@@ -82,8 +111,8 @@ const TransactionForm = ({ onClosed, modalType, row }) => {
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
     isUpdateType
-      ? updateInput({ id: row["id"], data: jsonData })
-      : addInput(jsonData);
+      ? await  updateInput({ id: row["id"], data: jsonData })
+      : await addInput(jsonData);
 
     onClosed();
   };

@@ -9,6 +9,7 @@ interface StatBoxProps {
   icon?: React.ReactNode; 
   description: string;
 }
+import { CustomTheme } from "../theme";
 
 const StatBox: React.FC<StatBoxProps> = ({
   span,
@@ -18,7 +19,7 @@ const StatBox: React.FC<StatBoxProps> = ({
   icon,
   description,
 }) => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   return (
     <Box
       gridColumn={`span ${span}`}
@@ -32,7 +33,7 @@ const StatBox: React.FC<StatBoxProps> = ({
       borderRadius="0.55rem"
     >
       <FlexBetween>
-        <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
+        <Typography variant="h6" >
           {title}
         </Typography>
         {icon}
@@ -40,7 +41,6 @@ const StatBox: React.FC<StatBoxProps> = ({
       <Typography
         variant="h3"
         fontWeight="600"
-        sx={{ color: theme.palette.secondary[200] }}
       >
         {value}
       </Typography>

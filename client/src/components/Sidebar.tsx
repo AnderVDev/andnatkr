@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Box,
   Drawer,
@@ -23,11 +22,15 @@ import {
   HomeWorkOutlined,
   MuseumOutlined,
 } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useEffect, useState , FC} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 
-const navItems = [
+interface NavItem {
+  text: string;
+  icon: React.ReactNode | null;
+}
+const navItems: NavItem[] = [
   {
     text: "Housing",
     icon: null,
@@ -69,8 +72,13 @@ const navItems = [
     icon: <TrendingUpOutlined />,
   },
 ];
-
-const Sidebar = ({
+interface SidebarProps {
+  drawerWidth: number;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (isOpen: boolean) => void;
+  isNonMobile: boolean;
+}
+const Sidebar: FC<SidebarProps> = ({
   drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
