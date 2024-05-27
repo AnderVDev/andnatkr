@@ -12,8 +12,8 @@ import {
 } from "@mui/icons-material";
 import StatBox from "../../../components/StatBox";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import TodoList from "./TodoList";
-import Modal from "./Modal";
+import TodoList from "./todo/TodoList";
+import Modal from "./todo/Modal";
 import { useGetTransactionQuery } from "../../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";

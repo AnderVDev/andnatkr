@@ -9,7 +9,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import { api } from "./api.ts";
-import globalReducer from "./index.ts";
+// import globalReducer from "./index.ts";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./";
 // import rateReducer from "./rateSlice.ts";

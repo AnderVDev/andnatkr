@@ -13,25 +13,32 @@ import {
   useDeleteTodoMutation,
   useGetTodoQuery,
   useUpdateTodoMutation,
-} from "../../../state/api";
+} from "../../../../state/api";
+import { CustomTheme } from "../../../../theme";
+
+interface Task {
+  id: string;
+  isChecked: boolean;
+  description: string;
+  type: string;
+}
 
 const TodoList = () => {
-  const theme = useTheme();
-  const { data, isLoading } = useGetTodoQuery({});
+  const theme = useTheme<CustomTheme>();
+  const { data } = useGetTodoQuery({});
   const filteredData = data
-    ? data.filter((task) => task.type === "finances")
+    ? data.filter((task: Task) => task.type === "finances")
     : [];
   const [deleteTask] = useDeleteTodoMutation();
   const [updateTask] = useUpdateTodoMutation();
 
-  const handleToggle = async (task) => {
-    console.log(task);
+  const handleToggle = async (task: Task) => {
     const updatedTask = { ...task, isChecked: !task.isChecked };
-    updateTask({ id: task.id, data: updatedTask });
+    await updateTask({ id: task.id, data: updatedTask });
   };
 
-  const handleDelete = async (taskId) => {
-    deleteTask(taskId);
+  const handleDelete = async (taskId: string) => {
+    await deleteTask(taskId);
   };
 
   return (
@@ -42,7 +49,7 @@ const TodoList = () => {
       }}
     >
       {filteredData && filteredData.length > 0 ? (
-        filteredData.map((task) => (
+        filteredData.map((task: Task) => (
           <ListItem
             key={task.id}
             secondaryAction={

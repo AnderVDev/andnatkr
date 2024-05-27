@@ -1,13 +1,9 @@
-import { SetStateAction, useState } from "react";
-import {
-  Menu as MenuIcon,
-  Search,
-  LogoutOutlined,
-} from "@mui/icons-material";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { SetStateAction, useState, MouseEvent } from "react";
+import { Menu as MenuIcon, Search, LogoutOutlined } from "@mui/icons-material";
 import FlexBetween from "./FlexBetween";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../state";
-// import profileImage from "../assets/profile.jpeg";
 import {
   Toolbar,
   AppBar,
@@ -20,24 +16,34 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../state/api";
-import avatar1 from "../assets/avatar1.jpg"
-import avatar2 from "../assets/avatar2.jpg"
+import avatar1 from "../assets/avatar1.jpg";
+import avatar2 from "../assets/avatar2.jpg";
 import { CustomTheme } from "../theme";
+import { RootState } from "../state/store";
 
-const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+interface NavbarProps {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (value: SetStateAction<boolean>) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme<CustomTheme>();
   const navigate = useNavigate();
-  const [logout, isLoading] = useLogoutMutation();
-  const persisted = useSelector((state) => state.persisted);
+  const [logout, { isLoading }] = useLogoutMutation();
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
   const { firstName, lastName, role, avatar } = user || {};
-  const selectedAvatar = avatar;
+  const selectedAvatar = avatar ? avatar1 : avatar2;
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
-  const handleClick = (event: { currentTarget: SetStateAction<null>; }) => setAnchorEl(event.currentTarget);
-  const handlelogout = async () => {
+  const handleClick = (event: MouseEvent<HTMLElement>) =>
+    setAnchorEl(event.currentTarget);
+
+  // const handleClick = (event: { currentTarget: SetStateAction<null> }) =>
+  //   setAnchorEl(event.currentTarget);
+  const handleLogout = async () => {
     const response = await logout({});
     const isAuthenticated =
       !response.isError && !response.isLoading && response;
@@ -57,10 +63,12 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             <MenuIcon />
           </IconButton>
           <FlexBetween
-            backgroundColor={theme.palette.background.alt}
-            borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
+            sx={{
+              backgroundColor: theme.palette.background.alt,
+              borderRadius: "9px",
+              gap: "3rem",
+              padding: "0.1rem 1.5rem"
+            }}
           >
             <InputBase placeholder="Search" />
             <IconButton>
@@ -71,9 +79,10 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={handlelogout}>
+          <IconButton onClick={handleLogout}>
             <LogoutOutlined
-              sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
+              sx={{ fontSize: "24px" }}
+              // sx={{ color: theme.palette.secondary[300], fontSize: "24px" }}
             />
           </IconButton>
           <FlexBetween>
