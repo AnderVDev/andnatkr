@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SetStateAction, useState, MouseEvent } from "react";
 import { Menu as MenuIcon, Search, LogoutOutlined } from "@mui/icons-material";
@@ -17,7 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../state/api";
 import avatar1 from "../assets/avatar1.jpg";
-import avatar2 from "../assets/avatar2.jpg";
+import avatar2 from "../assets/avatar2.jpeg";
 import { CustomTheme } from "../theme";
 import { RootState } from "../state/store";
 
@@ -33,8 +34,8 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [logout, { isLoading }] = useLogoutMutation();
   const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
-  const { firstName, lastName, role, avatar } = user || {};
-  const selectedAvatar = avatar ? avatar1 : avatar2;
+  const { firstName, lastName, role } = user || {};
+  const selectedAvatar = firstName === "Anderson" ? avatar1 : avatar2;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
@@ -44,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   // const handleClick = (event: { currentTarget: SetStateAction<null> }) =>
   //   setAnchorEl(event.currentTarget);
   const handleLogout = async () => {
-    const response = await logout({});
+    const response: any = await logout({});
     const isAuthenticated =
       !response.isError && !response.isLoading && response;
     setAnchorEl(null);
@@ -99,8 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <Box
                 component="img"
                 alt="profile"
-                // src={`http://localhost:5173/client/src/assets/${avatar}`}
-                src={avatar1}
+                src={selectedAvatar}
                 height="32px"
                 width="32px"
                 borderRadius="50%"

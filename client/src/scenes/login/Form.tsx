@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
@@ -8,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import * as yup from "yup";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 import { unflatten } from "flat";
 import Dropzone from "react-dropzone";
@@ -24,23 +25,23 @@ const Form = () => {
   const { palette } = useTheme<CustomTheme>();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-  const [newLogin, { isLoading: isLoidingLogin, isError: isErrorLogin }] =
-    useLoginMutation();
-  const [
-    newRegister,
-    {
-      isLoading: isLoadingRegister,
-      isError: isErrorRegister,
-      isSuccess: isSuccessRegister,
-    },
-  ] = useRegisterMutation();
+  const [newLogin] = useLoginMutation();
+  const [newRegister] = useRegisterMutation();
 
-  const initialValues = {
+  interface FormValues {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    // picture: string | any| File;
+  }
+
+  const initialValues: FormValues = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    picture: "",
+    // picture: "",
   };
 
   const schema = isLogin
@@ -53,23 +54,38 @@ const Form = () => {
         lastName: yup.string().required("Required"),
         email: yup.string().email("invalid email").required("Required"),
         password: yup.string().required("Required"),
-        picture: yup.mixed().required("Required"),
+        // picture: yup.mixed().required("Required"),
       });
 
-  const register = async (values, onSubmitProps) => {
+  const register = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      if (value === "picture") {
-        formData.append("avatar", values[value].name);
-      } else {
-        formData.append(value, values[value]);
-      }
+    // for (const value in values) {
+    //   if (value === "picture") {
+    //     formData.append("avatar", values[value].name);
+    //   } else {
+    //     formData.append(value, values[value]);
+    //   }
+    // }
+
+    for (const [key, value] of Object.entries(values)) {
+      formData.append(key, value);
+      
     }
+    // for (const [key, value] of Object.entries(values)) {
+    //   if (key === "picture") {
+    //     formData.append("avatar", value.name);
+    //   } else {
+    //     formData.append(key, value);
+    //   }
+    // }
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    const response = await newRegister(jsonData);
+    const response: any = await newRegister(jsonData);
     const isRegistered = response && !response.error;
 
     onSubmitProps.resetForm();
@@ -78,7 +94,10 @@ const Form = () => {
     }
   };
 
-  const authenticate = async (values, onSubmitProps) => {
+  const authenticate = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
     formData.append("email", values["email"]);
@@ -87,7 +106,7 @@ const Form = () => {
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    const response = await newLogin(jsonData);
+    const response: any = await newLogin(jsonData);
     const isSuccess = response && !response.error;
 
     onSubmitProps.resetForm();
@@ -96,7 +115,10 @@ const Form = () => {
     }
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     isLogin
       ? await authenticate(values, onSubmitProps)
       : await register(values, onSubmitProps);
@@ -152,7 +174,7 @@ const Form = () => {
                   sx={{ gridColumn: "span 2" }}
                 />
 
-                <Box
+                {/* <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
@@ -184,7 +206,7 @@ const Form = () => {
                       </Box>
                     )}
                   </Dropzone>
-                </Box>
+                </Box> */}
               </>
             )}
 
