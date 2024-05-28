@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
   Button,
@@ -6,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { unflatten } from "flat";
 import {
@@ -17,11 +18,24 @@ import {
 } from "../../../state/api";
 import { useSelector } from "react-redux";
 import { months, currentMonth, currentYear } from "../../../dataUtil";
+import { CustomTheme } from "../../../theme";
+import { RootState } from "../../../state/store";
+
+interface FormValues {
+  user: string;
+  estate: string;
+  installment_number: number | string;
+  month: string;
+  year: number | string;
+  uf: number | string;
+  clp: number | string;
+  comments: string;
+}
 
 // Input Validations
 const dataSchema = yup.object().shape({
   user: yup.string().required("required"), //user id
-  estate: yup.string().required("required"), 
+  estate: yup.string().required("required"),
   installment_number: yup.number().required("required").positive(),
   month: yup.string().required("required"),
   year: yup.number().required("required").positive(),
@@ -32,36 +46,27 @@ const dataSchema = yup.object().shape({
 
 //Input data
 const estatesData = ["506", "619"];
-// const months = [
-//   "January",
-//   "February",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-//   "August",
-//   "September",
-//   "October",
-//   "November",
-//   "December",
-// ];
 
-const Form = ({ onClosed, modalType, row }) => {
-  const { palette } = useTheme();
+interface FormProps {
+  onClosed: () => void;
+  modalType: "newInput" | "update" | string;
+  row: any;
+}
+const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
+  const { palette } = useTheme<CustomTheme>();
   const isUpdateType = modalType === "update";
   const [addEntry] = useAddMortgagesMutation();
   const [updateEntry] = useUpdateMortgagesMutation();
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const persisted = useSelector((state) => state.persisted);
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
-  const { id } = user;
-  let inputId = 0;
+  const id = user ? user.id : "";
+  let inputId = "0";
 
   // Initial Values
-  const initialValues = {
+  const initialValues: FormValues = {
     user: isUpdateType ? row["user.id"] : id,
     estate: isUpdateType ? row["estate"] : "",
     installment_number: isUpdateType ? row["installment_number"] : "",
@@ -72,22 +77,28 @@ const Form = ({ onClosed, modalType, row }) => {
     comments: isUpdateType ? row["comments"] : "",
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    await newInput(values);
-    if (inputId !== 0 || isUpdateType) {
+  const handleFormSubmit = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
+    await newInput(values, onSubmitProps);
+    if (inputId !== "0" || isUpdateType) {
       await newEntry(values, onSubmitProps);
     }
   };
 
-  const newInput = async (values) => {
+  const newInput = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
     formData.append("user.id", values["user"]);
     formData.append("estate", values["estate"]);
     formData.append("financeStatement", "Expense");
-    formData.append("amount", values["clp"]);
+    formData.append("amount", values["clp"] as string);
     formData.append("month", values["month"]);
-    formData.append("year", values["year"]);
+    formData.append("year", values["year"] as string);
     formData.append(
       "detail",
       `Mortgage Payment, Installment#: ${values["installment_number"]}`
@@ -101,20 +112,24 @@ const Form = ({ onClosed, modalType, row }) => {
     if (isUpdateType) {
       updateInput({ id: row["mgmt_input_id"], data: jsonData });
     } else {
-      const response = await addInput(jsonData);
-      inputId = response.data.id;
+      const {data}: any = await addInput(jsonData);
+      inputId = data.id;
     }
+    onSubmitProps.resetForm();
     onClosed();
   };
 
-  const newEntry = async (values, onSubmitProps) => {
+  const newEntry = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      if (value === "user") {
-        formData.append("user.id", values[value]);
+    for (const [key, value] of Object.entries(values)) {
+      if (key === "user") {
+        formData.append("user.id", value);
       } else {
-        formData.append(value, values[value]);
+        formData.append(key, value);
       }
     }
     formData.append("mgmt_input_id", inputId);
@@ -125,7 +140,8 @@ const Form = ({ onClosed, modalType, row }) => {
       ? updateEntry({ id: row["id"], data: jsonData })
       : addEntry(jsonData);
 
-    inputId = 0;
+    inputId = "0";
+    onSubmitProps.resetForm();
     onClosed();
   };
 
@@ -142,8 +158,6 @@ const Form = ({ onClosed, modalType, row }) => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
-        resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
           <Box

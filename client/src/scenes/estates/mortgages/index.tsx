@@ -7,10 +7,10 @@ import FlexBetween from "../../../components/FlexBetween";
 import { useGetMortgagesQuery } from "../../../state/api";
 import ActionButtons from "./Actions";
 import numeral from "numeral";
+import { CustomTheme } from "../../../theme";
 
 const Mortgages = () => {
-  const theme = useTheme();
-  // const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const theme = useTheme<CustomTheme>();
   const { data, isLoading } = useGetMortgagesQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
@@ -78,7 +78,7 @@ const Mortgages = () => {
           title="MORTGAGES"
           subtitle="List of Transactions of Mortgages Payments"
         />
-        <ModalMortgages modalType="new" id={1} />
+        <ModalMortgages modalType="new" row={undefined} />
       </FlexBetween>
       <Box
         mt="40px"
@@ -100,7 +100,7 @@ const Mortgages = () => {
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.neutral[200]} !important`,
+            color: `${theme.palette.neutral.main} !important`,
           },
         }}
       >

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FlexBetween from "../../../components/FlexBetween";
 import { Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
@@ -9,7 +10,7 @@ import ModalMortgages from "./Modal";
 
 interface buttonsProps {
   modalType: string;
-  row: { id: number; mgmt_input_id: number };
+  row: any;
 }
 
 const ActionButtons = ({ modalType, row }: buttonsProps) => {

@@ -7,9 +7,10 @@ import FlexBetween from "../../../components/FlexBetween";
 import { useGetEstateMgmtQuery } from "../../../state/api";
 import ActionButtons from "../../../components/ActionButtons";
 import numeral from "numeral";
+import { CustomTheme } from "../../../theme";
 
 const Operations = () => {
-  const theme = useTheme();
+  const theme = useTheme<CustomTheme>();
   const { data, isLoading } = useGetEstateMgmtQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
@@ -39,7 +40,7 @@ const Operations = () => {
       field: "amount",
       headerName: "Amount",
       flex: 0.5,
-      renderCell: (params) =>  numeral(params.value).format('0,0'),
+      renderCell: (params) => numeral(params.value).format("0,0"),
     },
     {
       field: "month",
@@ -79,7 +80,7 @@ const Operations = () => {
           title="OPERATIONS"
           subtitle="List of Real estate administration Transactions"
         />
-        <ModalRealEstate modalType="new" id={1} />
+        <ModalRealEstate modalType="new" row={undefined} />
       </FlexBetween>
       <Box
         mt="40px"
@@ -102,11 +103,16 @@ const Operations = () => {
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.neutral[200]} !important`,
+            color: `${theme.palette.neutral.main} !important`,
           },
         }}
       >
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [{ field: "id", sort: "desc" }],
+            },
+          }}
           loading={isLoading || !data}
           getRowId={(row) => row.id}
           rows={flattenedData}

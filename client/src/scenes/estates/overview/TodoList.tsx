@@ -8,29 +8,37 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { DeleteOutlineOutlined, Task } from "@mui/icons-material";
 import {
   useDeleteTodoMutation,
   useGetTodoQuery,
   useUpdateTodoMutation,
 } from "../../../state/api";
+import { CustomTheme } from "../../../theme";
+
+interface Task {
+  id: string;
+  isChecked: boolean;
+  description: string;
+  type: string;
+}
 
 const TodoList = () => {
-  const theme = useTheme();
-  const { data, isLoading } = useGetTodoQuery({});
+  const theme = useTheme<CustomTheme>();
+  const { data} = useGetTodoQuery({});
   const filteredData = data
-    ? data.filter((task) => task.type === "estates")
+    ? data.filter((task: Task) => task.type === "estates")
     : [];
   const [deleteTask] = useDeleteTodoMutation();
   const [updateTask] = useUpdateTodoMutation();
 
-  const handleToggle = async (task) => {
+  const handleToggle = async (task: Task) => {
   
     const updatedTask = { ...task, isChecked: !task.isChecked };
-    updateTask({ id: task.id, data: updatedTask });
+    await updateTask({ id: task.id, data: updatedTask });
   };
 
-  const handleDelete = async (taskId) => {
+  const handleDelete = async (taskId: string) => {
     deleteTask(taskId);
   };
 
@@ -42,7 +50,7 @@ const TodoList = () => {
       }}
     >
       {filteredData && filteredData.length > 0 ? (
-        filteredData.map((task) => (
+        filteredData.map((task: Task) => (
           <ListItem
             key={task.id}
             secondaryAction={

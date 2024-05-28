@@ -99,11 +99,19 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
   ) => {
     const formData = new FormData();
 
-    for (const value in values) {
-      if (value === "user") {
-        formData.append("user.id", values[value]);
+    // for (const value in values) {
+    //   if (value === "user") {
+    //     formData.append("user.id", values[value]);
+    //   } else {
+    //     formData.append(value, values[value]);
+    //   }
+    // }
+
+    for (const [key, value] of Object.entries(values)) {
+      if (key === "user") {
+        formData.append("user.id", value);
       } else {
-        formData.append(value, values[value]);
+        formData.append(key, value);
       }
     }
 

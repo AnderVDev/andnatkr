@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   styled,
@@ -16,7 +17,7 @@ import Form from "./Form";
 
 interface ModalMortgageProps {
   modalType: string;
-  row: unknown;
+  row: any;
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({

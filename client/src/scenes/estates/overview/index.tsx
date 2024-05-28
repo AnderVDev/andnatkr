@@ -15,12 +15,7 @@ import Modal from "./Modal";
 import { useGetEstateMgmtQuery, useGetEstateQuery } from "../../../state/api";
 import { flatten } from "flat";
 import numeral from "numeral";
-import {
-  accumulatorByAmount,
-  dataByDeptNumber,
-  filterByKey,
-  leaseByDeptNumber,
-} from "../../../utility";
+import { accumulatorByAmount, dataByDeptNumber } from "../../../utility";
 import { chileanIndex } from "../../../state/publicApi";
 import { CustomTheme } from "../../../theme";
 
@@ -62,18 +57,19 @@ const filterDetails = [
 const Overview = () => {
   const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data: dataEstate, isLoading: isLoadingEstate } = useGetEstateQuery(
-    {}
-  );
+  const { data: dataEstate } = useGetEstateQuery({});
   const { data, isLoading } = useGetEstateMgmtQuery({});
   const flattenedDataEstate = dataEstate
     ? dataEstate.map((item: JSON) => flatten(item))
     : [];
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
+  // Destructuring data for better readability
+
   const bigDepto = dataByDeptNumber(flattenedDataEstate, 506);
   const smallDepto = dataByDeptNumber(flattenedDataEstate, 619);
   const { exchangeData } = chileanIndex();
+  //  const { uf: { valor: currentUfValue } = {} } = exchangeData || {};
 
   const currentUfValue = exchangeData?.uf.valor;
 
@@ -83,7 +79,7 @@ const Overview = () => {
   const currentSmallUfLease = smallDepto
     ? smallDepto.leasing_price / currentUfValue
     : 0;
-  
+
   const incomeSum = accumulatorByAmount(flattenedData, filterDetails[0]);
   const expenseSum = accumulatorByAmount(flattenedData, filterDetails[1]);
 
@@ -166,9 +162,7 @@ const Overview = () => {
         <StatBox
           span="2"
           title="Current Leasing"
-          value={numeral(bigDepto ? bigDepto.leasing_price : 1).format(
-            "0,0"
-          )}
+          value={numeral(bigDepto ? bigDepto.leasing_price : 1).format("0,0")}
           increase="506"
           description={`${numeral(currentBigUfLease).format("0,0.00")} UF`}
           icon={<ApartmentOutlined sx={{ fontSize: "26px" }} />}
@@ -261,6 +255,11 @@ const Overview = () => {
           }}
         >
           <DataGrid
+            initialState={{
+              sorting: {
+                sortModel: [{ field: "id", sort: "desc" }],
+              },
+            }}
             loading={isLoading || !data}
             getRowId={(row) => row.id}
             rows={flattenedData}
@@ -276,7 +275,8 @@ const Overview = () => {
           <FlexBetween>
             <Typography
               variant="h6"
-              sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
+              sx={{ ml: "1rem" }}
+              // sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
             >
               TodoList
             </Typography>

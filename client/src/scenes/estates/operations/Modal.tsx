@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   styled,
@@ -12,11 +13,11 @@ import {
   AddCircleOutlineOutlined,
   SettingsOutlined,
 } from "@mui/icons-material";
-import TransactionForm from "../../../components/TransactionForm";
+import Form from "./Form";
 
 interface ModalRealEstateProps {
   modalType: string;
-  row: unknown;
+  row: any;
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }: { theme: Theme }) => ({
@@ -68,7 +69,7 @@ const ModalRealEstate = ({ modalType, row }: ModalRealEstateProps) => {
           <CloseOutlined />
         </IconButton>
         <DialogContent dividers>
-          <TransactionForm
+          <Form
             onClosed={handleClose}
             modalType={modalType}
             row={row}

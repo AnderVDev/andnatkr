@@ -3,18 +3,22 @@ import {
   Button,
   TextField,
   useMediaQuery,
-  Typography,
   useTheme,
   Divider,
 } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useAddTodoMutation } from "../../../state/api";
 import { unflatten } from "flat";
+import { CustomTheme } from "../../../theme";
+import { RootState } from "../../../state/store";
 
-const initialValues = {
+interface FormValues {
+  description: string;
+}
+const initialValues: FormValues = {
   description: "",
 };
 
@@ -22,35 +26,40 @@ const todoSchema = yup.object().shape({
   description: yup.string().required("required"),
 });
 
-type Props = {};
-
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const { palette } = useTheme();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [addTodo, { isLoading, isError }] = useAddTodoMutation();
-  const persisted = useSelector((state) => state.persisted);
+  const { palette } = useTheme<CustomTheme>();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  const [addTodo] = useAddTodoMutation();
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
-  const { id } = user;
+  const id = user ? user.id : "";
+  // const { id } = user;
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     await newTask(values, onSubmitProps);
   };
 
-  const newTask = async (values, onSubmitProps) => {
+  const newTask = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
     formData.append("user.id", id);
     formData.append("description", values["description"]);
-    formData.append("isChecked", false);
+    formData.append("isChecked", "false");
     formData.append("type", "estates");
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    const response = await addTodo(jsonData);
-    const isAdded = !isError && !isLoading;
+     await addTodo(jsonData);
+    // const isAdded = !isError && !isLoading;
     onSubmitProps.resetForm();
   };
 
@@ -67,8 +76,6 @@ const Form = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
-        resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
           <Box
