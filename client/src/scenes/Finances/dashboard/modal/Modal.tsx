@@ -10,7 +10,6 @@ import {
 import {
   CloseOutlined,
   AddCircleOutlineOutlined,
-  SettingsOutlined,
   AddCardOutlined,
 } from "@mui/icons-material";
 import Form from "./Form";

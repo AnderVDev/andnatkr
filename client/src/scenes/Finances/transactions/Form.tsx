@@ -28,22 +28,11 @@ import {
 import { CustomTheme } from "../../../theme";
 import { RootState } from "../../../state/store";
 
-interface Row {
-  id: string;
-  user: {
-    id: string;
-  };
-  financeStatement: string;
-  amount: number;
-  month: string;
-  year: number;
-  detail: string;
-  comments: string;
-}
+
 interface FormProps {
   onClosed: () => void;
   modalType: string;
-  row: Row;
+  row: any;
 }
 
 interface FormValues {
@@ -86,7 +75,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
   // const { id } = user;
 
   // Initial Values
-  const initialValues = {
+  const initialValues: FormValues = {
     
     user: isUpdateType ? row["user.id"] : id,
     financeStatement: isUpdateType ? row["financeStatement"] : "",
@@ -114,7 +103,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
       if (value === "user") {
         formData.append("user.id", values[value]);
       } else {
-        formData.append(value, values[value] as string);
+        formData.append(value, values[value]);
       }
     }
 

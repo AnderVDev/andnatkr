@@ -157,7 +157,7 @@ const Dashboard = () => {
               >
                 Goals List
               </Typography>
-              <Modal />
+              <Modal modalType={""} row={undefined} />
             </FlexBetween>
           </Box>
           <DataGrid

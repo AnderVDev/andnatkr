@@ -1,13 +1,8 @@
-import { useState } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  MenuItem,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { Formik } from "formik";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { useState } from "react";
+import { Box, Button, TextField, useMediaQuery, useTheme } from "@mui/material";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { unflatten } from "flat";
 import {
@@ -16,6 +11,15 @@ import {
 } from "../../../../state/api";
 import { useSelector } from "react-redux";
 import numeral from "numeral";
+import { CustomTheme } from "../../../../theme";
+import { RootState } from "../../../../state/store";
+
+interface FormValues {
+  user: string;
+  objective: string;
+  target: number;
+  current: number | string;
+}
 
 // Input Validations
 const newInputSchema = yup.object().shape({
@@ -27,49 +31,68 @@ const newInputSchema = yup.object().shape({
     .positive("target value must be positive"),
 });
 
-const Form = ({ onClosed, modalType, row }) => {
-  const { palette } = useTheme();
-  const isUpdateType = modalType === "update";
-  const [addGoal, { isLoading, isError }] = useAddGoalMutation();
+interface FormProps {
+  onClosed: () => void;
+  modalType: string;
+  row: any;
+}
+const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
+  const { palette } = useTheme<CustomTheme>();
+  const isUpdateType: boolean = modalType === "update";
+  const [addGoal] = useAddGoalMutation();
   const [updateInput] = useUpdateGoalMutation();
-  const [pageType, setPageType] = useState("newInput");
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const persisted = useSelector((state) => state.persisted);
+  // const [pageType, setPageType] = useState("newInput");
+  const isNonMobile: boolean = useMediaQuery("(min-width:600px)");
+  const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
-  const { id } = user;
+  const id = user ? user.id : "";
+  // const { id } = user;
 
   // Initial Values
-  const initialValues = {
+  const initialValues: FormValues = {
     user: isUpdateType ? row["user.id"] : id,
     objective: isUpdateType ? row["objective"] : "",
-    target: isUpdateType ? row["target"] : "",
+    target: isUpdateType ? row["target"] : 0,
     current: "",
   };
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     await newInput(values, onSubmitProps);
   };
 
-  const newInput = async (values, onSubmitProps) => {
+  const newInput = async (
+    values: FormValues,
+    onSubmitProps: FormikHelpers<FormValues>
+  ) => {
     const formData = new FormData();
 
     formData.append("user.id", id);
     formData.append("objective", values["objective"]);
-    formData.append("target", values["target"]);
+    formData.append("target", String(values["target"]));
     formData.append(
       "current",
+      // isUpdateType
+      //   ? numeral(row["current"]).value() + numeral(values["current"]).value()
+      //   : "0"
       isUpdateType
-        ? numeral(row["current"]).value() + numeral(values["current"]).value()
+        ? String(
+            (numeral(row["current"]).value() || 0) +
+              (numeral(values["current"]).value() || 0)
+          )
         : "0"
     );
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
 
-    const response = isUpdateType
-      ? updateInput({ id: row["id"], data: jsonData })
+    isUpdateType
+      ? // const response = isUpdateType
+        await updateInput({ id: row["id"], data: jsonData })
       : await addGoal(jsonData);
-    const isAdded = !isError && !isLoading;
+    // const isAdded = !isError && !isLoading;
     onSubmitProps.resetForm();
     onClosed();
   };
