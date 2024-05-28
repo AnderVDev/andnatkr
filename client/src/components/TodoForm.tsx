@@ -8,10 +8,8 @@ import {
   useTheme,
   Divider,
 } from "@mui/material";
-import { Formik,FormikHelpers } from "formik";
+import { Formik} from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { CustomTheme } from "../theme";
 
 interface FormValues {
@@ -30,8 +28,6 @@ const handleFormSubmit = () => console.log("Form Submitted");
 const TodoForm: React.FC = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { palette } = useTheme<CustomTheme>();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   return (
     <Formik
       onSubmit={handleFormSubmit}

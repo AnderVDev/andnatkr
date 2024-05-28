@@ -31,14 +31,13 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme<CustomTheme>();
   const navigate = useNavigate();
-  const [logout, { isLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
   const { firstName, lastName, role } = user || {};
   const selectedAvatar = firstName === "Anderson" ? avatar1 : avatar2;
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isOpen = Boolean(anchorEl);
+  const [, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleClick = (event: MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 

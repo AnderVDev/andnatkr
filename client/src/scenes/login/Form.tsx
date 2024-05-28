@@ -12,11 +12,11 @@ import * as yup from "yup";
 import { Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 import { unflatten } from "flat";
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation, useRegisterMutation } from "../../state/api.ts";
-import FlexBetween from "../../components/FlexBetween.tsx";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+// import FlexBetween from "../../components/FlexBetween.tsx";
+// import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { CustomTheme } from "../../theme.ts";
 // type Props = {};
 
@@ -137,7 +137,6 @@ const Form = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldValue,
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>

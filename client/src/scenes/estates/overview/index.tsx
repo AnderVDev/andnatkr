@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Header from "../../../components/Header";
 import FlexBetween from "../../../components/FlexBetween";
@@ -68,7 +69,7 @@ const Overview = () => {
 
   const bigDepto = dataByDeptNumber(flattenedDataEstate, 506);
   const smallDepto = dataByDeptNumber(flattenedDataEstate, 619);
-  const { exchangeData } = chileanIndex();
+  const { exchangeData }: any = chileanIndex();
   //  const { uf: { valor: currentUfValue } = {} } = exchangeData || {};
 
   const currentUfValue = exchangeData?.uf.valor;

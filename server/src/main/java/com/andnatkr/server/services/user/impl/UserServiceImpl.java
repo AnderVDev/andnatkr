@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             Optional.ofNullable(userEntity.getEmail()).ifPresent(existingUser::setEmail);
             Optional.ofNullable(userEntity.getPassword()).ifPresent(existingUser::setPassword);
             Optional.ofNullable(userEntity.getRole()).ifPresent(existingUser::setRole);
-            Optional.ofNullable(userEntity.getNameAvatar()).ifPresent(existingUser::setNameAvatar);
+//            Optional.ofNullable(userEntity.getNameAvatar()).ifPresent(existingUser::setNameAvatar);
 //            Optional.ofNullable(userEntity.getDescription()).ifPresent(existingUser::setDescription);
             return  userRepository.save(existingUser);
         }).orElseThrow(() -> new RuntimeException("User Does not Exist"));

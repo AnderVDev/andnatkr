@@ -1,25 +1,35 @@
-import { Theme, TypeBackground, Palette, PaletteMode } from "@mui/material";
-import createPalette, {
+import {
+  Theme,
+  TypeBackground,
+  Palette,
+  PaletteMode,
   PaletteOptions,
-} from "@mui/material/styles/createPalette";
+} from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
+// Extend the TypeBackground interface to include `alt`
 interface CustomTypeBackground extends TypeBackground {
   alt: string;
 }
-export interface CustomTheme extends Theme {
-  palette: Palette & {
-    neutral: {
-      dark: string;
-      main: string;
-      light: string;
-      mediumMain?: string;
-      medium: string;
-    };
-    background: CustomTypeBackground; // Use CustomTypeBackground here
+
+// Extend the Palette interface to include custom properties
+interface CustomPalette extends Palette {
+  neutral: {
+    dark: string;
+    main: string;
+    light: string;
+    mediumMain?: string;
+    medium: string;
   };
+  background: CustomTypeBackground;
 }
 
-// color design tokens export
+// Extend the Theme interface to include the custom palette
+export interface CustomTheme extends Theme {
+  palette: CustomPalette;
+}
+
+// Color design tokens
 export const colorTokens = {
   grey: {
     0: "#FFFFFF",
@@ -50,52 +60,53 @@ export const colorTokens = {
   },
 };
 
-// mui theme settings
+// Theme settings
 export const themeSettings = (mode: PaletteMode): CustomTheme => {
   const paletteOptions: PaletteOptions = {
     mode: mode,
+    ...(mode === "dark"
+      ? {
+          primary: {
+            dark: colorTokens.primary[200],
+            main: colorTokens.primary[500],
+            light: colorTokens.primary[800],
+            contrastText: "#FFFFFF",
+          },
+          neutral: {
+            dark: colorTokens.grey[100],
+            main: colorTokens.grey[200],
+            mediumMain: colorTokens.grey[300],
+            medium: colorTokens.grey[400],
+            light: colorTokens.grey[700],
+          },
+          background: {
+            default: colorTokens.grey[900],
+            alt: colorTokens.grey[800],
+          } as CustomTypeBackground,
+        }
+      : {
+          primary: {
+            dark: colorTokens.primary[700],
+            main: colorTokens.primary[500],
+            light: colorTokens.primary[50],
+            contrastText: "#FFFFFF",
+          },
+          neutral: {
+            dark: colorTokens.grey[700],
+            main: colorTokens.grey[500],
+            mediumMain: colorTokens.grey[400],
+            medium: colorTokens.grey[300],
+            light: colorTokens.grey[50],
+          },
+          background: {
+            default: colorTokens.grey[10],
+            alt: colorTokens.grey[0],
+          } as CustomTypeBackground,
+        }),
   };
-  return {
-    palette: {
-      ...createPalette(paletteOptions), // Use MUI's createPalette to create a Palette object
-      ...(mode === "dark"
-        ? {
-            // palette values for dark mode
-            primary: {
-              dark: colorTokens.primary[200],
-              main: colorTokens.primary[500],
-              light: colorTokens.primary[800],
-              contrastText: "#FFFFFF", // Example contrastText
-            },
-            neutral: {
-              dark: colorTokens.grey[100],
-              main: colorTokens.grey[200],
-              mediumMain: colorTokens.grey[300],
-              medium: colorTokens.grey[400],
-              light: colorTokens.grey[700],
-            },
-          }
-        : {
-            // palette values for light mode
-            primary: {
-              dark: colorTokens.primary[700],
-              main: colorTokens.primary[500],
-              light: colorTokens.primary[50],
-              contrastText: "#FFFFFF", // Example contrastText
-            },
-            neutral: {
-              dark: colorTokens.grey[700],
-              main: colorTokens.grey[500],
-              mediumMain: colorTokens.grey[400],
-              medium: colorTokens.grey[300],
-              light: colorTokens.grey[50],
-            },
-          }),
-      background: {
-        default: mode === "dark" ? colorTokens.grey[900] : colorTokens.grey[10],
-        alt: mode === "dark" ? colorTokens.grey[800] : colorTokens.grey[0],
-      } as CustomTypeBackground,
-    },
+
+  return createTheme({
+    palette: paletteOptions as CustomPalette, // Cast paletteOptions to CustomPalette
     typography: {
       fontFamily: ["Rubik", "sans-serif"].join(","),
       fontSize: 12,
@@ -123,19 +134,19 @@ export const themeSettings = (mode: PaletteMode): CustomTheme => {
         fontFamily: ["Rubik", "sans-serif"].join(","),
         fontSize: 14,
       },
-      // subtitle1: {},
-      // subtitle2: {},
-      // body1: {},
-      // body2: {},
-      // caption: {},
-      // button: {},
-      // overline: {},
-      // fontWeightLight: undefined,
-      // fontWeightRegular: undefined,
-      // fontWeightMedium: undefined,
-      // fontWeightBold: undefined,
-      // htmlFontSize: 0,
-      // pxToRem: (px: number) => `${px / 16}rem`
+      subtitle1: {},
+      subtitle2: {},
+      body1: {},
+      body2: {},
+      caption: {},
+      button: {},
+      overline: {},
+      fontWeightLight: undefined,
+      fontWeightRegular: undefined,
+      fontWeightMedium: undefined,
+      fontWeightBold: undefined,
+      htmlFontSize: 0,
+      // pxToRem: (px: number) => `${px / 16}rem`,
     },
-  };
+  }) as CustomTheme; // Cast the returned theme to CustomTheme
 };

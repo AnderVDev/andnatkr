@@ -65,7 +65,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
   const isUpdateType = modalType === "update";
   const [addInput] = useAddEstateMgmtMutation();
   const [updateInput] = useUpdateEstateMgmtMutation();
-  const [pageType, setPageType] = useState<"newInput" | "update">("newInput");
+  const [pageType] = useState<"newInput" | "update">("newInput");
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;

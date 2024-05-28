@@ -1,16 +1,16 @@
-version: '3.9'
+# version: '3.9'
 
-services:
-  postgres:
-    image: postgres:latest
-    restart: always
-    environment:
-      POSTGRES_USER: dummyuser
-      POSTGRES_PASSWORD: dummypassword
-      POSTGRES_DB: andnatkrdb
-    ports:
-      - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
-volumes:
-  db-data:
+# services:
+#   postgres:
+#     image: postgres:latest
+#     restart: always
+#     environment:
+#       POSTGRES_USER: dummyuser
+#       POSTGRES_PASSWORD: dummypassword
+#       POSTGRES_DB: andnatkrdb
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+# volumes:
+#   db-data:
