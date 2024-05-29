@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  #new app 
+  client:
+    container_name: client
+    image: client:1.0.0
+    build: 
+      context: ./client
+      args:
+        - VITE_API_URL=http://server:8080
+    ports:
+      - 5173:5173
+    networks:
+      - tkr_network
+    depends_on:
+      - server
+
+  server:
+    container_name: server
+    image: server:1.0.0
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=jdbc:postgresql://database:5432/postgres
+      - DATABASE_USERNAME=dummyuser
+      - DATABASE_PASSWORD=dummypassword
+    networks:
+      - tkr_network
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: database
+    image: postgres:latest
+    restart: always
+    environment:
+        POSTGRES_USER: dummyuser
+        POSTGRES_PASSWORD: dummypassword
+        POSTGRES_DB: andnatkrdb
+    ports:
+        - "5432:5432"
+    volumes:
+        - db-data:/var/lib/postgresql/data
+    networks:
+      - tkr_network
+networks:
+  tkr_network:      
+
+volumes:
+    db-data:
