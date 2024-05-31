@@ -6,6 +6,8 @@ import {
   PaletteOptions,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
+import { TypographyOptions } from "@mui/material/styles/createTypography";
+
 
 // Extend the TypeBackground interface to include `alt`
 interface CustomTypeBackground extends TypeBackground {
@@ -146,7 +148,7 @@ export const themeSettings = (mode: PaletteMode): CustomTheme => {
       fontWeightMedium: undefined,
       fontWeightBold: undefined,
       htmlFontSize: 0,
-      // pxToRem: (px: number) => `${px / 16}rem`,
-    },
+      pxToRem: (px: number) => `${px / 16}rem`,
+    }as TypographyOptions,
   }) as CustomTheme; // Cast the returned theme to CustomTheme
 };
