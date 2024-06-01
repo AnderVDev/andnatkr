@@ -53,6 +53,7 @@ services:
     image: postgres:latest
     volumes:
       - ./backup.sh:/backup.sh:ro
+      - db-data:/var/lib/postgresql/data:ro
       - backups:/backups
     environment:
       - PGHOST=database

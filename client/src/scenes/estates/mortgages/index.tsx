@@ -105,6 +105,11 @@ const Mortgages = () => {
         }}
       >
         <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [{ field: "installment_number", sort: "desc" }],
+          },
+        }}
           loading={isLoading || !data}
           getRowId={(row) => row.id}
           rows={flattenedData}
