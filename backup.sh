@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Wait for the PostgreSQL server to be ready
