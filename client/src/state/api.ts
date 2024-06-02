@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from ".";
-
+import { API } from "../config/constants";
 // Define a type for your Redux state
 export interface RootState {
   persisted: {
@@ -9,7 +9,7 @@ export interface RootState {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_API_URL}:8080/api/v1`,
+  baseUrl: `${API}:8080/api/v1`,
   // baseUrl: "http://localhost:8080/api/v1",
   prepareHeaders: (headers, { getState, endpoint }) => {
     const { persisted } = getState() as RootState;
