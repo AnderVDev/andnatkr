@@ -8,7 +8,7 @@ services:
     ports:
       - "3050:80"
     volumes:
-      - /c/D_data/side-projects/front.env.js:/var/www/app/config/front.env.js:ro
+      - ${API_URI}/front.env.js:/var/www/app/config/front.env.js:ro
     networks:
       - tkr_network
     depends_on:
@@ -32,7 +32,7 @@ services:
 
   postgres:
     container_name: database
-    image: postgres:latest
+    image: postgres:alpine
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -42,13 +42,13 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-      - backups:/backups:ro
+      - backups:/backups
     networks:
       - tkr_network
 
   backup:
     container_name: backup
-    image: postgres:latest
+    image: postgres:alpine
     volumes:
       - ./backup.sh:/backup.sh:ro
       - db-data:/var/lib/postgresql/data:ro
@@ -60,9 +60,24 @@ services:
       - PGDATABASE=${PGDATABASE}
     depends_on:
       - postgres
-    command: /bin/sh -c "./backup.sh"
+    command: sh -c "cp /backup.sh /tmp/backup.sh && dos2unix /tmp/backup.sh && chmod +x /tmp/backup.sh && /tmp/backup.sh"
+    # command: /bin/sh -c "./backup.sh"
     networks:
       - tkr_network
+  # backup:
+  #   container_name: postgres-backup
+  #   image: postgres:alpine
+  #   command: >
+  #     sh -c 'pg_dump -U $POSTGRES_USER -d $POSTGRES_DB -h database > /backups/backup.sql'
+  #   environment:
+  #     PGUSER: ${POSTGRES_USER}
+  #     PGPASSWORD: ${POSTGRES_PASSWORD}
+  #     PGDATABASE: ${POSTGRES_DB}
+  #   volumes:
+  #     - backups:/backups
+  #   networks:
+  #     - tkr_network
+
 networks:
   tkr_network:
     driver: bridge

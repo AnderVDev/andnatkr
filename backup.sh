@@ -2,7 +2,7 @@
 
 # Function to wait for PostgreSQL to be ready
 wait_for_postgres() {
-  until pg_isready -h "$PGHOST" -p 5432 -U "$PGUSER"; do
+  until pg_isready -h "$PGHOST" -p 5432 -U "$PGUSER" >/dev/null 2>&1; do
     echo "Waiting for PostgreSQL to be ready..."
     sleep 5
   done
@@ -29,7 +29,8 @@ perform_backup() {
 }
 
 # Main script execution
-echo "Starting backup process..."
+echo "Preparing backup process..."
 wait_for_postgres
 echo "PostgreSQL is ready. Starting backup..."
 perform_backup
+
