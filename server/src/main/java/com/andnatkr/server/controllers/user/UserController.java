@@ -14,7 +14,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:5173",maxAge = 3600, allowCredentials = "true")
+@CrossOrigin(maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:5173",maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
