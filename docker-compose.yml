@@ -61,22 +61,25 @@ services:
     depends_on:
       - postgres
     command: sh -c "cp /backup.sh /tmp/backup.sh && dos2unix /tmp/backup.sh && chmod +x /tmp/backup.sh && /tmp/backup.sh"
-    # command: /bin/sh -c "./backup.sh"
+
     networks:
       - tkr_network
-  # backup:
-  #   container_name: postgres-backup
-  #   image: postgres:alpine
-  #   command: >
-  #     sh -c 'pg_dump -U $POSTGRES_USER -d $POSTGRES_DB -h database > /backups/backup.sql'
-  #   environment:
-  #     PGUSER: ${POSTGRES_USER}
-  #     PGPASSWORD: ${POSTGRES_PASSWORD}
-  #     PGDATABASE: ${POSTGRES_DB}
-  #   volumes:
-  #     - backups:/backups
-  #   networks:
-  #     - tkr_network
+    
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "80:80"   # HTTP
+      - "81:81"   # NPM Admin interface
+      - "443:443" # HTTPS
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - tkr_network
 
 networks:
   tkr_network:
@@ -85,3 +88,5 @@ networks:
 volumes:
   db-data:
   backups:
+  npm_data:
+  npm_letsencrypt:
