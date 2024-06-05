@@ -6,7 +6,7 @@ services:
     build:
       context: ./client
     ports:
-      - "3050:80"
+      - "80:80"
     volumes:
       - ${API_URI}/front.env.js:/var/www/app/config/front.env.js:ro
       - ./certbot/www:/var/www/certbot
@@ -76,7 +76,6 @@ services:
     # command: certonly --webroot -w /var/www/certbot --force-renewal --email andnatkr@gmail.com -d andnatkr.com -d www.andnatkr.com --agree-tos
     networks:
       - tkr_network
-    
 
 networks:
   tkr_network:
@@ -85,5 +84,3 @@ networks:
 volumes:
   db-data:
   backups:
-  certbot-www:
-  certbot-conf:
