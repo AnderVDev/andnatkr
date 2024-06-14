@@ -6,4 +6,4 @@ declare global {
 }
 
 export const API =
-  import.meta.env.VITE_API_URL ?? window._env_?.API ?? "http://localhosttest";
+  import.meta.env.VITE_API_URL ?? window._env_?.API ?? "https://localhosttest";
