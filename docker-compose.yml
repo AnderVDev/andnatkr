@@ -23,8 +23,6 @@ services:
       context: .
     ports:
       - "8443:8443"
-    volumes:
-      - npm_letsencrypt:/etc/letsencrypt
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
@@ -40,8 +38,8 @@ services:
     image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
@@ -60,9 +58,9 @@ services:
       - backups:/backups
     environment:
       - PGHOST=${PGHOST}
-      - PGUSER=${PGUSER}
-      - PGPASSWORD=${PGPASSWORD}
-      - PGDATABASE=${PGDATABASE}
+      - PGUSER=${DATABASE_USERNAME}
+      - PGPASSWORD=${DATABASE_PASSWORD}
+      - PGDATABASE=${POSTGRES_DB}
     depends_on:
       - database
     command: sh -c "cp /backup.sh /tmp/backup.sh && dos2unix /tmp/backup.sh && chmod +x /tmp/backup.sh && /tmp/backup.sh"
@@ -74,9 +72,9 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - "80:80"   # HTTP
-      - "81:81"   # NPM Admin interface
-      - "443:443" # HTTPS
+      - "80:80"   
+      - "81:81"   
+      - "443:443" 
     environment:
       DB_SQLITE_FILE: "/data/database.sqlite"
     volumes:
