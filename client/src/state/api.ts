@@ -41,6 +41,8 @@ export const api = createApi({
     "TodoById",
     "Goal",
     "GoalById",
+    "Activities",
+    "ActivityById",
   ],
   endpoints: (builder) => ({
     // Authentication
@@ -107,6 +109,50 @@ export const api = createApi({
       }),
       invalidatesTags: ["Transaction"],
     }),
+
+    // Personal Finance
+
+    getActivities: builder.query({
+      query: () => "/personal_transaction",
+      providesTags: ["Activities"],
+    }),
+
+    getActivityById: builder.query({
+      query: (id) => `/personal_transaction/${id}`,
+      providesTags: ["ActivityById"],
+    }),
+
+    addActivity: builder.mutation({
+      query: (input) => ({
+        url: "/personal_transaction",
+        method: "POST",
+        body: input,
+      }),
+      invalidatesTags: ["Activities"],
+    }),
+
+    updateActivity: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/personal_transaction/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Activities"],
+    }),
+
+    deleteActivity: builder.mutation({
+      query: (id) => ({
+        url: `/personal_transaction/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Activities"],
+    }),
+
+
+
+
+
+
 
     // Estates
     getEstate: builder.query({
@@ -267,6 +313,11 @@ export const {
   useDeleteTransactionMutation,
   useAddTransactionMutation,
   useGetTransactionByIdQuery,
+  useGetActivitiesQuery,
+  useUpdateActivityMutation,
+  useDeleteActivityMutation,
+  useAddActivityMutation,
+  useGetActivityByIdQuery,
   useGetEstateQuery,
   useGetEstateMgmtQuery,
   useUpdateEstateMgmtMutation,

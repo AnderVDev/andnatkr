@@ -12,6 +12,8 @@ import Operations from "./scenes/estates/operations";
 import Mortgages from "./scenes/estates/mortgages";
 import Performance from "./scenes/estates/performance";
 import Dashboard from "./scenes/Finances/dashboard";
+import Activities from "./scenes/personal_finance/activities"
+import Finance from "./scenes/personal_finance/finance"
 
 function App() {
   const theme = createTheme(themeSettings("dark"));
@@ -26,12 +28,14 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/balance" element={<Balance />} />
+              <Route path="/balance" element={<Balance />} /> 
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/overview" element={<Overview />} />
               <Route path="/operations" element={<Operations />} />
               <Route path="/mortgages" element={<Mortgages />} />
               <Route path="/performance" element={<Performance />} />
+              <Route path="/activities" element={<Activities />} />
+              <Route path="/finance" element={<Finance />} />
             </Route>
           </Routes>
         </ThemeProvider>

@@ -21,6 +21,8 @@ import {
   AccountBalanceWalletOutlined,
   HomeWorkOutlined,
   MuseumOutlined,
+  RequestQuoteOutlined,
+  AssessmentOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState , FC} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -70,6 +72,18 @@ const navItems: NavItem[] = [
   {
     text: "Performance",
     icon: <TrendingUpOutlined />,
+  },
+  {
+    text: "Personal",
+    icon: null,
+  },
+  {
+    text: "Finance",
+    icon: <AssessmentOutlined />,
+  },
+  {
+    text: "Activities",
+    icon: <RequestQuoteOutlined />,
   },
 ];
 interface SidebarProps {
