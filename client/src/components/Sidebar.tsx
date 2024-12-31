@@ -23,8 +23,9 @@ import {
   MuseumOutlined,
   RequestQuoteOutlined,
   AssessmentOutlined,
+  SavingsOutlined,
 } from "@mui/icons-material";
-import { useEffect, useState , FC} from "react";
+import { useEffect, useState, FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 
@@ -44,6 +45,10 @@ const navItems: NavItem[] = [
   {
     text: "Transactions",
     icon: <SyncAltOutlined />,
+  },
+  {
+    text: "Savings",
+    icon: <SavingsOutlined />,
   },
   {
     text: "Dashboard",

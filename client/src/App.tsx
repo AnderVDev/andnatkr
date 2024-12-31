@@ -7,6 +7,7 @@ import LoginPage from "./scenes/login/index";
 import Layout from "./scenes/layout";
 import Balance from "./scenes/Finances/balance";
 import Transactions from "./scenes/Finances/transactions";
+import Savings from "./scenes/Finances/savings";
 import Overview from "./scenes/estates/overview";
 import Operations from "./scenes/estates/operations";
 import Mortgages from "./scenes/estates/mortgages";
@@ -26,16 +27,17 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<Navigate to="balance" replace />} />
               <Route path="/balance" element={<Balance />} /> 
               <Route path="/transactions" element={<Transactions />} />
+              <Route path="/savings" element={<Savings />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/overview" element={<Overview />} />
               <Route path="/operations" element={<Operations />} />
               <Route path="/mortgages" element={<Mortgages />} />
               <Route path="/performance" element={<Performance />} />
-              <Route path="/activities" element={<Activities />} />
               <Route path="/finance" element={<Finance />} />
+              <Route path="/activities" element={<Activities />} />
             </Route>
           </Routes>
         </ThemeProvider>
