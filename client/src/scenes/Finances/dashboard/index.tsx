@@ -1,16 +1,32 @@
-import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  MenuItem,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Header from "../../../components/Header";
 import { CustomTheme } from "../../../theme";
 import CustomBarChart from "../../../components/chart/CustomBarPosition";
-import CustomPieChart from "../../../components/chart/CustomPieChart";
 import FlexCenter from "../../../components/FlexCenter";
 import CustomLineChart from "../../../components/chart/CustomLineChart";
+import CustomPieChartByDetail from "./_charts/CustomPieChartByDetail";
+import { transactionDetails } from "../../../dataUtil";
+import { useState } from "react";
+import CustomPieChartStatementByMonth from "./_charts/CustomPieChartStatementByMonth";
+import CustomPieChartDetailByMonth from "./_charts/CustomPieChartDetailByMonth";
+import CustomPieChartTotalByStatements from "./_charts/CustomPieChartTotalByStatements";
 // type Props = {}
 
 const Dashboard = () => {
   const theme = useTheme<CustomTheme>();
 
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const [selectedDetail, setSelectedDetail] = useState<string>("Salary");
+  const handleDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDetail(event.target.value); // Update state with selected value
+  };
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -43,7 +59,7 @@ const Dashboard = () => {
               variant="h2"
               sx={{ color: theme.palette.secondary.light, marginTop: 1 }}
             >
-              Last 12 months
+              Last 12 months By Statements
             </Typography>
             <CustomBarChart />
           </FlexCenter>
@@ -68,9 +84,9 @@ const Dashboard = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Totals
+              Total By statements
             </Typography>
-            <CustomPieChart />
+            <CustomPieChartTotalByStatements />
           </FlexCenter>
         </Box>
 
@@ -92,9 +108,9 @@ const Dashboard = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total Expenses By detail
+              Expenses By detail
             </Typography>
-            <CustomPieChart />
+            <CustomPieChartByDetail />
           </FlexCenter>
         </Box>
 
@@ -118,10 +134,12 @@ const Dashboard = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total Statement By Month
+              Statement By Month
             </Typography>
-            <CustomPieChart />
           </FlexCenter>
+          
+
+          <CustomPieChartStatementByMonth />
         </Box>
 
         <Box
@@ -142,10 +160,10 @@ const Dashboard = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total detail By month
+              Detail By month
             </Typography>
-            <CustomPieChart />
           </FlexCenter>
+            <CustomPieChartDetailByMonth />
         </Box>
 
         <Box
@@ -166,20 +184,34 @@ const Dashboard = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total statement last 12 months
+              Total By detail last 12 months
             </Typography>
-            {/* <LineChart
-              xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-              series={[
-                {
-                  data: [2, 5.5, 2, 8.5, 1.5, 5],
-                },
-              ]}
-              width={500}
-              height={300}
-            /> */}
-            <CustomLineChart />
           </FlexCenter>
+          <TextField
+            id="detail"
+            select
+            label="Detail"
+            value={selectedDetail} // Control the TextField value with state
+            onChange={handleDetailChange} // Update state on change
+            // helperText="Please select a detail"
+            sx={{
+              color: theme.palette.secondary.light,
+              marginTop: 2,
+              marginLeft: 2,
+              display: "flex",
+              // justifyContent: "flex-start",
+              width: "10%",
+            }}
+          >
+            {transactionDetails.map((option, index) => (
+              <MenuItem key={`${option}-${index}`} value={option}>
+                {" "}
+                {/* Unique key by combining option and index */}
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <CustomLineChart detail={selectedDetail} />
         </Box>
       </Box>
     </Box>

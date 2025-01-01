@@ -43,5 +43,20 @@ export const details: { [key: string]: string[] } = {
     "Subscription",
     "Utility",
     "Saving",
+    "transport",
   ],
 };
+
+export const transactionDetails: string[] = [
+  "Salary",
+  "Other",
+  "Entertainment",
+  "Grocery",
+  "Insurance",
+  "Other",
+  "Rent",
+  "Subscription",
+  "Utility",
+  "Saving",
+  "transport",
+];

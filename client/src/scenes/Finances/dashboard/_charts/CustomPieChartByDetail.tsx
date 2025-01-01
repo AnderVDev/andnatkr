@@ -4,33 +4,39 @@ import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 // import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
 import { pieArcLabelClasses, PiePlot } from "@mui/x-charts/PieChart";
-import { ItemTooltip } from "./tooltip/ItemTooltip";
-import { useTransactionsSummary } from "./hooks/useTransactionsSummary";
+import { ItemTooltip } from "../../../../components/chart/tooltip/ItemTooltip";
+import { useTransactionsSummary } from "../../../../components/chart/hooks/useTransactionsSummary";
 // import numeral from "numeral";
-export default function CustomPieChart() {
+export default function CustomPieChartByDetail() {
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const { totalIncomes, totalExpenses } =
-    useTransactionsSummary();
+  const { totalExpensesByDetail } = useTransactionsSummary();
 
-  // Pie chart data
-  const dataset = [
-    {
-      id: "income",
-      label: "Income",
-      value: totalIncomes,
-      color: "#2c5b87", // Color for income
-    },
-    {
-      id: "expenses",
-      label: "Expenses",
-      value: totalExpenses,
-      color: "#d1d4dc", // Color for expenses
-    },
+  const palette = [
+    "#2c5b87", // Deep blue
+    "#cccccc", // Light gray
+    "#8e44ad", // Rich purple
+    "#6c3483", // Deep violet
+    "#1f3b4d", // Midnight blue
+    "#3a5f81", // Steel blue
+    "#a0a0a0", // Medium gray
+    "#5b2c6f", // Dark plum
+    "#e0e0e0", // Pale gray
+    "#2a4974", // Navy blue
   ];
+
+  const data = totalExpensesByDetail || [];
+  // Pie chart data
+  const dataset = data.map((item: { detail: string; totalAmount: number }) => ({
+    id: item.detail.toLowerCase().replace(/\s+/g, "-"), // Ensure unique, consistent ID
+    label: item.detail, // Use detail as the label
+    value: item.totalAmount, // Total amount for the pie chart segment
+    color: "#2c5b87", // Common color for all expense categories (can be customized)
+  }));
 
   return (
     <ResponsiveChartContainer
+      colors={palette}
       height={300}
       series={[
         {
@@ -40,9 +46,14 @@ export default function CustomPieChart() {
             id: item.id,
             value: item.value,
             label: item.label,
-            color: item.color,
+            // color: item.color,
           })),
-          //  arcLabel: (item) => numeral(item.value).format("0,0.00"),
+          highlightScope: { fade: "global", highlight: "item" },
+          paddingAngle: 0.5,
+          cx: 170,
+          cy: 100,
+          // outerRadius: 126,
+          // arcLabel: (item) => numeral(item.value).format("0,0.00"),
           // arcLabel: "value",
           // arcLabelMinAngle: 35,
           // arcLabelRadius: "50%",
@@ -55,7 +66,7 @@ export default function CustomPieChart() {
       }}
     >
       <g clipPath={`url(#${clipPathId})`}>
-        <PiePlot margin={{ top: 100, bottom: 100, left: 100, right: 100 }} />
+        <PiePlot />
       </g>
       <ChartsLegend
         direction="column"

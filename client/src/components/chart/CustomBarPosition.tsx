@@ -6,13 +6,17 @@ import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsYAxis } from "@mui/x-charts/ChartsYAxis";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 import { ItemTooltip } from "./tooltip/ItemTooltip";
-import { dataset } from "./datasets/Total_Income_Expenses";
+import { useTransactionsSummary } from "./hooks/useTransactionsSummary";
 // import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
 
 export default function CustomBarChart() {
 
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
+  const {total12Months} = useTransactionsSummary();
+
+  const dataset = total12Months || [];
+
   return (
     <ResponsiveChartContainer
       height={400}

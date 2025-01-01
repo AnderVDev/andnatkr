@@ -4,14 +4,12 @@ import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 // import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
 import { pieArcLabelClasses, PiePlot } from "@mui/x-charts/PieChart";
-import { ItemTooltip } from "./tooltip/ItemTooltip";
-import { useTransactionsSummary } from "./hooks/useTransactionsSummary";
-// import numeral from "numeral";
-export default function CustomPieChart() {
+import { ItemTooltip } from "../../../../components/chart/tooltip/ItemTooltip";
+import { useTransactionsSummary } from "../../../../components/chart/hooks/useTransactionsSummary";
+export default function CustomPieChartTotalByStatements() {
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const { totalIncomes, totalExpenses } =
-    useTransactionsSummary();
+  const { totalIncomes, totalExpenses } = useTransactionsSummary();
 
   // Pie chart data
   const dataset = [
@@ -32,6 +30,7 @@ export default function CustomPieChart() {
   return (
     <ResponsiveChartContainer
       height={300}
+      margin={{ right: 150 }}
       series={[
         {
           type: "pie",
@@ -42,6 +41,10 @@ export default function CustomPieChart() {
             label: item.label,
             color: item.color,
           })),
+          highlightScope: { fade: "global", highlight: "item" },
+          paddingAngle: 0.5,
+          cx: 200,
+          cy: 100,
           //  arcLabel: (item) => numeral(item.value).format("0,0.00"),
           // arcLabel: "value",
           // arcLabelMinAngle: 35,
@@ -55,7 +58,7 @@ export default function CustomPieChart() {
       }}
     >
       <g clipPath={`url(#${clipPathId})`}>
-        <PiePlot margin={{ top: 100, bottom: 100, left: 100, right: 100 }} />
+        <PiePlot />
       </g>
       <ChartsLegend
         direction="column"
