@@ -170,7 +170,7 @@ const Insights = () => {
           mt="20px"
           display="grid"
           gridColumn="span 12"
-          gridRow="span 3"
+          gridRow="span 4"
           bgcolor={theme.palette.background.alt}
           borderRadius="0.55rem"
           sx={{

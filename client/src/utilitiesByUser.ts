@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { currentMonth, currentYear, months } from "./dataUtil";
 
-
-
-export const dataByUser = (
-  data: any[],
-  user_id: string
-) => {
+export const dataByUser = (data: any[], user_id: string) => {
   return data
     .filter((transaction) => transaction.user_id === user_id)
-    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    .sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )
+    .map((transaction, index) => ({
+      ...transaction,
+      id: index + 1, // Set `id` to the index (starting from 1)
+    }));
 };
-
 
 export const filterByKey = (data: any[], key: string | number, value: any) => {
   const filteredData = data
@@ -30,9 +31,6 @@ export const accumulatorByTotalAmount = (
     return accumulator + entry.amount;
   }, 0);
 };
-
-
-
 
 // ***************** Insights **************************************
 

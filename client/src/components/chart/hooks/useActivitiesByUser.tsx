@@ -92,9 +92,9 @@ export function useActivitiesByUser() {
         // Flatten data
         const flattenedData = data.map((item: unknown) => flatten(item));
         // const currentUserData = dataByUser(flattenedData, id)
-        // const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0652bf9")
-        const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0658421")
-
+        const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0652bf9")
+        // const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0658421")
+        console.log({currentUserData})
         // Calculate totals
         const totalIncomesCalculated = accumulatorByTotalAmount(
           currentUserData,

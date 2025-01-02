@@ -22,11 +22,11 @@ const Transactions = () => {
       headerName: "ID",
       flex: 0.3,
     },
-    {
-      field: "user.firstName",
-      headerName: "User",
-      flex: 0.7,
-    },
+    // {
+    //   field: "user.firstName",
+    //   headerName: "User",
+    //   flex: 0.7,
+    // },
     {
       field: "financeStatement",
       headerName: "Statement",
