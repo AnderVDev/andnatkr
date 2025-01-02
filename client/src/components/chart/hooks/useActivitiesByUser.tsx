@@ -7,11 +7,12 @@ import {
   accumulatorLast12MonthsByDetail,
   accumulatorTotalStatementsByMonth,
   accumulatorTotalDetailsByMonth,
-} from "../../../utility";
+  dataByUser,
+} from "../../../utilitiesByUser";
 import { useEffect, useState } from "react";
 import { financeTransactions } from "../datasets/dataset_Fake";
-
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 // Define types based on the expected data structure
 // interface TransactionData {
 //   financeStatement: {
@@ -53,9 +54,18 @@ type Total12MonthsByDetail = {
   details: Record<string, number>; // A record of the categories and their respective amounts for that month
 };
 
-export function useTransactionsSummary() {
+export function useActivitiesByUser() {
   // const { data, isLoading, error } = useGetTransactionQuery({});
   const data = financeTransactions;
+
+  const persisted = useSelector((state: RootState) => state.persisted);
+  const { user } = persisted;
+  const id = user ? user.id : "";
+
+  console.log({id})
+
+
+
   const [totalIncomes, setTotalIncomes] = useState<number>(0);
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const [totalStatementsByMonth, setTotalStatementsByMonth] = useState<
@@ -81,33 +91,36 @@ export function useTransactionsSummary() {
       try {
         // Flatten data
         const flattenedData = data.map((item: unknown) => flatten(item));
-        
+        // const currentUserData = dataByUser(flattenedData, id)
+        // const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0652bf9")
+        const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0658421")
+
         // Calculate totals
         const totalIncomesCalculated = accumulatorByTotalAmount(
-          flattenedData,
+          currentUserData,
           "financeStatement",
           "Income"
         );
         const totalExpensesCalculated = accumulatorByTotalAmount(
-          flattenedData,
+          currentUserData,
           "financeStatement",
           "Expense"
         );
         const totalStatementsByMonthCalculated =
-          accumulatorTotalStatementsByMonth(flattenedData) as Transaction[];
+          accumulatorTotalStatementsByMonth(currentUserData) as Transaction[];
 
         const totalDetailsByMonthCalculated =
-        accumulatorTotalDetailsByMonth(flattenedData) as TotalDetailsByMonth[];
+        accumulatorTotalDetailsByMonth(currentUserData) as TotalDetailsByMonth[];
 
         const totalExpensesByDetailCalculated =
           accumulatorTotalExpensesByDetailGrouped(
-            flattenedData
+            currentUserData
           ) as ExpenseDetail[];
 
-        const totals12MonthsCalculated = accumulatorLast12Months(flattenedData);
+        const totals12MonthsCalculated = accumulatorLast12Months(currentUserData);
 
         const totals12MonthsByDetailCalculated =
-          accumulatorLast12MonthsByDetail(flattenedData);
+          accumulatorLast12MonthsByDetail(currentUserData);
 
         // Set totals in state
         setTotalIncomes(totalIncomesCalculated);

@@ -151,7 +151,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
           >
             {pageType === "newInput" && (
               <>
-                <TextField
+                {/* <TextField
                   label="User"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -163,7 +163,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
                   InputProps={{
                     readOnly: true,
                   }}
-                />
+                /> */}
 
                 <TextField
                   label="Statement"

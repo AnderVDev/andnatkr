@@ -8,18 +8,18 @@ import {
 } from "@mui/material";
 import Header from "../../../components/Header";
 import { CustomTheme } from "../../../theme";
-import CustomBarChart from "../../../components/chart/CustomBarPosition";
 import FlexCenter from "../../../components/FlexCenter";
-import CustomLineChart from "../../../components/chart/CustomLineChart";
 import CustomPieChartByDetail from "./_charts/CustomPieChartByDetail";
 import { transactionDetails } from "../../../dataUtil";
 import { useState } from "react";
 import CustomPieChartStatementByMonth from "./_charts/CustomPieChartStatementByMonth";
 import CustomPieChartDetailByMonth from "./_charts/CustomPieChartDetailByMonth";
 import CustomPieChartTotalByStatements from "./_charts/CustomPieChartTotalByStatements";
+import CustomBarByUser from "./_charts/CustomBarByUser";
+import CustomLineChartByUser from "./_charts/CustomLineChartByUser";
 // type Props = {}
 
-const Performance = () => {
+const Insights = () => {
   const theme = useTheme<CustomTheme>();
 
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -30,10 +30,7 @@ const Performance = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header
-        title="PERFORMANCE"
-        subtitle="View a full performances of properties"
-      />
+      <Header title="INSIGHTS" subtitle="Summary" />
 
       {/* Main Grid */}
       <Box
@@ -64,7 +61,7 @@ const Performance = () => {
             >
               Last 12 months By Statements
             </Typography>
-            <CustomBarChart />
+            <CustomBarByUser />
           </FlexCenter>
         </Box>
 
@@ -87,7 +84,7 @@ const Performance = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total by statements 506
+              Total By statements
             </Typography>
             <CustomPieChartTotalByStatements />
           </FlexCenter>
@@ -111,7 +108,7 @@ const Performance = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Total by statements 619
+              Expenses By detail
             </Typography>
             <CustomPieChartByDetail />
           </FlexCenter>
@@ -137,9 +134,10 @@ const Performance = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Statements By Month 506
+              Statement By Month
             </Typography>
           </FlexCenter>
+          
 
           <CustomPieChartStatementByMonth />
         </Box>
@@ -162,10 +160,10 @@ const Performance = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Statements By Month 506
+              Detail By month
             </Typography>
           </FlexCenter>
-          <CustomPieChartDetailByMonth />
+            <CustomPieChartDetailByMonth />
         </Box>
 
         <Box
@@ -213,11 +211,11 @@ const Performance = () => {
               </MenuItem>
             ))}
           </TextField>
-          <CustomLineChart detail={selectedDetail} />
+          <CustomLineChartByUser detail={selectedDetail} />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Performance;
+export default Insights;

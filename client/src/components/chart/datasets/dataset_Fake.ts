@@ -154,5 +154,29 @@ export const financeTransactions = [
       updated_at: "2024-06-10T12:00:00.000",
       year: 2024,
       user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
-    }
+    },
+    {
+      id: 14,
+      amount: 1300,
+      comments: null,
+      createdAt: "2024-06-16T17:59:47.425",
+      detail: "Salary",
+      financeStatement: "Income",
+      month: "June",
+      updated_at: "2024-06-16T17:59:47.425",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0658421"
+    },
+    {
+      id: 15,
+      amount: 800,
+      comments: "internet",
+      createdAt: "2024-06-25T09:15:30.000",
+      detail: "Utilities",
+      financeStatement: "Expense",
+      month: "June",
+      updated_at: "2024-06-25T09:15:30.000",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0658421"
+    },
   ];

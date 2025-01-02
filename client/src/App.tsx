@@ -15,6 +15,7 @@ import Performance from "./scenes/estates/performance";
 import Dashboard from "./scenes/Finances/dashboard";
 import Activities from "./scenes/personal_finance/activities"
 import Finance from "./scenes/personal_finance/finance"
+import Insights from "./scenes/personal_finance/insights";
 
 function App() {
   const theme = createTheme(themeSettings("dark"));
@@ -38,6 +39,7 @@ function App() {
               <Route path="/performance" element={<Performance />} />
               <Route path="/finance" element={<Finance />} />
               <Route path="/activities" element={<Activities />} />
+              <Route path="/insights" element={<Insights />} />
             </Route>
           </Routes>
         </ThemeProvider>

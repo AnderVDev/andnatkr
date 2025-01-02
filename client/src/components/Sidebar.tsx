@@ -24,6 +24,7 @@ import {
   RequestQuoteOutlined,
   AssessmentOutlined,
   SavingsOutlined,
+  InsightsOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState, FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -89,6 +90,10 @@ const navItems: NavItem[] = [
   {
     text: "Activities",
     icon: <RequestQuoteOutlined />,
+  },
+  {
+    text: "Insights",
+    icon: <InsightsOutlined />,
   },
 ];
 interface SidebarProps {
