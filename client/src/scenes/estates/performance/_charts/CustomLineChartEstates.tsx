@@ -1,41 +1,48 @@
 import * as React from "react";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
-import { BarPlot } from "@mui/x-charts/BarChart";
 import { ChartsXAxis } from "@mui/x-charts/ChartsXAxis";
 import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsYAxis } from "@mui/x-charts/ChartsYAxis";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
-import { ItemTooltip } from "./tooltip/ItemTooltip";
-import { useTransactionsSummary } from "./hooks/useTransactionsSummary";
-// import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
+import { LineHighlightPlot, LinePlot } from "@mui/x-charts";
+import { LineCharTooltip } from "../../../../components/chart/tooltip/LineCharTooltip";
+import { useOperationsEstates } from "../../../../components/chart/hooks/useOperationsEstates";
 
-export default function CustomBarChart() {
-
+interface CustomLineChartProps {
+  estate: string;
+  detail: string; // Accept the selected detail as a prop
+}
+export default function CustomLineChartEstates({
+  estate,
+  detail,
+}: CustomLineChartProps) {
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const {total12Months} = useTransactionsSummary();
+  const { total12MonthsByDetail } = useOperationsEstates(estate);
 
-  const dataset = total12Months || [];
+  // Map the selected `detail` to its data across months
+  const filteredData = total12MonthsByDetail
+    ? total12MonthsByDetail.map((item) => ({
+        month: item.month,
+        value: item.details[detail] || 0, // Use the value for the selected detail, or 0 if not found
+      }))
+    : [];
+
+  const data = filteredData.length > 0 ? filteredData : [];
 
   return (
     <ResponsiveChartContainer
       height={400}
-      dataset={dataset}
+      dataset={data}
       series={[
         {
-          type: "bar",
-          dataKey: "totalIncome",
+          type: "line",
+          dataKey: "value",
           label: "Income",
           color: "#2c5b87",
-        },
-        {
-          type: "bar",
-          dataKey: "totalExpenses",
-          label: "Expenses",
-          color: "#d1d4dc",
+          highlightScope: { fade: "global", highlight: "item" },
         },
       ]}
-
       xAxis={[
         {
           scaleType: "band",
@@ -44,8 +51,13 @@ export default function CustomBarChart() {
       ]}
     >
       <g clipPath={`url(#${clipPathId})`}>
-        <BarPlot />
+        <LinePlot />
       </g>
+      {/* Tooltip integration */}
+      {/* <ChartsTooltip
+        trigger="axis" // Tooltip triggers on item hover
+      /> */}
+
       <ChartsLegend
         slotProps={{
           legend: {
@@ -82,7 +94,23 @@ export default function CustomBarChart() {
         }}
       />
 
-      <ItemTooltip />
+      {/* <ChartsAxisHighlight
+        x="line"
+        y="line"  
+      /> */}
+
+      <LineHighlightPlot
+        slotProps={{
+          lineHighlight: {
+            style: {
+              fill: "#CCCCCC",
+            },
+          },
+        }}
+      />
+
+      <LineCharTooltip />
+
       <ChartsClipPath id={clipPathId} />
     </ResponsiveChartContainer>
   );

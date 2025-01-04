@@ -22,6 +22,7 @@ public class GoalDto {
     private String objective;
     private Double target;
     private Double current;
+    private String type;
     private Date createdAt;
     private Date updatedAt;
 }

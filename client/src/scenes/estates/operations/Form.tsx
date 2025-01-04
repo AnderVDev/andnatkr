@@ -17,7 +17,12 @@ import {
   useUpdateEstateMgmtMutation,
 } from "../../../state/api";
 import { useSelector } from "react-redux";
-import { months, currentMonth, currentYear } from "../../../dataUtil";
+import {
+  months,
+  currentMonth,
+  currentYear,
+  estateDetails,
+} from "../../../dataUtil";
 import { CustomTheme } from "../../../theme";
 import { RootState } from "../../../state/store";
 
@@ -172,6 +177,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
                     </MenuItem>
                   ))}
                 </TextField>
+
                 <TextField
                   label="Statement"
                   onBlur={handleBlur}
@@ -196,6 +202,26 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
                 </TextField>
 
                 <TextField
+                  label="Detail"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.detail}
+                  name="detail"
+                  error={Boolean(touched.detail) && Boolean(errors.detail)}
+                  helperText={touched.detail && errors.detail}
+                  sx={{ gridColumn: "span 2" }}
+                  select
+                >
+                  {estateDetails.map((option, index) => (
+                    <MenuItem key={`${option}-${index}`} value={option}>
+                      {" "}
+                      {/* Unique key by combining option and index */}
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
                   label="Amount"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -203,7 +229,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
                   name="amount"
                   error={Boolean(touched.amount) && Boolean(errors.amount)}
                   helperText={touched.amount && errors.amount}
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 2" }}
                 />
 
                 <TextField
@@ -233,17 +259,6 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
                   error={Boolean(touched.year) && Boolean(errors.year)}
                   helperText={touched.year && errors.year}
                   sx={{ gridColumn: "span 2" }}
-                />
-
-                <TextField
-                  label="Detail"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.detail}
-                  name="detail"
-                  error={Boolean(touched.detail) && Boolean(errors.detail)}
-                  helperText={touched.detail && errors.detail}
-                  sx={{ gridColumn: "span 4" }}
                 />
 
                 <TextField

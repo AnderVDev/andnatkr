@@ -111,7 +111,6 @@ export const api = createApi({
     }),
 
     // Personal Finance
-
     getActivities: builder.query({
       query: () => "/personal_transaction",
       providesTags: ["Activities"],

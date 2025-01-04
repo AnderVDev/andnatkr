@@ -5,15 +5,19 @@ import { ChartsXAxis } from "@mui/x-charts/ChartsXAxis";
 import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsYAxis } from "@mui/x-charts/ChartsYAxis";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
-import { ItemTooltip } from "./tooltip/ItemTooltip";
-import { useTransactionsSummary } from "./hooks/useTransactionsSummary";
-// import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
+import { ItemTooltip } from "../../../../components/chart/tooltip/ItemTooltip";
+import { useOperationsEstates } from "../../../../components/chart/hooks/useOperationsEstates";
 
-export default function CustomBarChart() {
-
+interface CustomBarEstatesProps {
+  estate: string; // Accept the selected detail as a prop
+}
+export default function CustomBarEstates({ estate }: CustomBarEstatesProps) {
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const {total12Months} = useTransactionsSummary();
+  const { total12Months } = useOperationsEstates(estate);
+  // const data = realEstateTransactions;
+
+  // const dataset12Months = accumulatorLast12Months(data, estate);
 
   const dataset = total12Months || [];
 
@@ -35,7 +39,6 @@ export default function CustomBarChart() {
           color: "#d1d4dc",
         },
       ]}
-
       xAxis={[
         {
           scaleType: "band",

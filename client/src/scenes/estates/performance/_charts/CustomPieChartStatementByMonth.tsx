@@ -2,21 +2,23 @@ import * as React from "react";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
-// import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
 import { pieArcLabelClasses, PiePlot } from "@mui/x-charts/PieChart";
 import { ItemTooltip } from "../../../../components/chart/tooltip/ItemTooltip";
-import { useTransactionsSummary } from "../../../../components/chart/hooks/useTransactionsSummary";
-// import numeral from "numeral";
 import { Box, MenuItem, TextField, useTheme } from "@mui/material";
 import { CustomTheme } from "../../../../theme";
 import { currentMonth, currentYear, months, years } from "../../../../dataUtil";
-
-export default function CustomPieChartStatementByMonth() {
+import { useOperationsEstates } from "../../../../components/chart/hooks/useOperationsEstates";
+interface CustomPieChartStatementByMonthProps {
+  estate: string; // Accept the selected detail as a prop
+}
+export default function CustomPieChartStatementByMonth({
+  estate,
+}: CustomPieChartStatementByMonthProps) {
   const theme = useTheme<CustomTheme>();
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const { totalStatementsByMonth } = useTransactionsSummary();
 
+  const { totalStatementsByMonth } = useOperationsEstates(estate);
   const [selectedMonth, setSelectedMonth] =
     React.useState<string>(currentMonth);
   const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +40,7 @@ export default function CustomPieChartStatementByMonth() {
   );
 
   const totalIncomes =
-    filteredTransactions.length > 0 ? filteredTransactions[0].totalIncome : 0;
+    filteredTransactions.length > 0 ? filteredTransactions[0].totalIncomes : 0;
 
   const totalExpenses =
     filteredTransactions.length > 0 ? filteredTransactions[0].totalExpenses : 0;

@@ -60,3 +60,11 @@ export const transactionDetails: string[] = [
   "Saving",
   "transport",
 ];
+
+export const estates: string[] = ["506", "619"];
+export const estateDetails: string[] = [
+  "Utilities",
+  "Rent",
+  "Mortgage Payment",
+  "Other",
+];

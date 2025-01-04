@@ -74,6 +74,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
     formData.append("target", String(values["target"]));
     formData.append(
       "current",
+
       isUpdateType
         ? String(
             (numeral(row["current"]).value() || 0) +
@@ -81,7 +82,7 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
           )
         : "0"
     );
-    formData.append("type", "housing");
+    formData.append("type", "personal");
 
     const formDataObject = Object.fromEntries(formData.entries());
     const jsonData = JSON.stringify(unflatten(formDataObject));
@@ -119,7 +120,21 @@ const Form: React.FC<FormProps> = ({ onClosed, modalType, row }) => {
             }}
           >
             {!isUpdateType ? (
-              <>           
+              <>
+                {/* <TextField
+                  label="User"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.user}
+                  name="user"
+                  error={Boolean(touched.user) && Boolean(errors.user)}
+                  helperText={touched.user && errors.user}
+                  sx={{ gridColumn: "span 12" }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                /> */}
+
                 <TextField
                   label="Objective"
                   onBlur={handleBlur}

@@ -2,14 +2,20 @@ import * as React from "react";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsClipPath } from "@mui/x-charts/ChartsClipPath";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
-// import { dataset, valueFormatter } from "./datasets/Total_Income_Expenses";
 import { pieArcLabelClasses, PiePlot } from "@mui/x-charts/PieChart";
 import { ItemTooltip } from "../../../../components/chart/tooltip/ItemTooltip";
-import { useTransactionsSummary } from "../../../../components/chart/hooks/useTransactionsSummary";
-export default function CustomPieChartTotalByStatements() {
+
+import { useOperationsEstates } from "../../../../components/chart/hooks/useOperationsEstates";
+interface CustomPieChartTotalByStatementsProps {
+  estate: string; // Accept the selected detail as a prop
+}
+export default function CustomPieChartTotalByStatements({
+  estate,
+}: CustomPieChartTotalByStatementsProps) {
   const id = React.useId();
   const clipPathId = `${id}-clip-path`;
-  const { totalIncomes, totalExpenses } = useTransactionsSummary();
+
+  const { totalIncomes, totalExpenses} = useOperationsEstates(estate);
 
   // Pie chart data
   const dataset = [

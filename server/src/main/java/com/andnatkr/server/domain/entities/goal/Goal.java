@@ -27,6 +27,7 @@ public class Goal {
     private String objective;
     private Double target;
     private Double current;
+    private String type;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

@@ -8,13 +8,20 @@ import { useGetActivitiesQuery } from "../../../state/api";
 import ActionButtons from "./ActionButtons";
 import numeral from "numeral";
 import { CustomTheme } from "../../../theme";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
+import { dataByUser } from "../../../utilitiesByUser";
 
-
-const Transactions = () => {
+const Activities = () => {
   const theme = useTheme<CustomTheme>();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const persisted = useSelector((state: RootState) => state.persisted);
+  const { user } = persisted;
+  const id = user ? user.id : "";
   const { data, isLoading } = useGetActivitiesQuery({});
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
+
+  const currentUserData = id ? dataByUser(flattenedData, id) : [];
 
   const columns: GridColDef[] = [
     {
@@ -22,11 +29,6 @@ const Transactions = () => {
       headerName: "ID",
       flex: 0.3,
     },
-    // {
-    //   field: "user.firstName",
-    //   headerName: "User",
-    //   flex: 0.7,
-    // },
     {
       field: "financeStatement",
       headerName: "Statement",
@@ -86,7 +88,6 @@ const Transactions = () => {
           "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
         }}
       >
-      
         <Box
           gridColumn="span 12"
           gridRow="span 3"
@@ -128,14 +129,13 @@ const Transactions = () => {
             }}
             loading={isLoading || !data}
             getRowId={(row) => row.id}
-            rows={flattenedData}
+            rows={currentUserData}
             columns={columns}
           />
         </Box>
       </Box>
-     
     </Box>
   );
 };
 
-export default Transactions;
+export default Activities;

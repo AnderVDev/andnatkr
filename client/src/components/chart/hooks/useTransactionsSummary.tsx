@@ -1,4 +1,4 @@
-// import { useGetTransactionQuery } from "../../../state/api";
+import { useGetTransactionQuery } from "../../../state/api";
 import { flatten } from "flat";
 import {
   accumulatorByTotalAmount,
@@ -9,7 +9,7 @@ import {
   accumulatorTotalDetailsByMonth,
 } from "../../../utility";
 import { useEffect, useState } from "react";
-import { financeTransactions } from "../datasets/dataset_Fake";
+// import { financeTransactions } from "../datasets/dataset_Fake";
 
 
 // Define types based on the expected data structure
@@ -54,8 +54,8 @@ type Total12MonthsByDetail = {
 };
 
 export function useTransactionsSummary() {
-  // const { data, isLoading, error } = useGetTransactionQuery({});
-  const data = financeTransactions;
+  const { data, isLoading, error } = useGetTransactionQuery({});
+  // const data = financeTransactions;
   const [totalIncomes, setTotalIncomes] = useState<number>(0);
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
   const [totalStatementsByMonth, setTotalStatementsByMonth] = useState<
@@ -76,8 +76,8 @@ export function useTransactionsSummary() {
   >([]);
 
   useEffect(() => {
-    // if (!isLoading && data) {
-    if (data) {
+    if (!isLoading && data) {
+    // if (data) {
       try {
         // Flatten data
         const flattenedData = data.map((item: unknown) => flatten(item));
@@ -125,17 +125,17 @@ export function useTransactionsSummary() {
         setTotalExpensesByDetail([]);
       }
     }
-  }, [data]);
-  // }, [data, isLoading]);
+  // }, [data]);
+  }, [data, isLoading]);
 
-  return {
-    totalIncomes,
-    totalExpenses,
-    totalStatementsByMonth,
-    totalDetailsByMonth,
-    total12Months,
-    totalExpensesByDetail,
-    total12MonthsByDetail,
-  };
-  // return { totalIncomes, totalExpenses,totalStatementsByMonth, totalDetailsByMonth, total12Months, totalExpensesByDetail,total12MonthsByDetail, isLoading, error };
+  // return {
+  //   totalIncomes,
+  //   totalExpenses,
+  //   totalStatementsByMonth,
+  //   totalDetailsByMonth,
+  //   total12Months,
+  //   totalExpensesByDetail,
+  //   total12MonthsByDetail,
+  // };
+  return { totalIncomes, totalExpenses,totalStatementsByMonth, totalDetailsByMonth, total12Months, totalExpensesByDetail,total12MonthsByDetail, isLoading, error };
 }

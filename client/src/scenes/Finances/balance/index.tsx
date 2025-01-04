@@ -293,16 +293,7 @@ const Balance = () => {
           <TodoList />
         </Box>
       </Box>
-      <Box
-        mt="20px"
-        display="grid"
-        gridTemplateColumns="repeat(4, 1fr)"
-        gridAutoRows="160px"
-        gap="20px"
-        sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
-        }}
-      ></Box>
+
     </Box>
   );
 };

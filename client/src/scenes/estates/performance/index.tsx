@@ -8,22 +8,30 @@ import {
 } from "@mui/material";
 import Header from "../../../components/Header";
 import { CustomTheme } from "../../../theme";
-import CustomBarChart from "../../../components/chart/CustomBarPosition";
 import FlexCenter from "../../../components/FlexCenter";
-import CustomLineChart from "../../../components/chart/CustomLineChart";
-import CustomPieChartByDetail from "./_charts/CustomPieChartByDetail";
-import { transactionDetails } from "../../../dataUtil";
+import CustomLineChartEstates from "./_charts/CustomLineChartEstates";
+import { estates, estateDetails } from "../../../dataUtil";
 import { useState } from "react";
 import CustomPieChartStatementByMonth from "./_charts/CustomPieChartStatementByMonth";
-import CustomPieChartDetailByMonth from "./_charts/CustomPieChartDetailByMonth";
+// import CustomPieChartDetailByMonth from "./_charts/CustomPieChartDetailByMonth";
 import CustomPieChartTotalByStatements from "./_charts/CustomPieChartTotalByStatements";
-// type Props = {}
+import CustomBarEstates from "./_charts/CustomBarEstates";
+
 
 const Performance = () => {
   const theme = useTheme<CustomTheme>();
 
+  // const data = realEstateTransactions;
+
+  // Call the hook
+
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const [selectedDetail, setSelectedDetail] = useState<string>("Salary");
+  const [selectedEstate, setSelectedEstate] = useState<string>("506");
+  const handleEstateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedEstate(event.target.value); // Update state with selected value
+  };
+
+  const [selectedDetail, setSelectedDetail] = useState<string>("Rent");
   const handleDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDetail(event.target.value); // Update state with selected value
   };
@@ -59,13 +67,36 @@ const Performance = () => {
         >
           <FlexCenter>
             <Typography
-              variant="h2"
+              variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 1 }}
             >
               Last 12 months By Statements
             </Typography>
-            <CustomBarChart />
           </FlexCenter>
+          <TextField
+            id="estate"
+            select
+            label="Estate"
+            value={selectedEstate} // Control the TextField value with state
+            onChange={handleEstateChange} // Update state on change
+            // helperText="Please select a detail"
+            sx={{
+              color: theme.palette.secondary.light,
+              marginTop: 0,
+              marginLeft: 2,
+              display: "flex",
+              width: "10%",
+            }}
+          >
+            {estates.map((option, index) => (
+              <MenuItem key={`${option}-${index}`} value={option}>
+                {" "}
+                {/* Unique key by combining option and index */}
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <CustomBarEstates estate={selectedEstate} />
         </Box>
 
         {/* Row 2 */}
@@ -89,7 +120,7 @@ const Performance = () => {
             >
               Total by statements 506
             </Typography>
-            <CustomPieChartTotalByStatements />
+            <CustomPieChartTotalByStatements estate={"506"} />
           </FlexCenter>
         </Box>
 
@@ -113,7 +144,7 @@ const Performance = () => {
             >
               Total by statements 619
             </Typography>
-            <CustomPieChartByDetail />
+            <CustomPieChartTotalByStatements estate={"619"} />
           </FlexCenter>
         </Box>
 
@@ -141,7 +172,7 @@ const Performance = () => {
             </Typography>
           </FlexCenter>
 
-          <CustomPieChartStatementByMonth />
+          <CustomPieChartStatementByMonth estate={"506"} />
         </Box>
 
         <Box
@@ -162,10 +193,10 @@ const Performance = () => {
               variant="h3"
               sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
             >
-              Statements By Month 506
+              Statements By Month 619
             </Typography>
           </FlexCenter>
-          <CustomPieChartDetailByMonth />
+          <CustomPieChartStatementByMonth estate={"619"} />
         </Box>
 
         <Box
@@ -184,36 +215,70 @@ const Performance = () => {
           <FlexCenter>
             <Typography
               variant="h3"
-              sx={{ color: theme.palette.secondary.light, marginTop: 2 }}
+              sx={{
+                color: theme.palette.secondary.light,
+                marginTop: 2,
+                marginBottom: 1,
+              }}
             >
               Total By detail last 12 months
             </Typography>
           </FlexCenter>
-          <TextField
-            id="detail"
-            select
-            label="Detail"
-            value={selectedDetail} // Control the TextField value with state
-            onChange={handleDetailChange} // Update state on change
-            // helperText="Please select a detail"
-            sx={{
-              color: theme.palette.secondary.light,
-              marginTop: 2,
-              marginLeft: 2,
-              display: "flex",
-              // justifyContent: "flex-start",
-              width: "10%",
-            }}
-          >
-            {transactionDetails.map((option, index) => (
-              <MenuItem key={`${option}-${index}`} value={option}>
-                {" "}
-                {/* Unique key by combining option and index */}
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-          <CustomLineChart detail={selectedDetail} />
+
+          <Box display="flex" flexDirection="row">
+            <TextField
+              id="estate"
+              select
+              label="Estate"
+              value={selectedEstate} // Control the TextField value with state
+              onChange={handleEstateChange} // Update state on change
+              // helperText="Please select a detail"
+              sx={{
+                color: theme.palette.secondary.light,
+                marginTop: 0,
+                marginLeft: 2,
+                display: "flex",
+                width: "10%",
+              }}
+            >
+              {estates.map((option, index) => (
+                <MenuItem key={`${option}-${index}`} value={option}>
+                  {" "}
+                  {/* Unique key by combining option and index */}
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="detail"
+              select
+              label="Detail"
+              value={selectedDetail} // Control the TextField value with state
+              onChange={handleDetailChange} // Update state on change
+              // helperText="Please select a detail"
+              sx={{
+                color: theme.palette.secondary.light,
+                marginTop: 0,
+                marginLeft: 2,
+                display: "flex",
+                // justifyContent: "flex-start",
+                width: "15%",
+              }}
+            >
+              {estateDetails.map((option, index) => (
+                <MenuItem key={`${option}-${index}`} value={option}>
+                  {" "}
+                  {/* Unique key by combining option and index */}
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+
+          <CustomLineChartEstates
+            estate={selectedEstate}
+            detail={selectedDetail}
+          />
         </Box>
       </Box>
     </Box>

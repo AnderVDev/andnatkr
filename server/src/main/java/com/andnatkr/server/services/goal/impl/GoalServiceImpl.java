@@ -49,6 +49,7 @@ public class GoalServiceImpl implements GoalService {
             Optional.ofNullable(inputEntity.getObjective()).ifPresent(existingInput::setObjective);
             Optional.ofNullable(inputEntity.getTarget()).ifPresent(existingInput::setTarget);
             Optional.ofNullable(inputEntity.getCurrent()).ifPresent(existingInput::setCurrent);
+            Optional.ofNullable(inputEntity.getType()).ifPresent(existingInput::setType);
             return repository.save(existingInput);
         }).orElseThrow(() -> new RuntimeException("Input Does not Exist"));
     }

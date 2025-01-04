@@ -180,3 +180,163 @@ export const financeTransactions = [
       user_id: "cde08541-13e8-43bc-b662-c349b0658421"
     },
   ];
+
+
+
+ export const realEstateTransactions = [
+    {
+      id: 1,
+      amount: 917644,
+      comments: "rent + warranty",
+      created_at: "2024-06-24T19:23:33.387",
+      detail: "Rent",
+      estate: 506,
+      finance_statement: "Income",
+      is_mortgage: false,
+      month: "December",
+      updated_at: "2024-06-24T19:29:04.336",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 2,
+      amount: 14699,
+      comments: "Gastos Comunes",
+      created_at: "2024-06-24T19:27:29.668",
+      detail: "Utilities",
+      estate: 506,
+      finance_statement: "Expense",
+      is_mortgage: false,
+      month: "November",
+      updated_at: "2024-06-24T19:27:29.668",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 3,
+      amount: 8426,
+      comments: "Gastos Comunes",
+      created_at: "2024-06-24T19:28:34.642",
+      detail: "Utilities",
+      estate: 619,
+      finance_statement: "Expense",
+      is_mortgage: false,
+      month: "November",
+      updated_at: "2024-06-24T19:29:16.863",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 4,
+      amount: 281988,
+      comments: null,
+      created_at: "2024-06-24T19:30:08.896",
+      detail: "Rent",
+      estate: 506,
+      finance_statement: "Income",
+      is_mortgage: false,
+      month: "January",
+      updated_at: "2024-06-24T19:30:08.896",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 5,
+      amount: 48987,
+      comments: "Gastos Comunes",
+      created_at: "2024-06-24T19:31:46.069",
+      detail: "Utilities",
+      estate: 619,
+      finance_statement: "Expense",
+      is_mortgage: false,
+      month: "December",
+      updated_at: "2024-06-24T19:31:46.069",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 8,
+      amount: 170000,
+      comments: "Half warranty",
+      created_at: "2024-06-24T19:35:54.589",
+      detail: "Rent",
+      estate: 619,
+      finance_statement: "Income",
+      is_mortgage: false,
+      month: "January",
+      updated_at: "2024-06-24T19:35:54.589",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 9,
+      amount: 225442,
+      comments: null,
+      created_at: "2024-06-24T19:36:55.345",
+      detail: "Rent",
+      estate: 619,
+      finance_statement: "Income",
+      is_mortgage: false,
+      month: "January",
+      updated_at: "2024-06-24T19:36:55.345",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 20,
+      amount: 1078387,
+      comments: "First Payment",
+      created_at: "2024-06-24T19:46:03.224",
+      detail: "Mortgage Payment, Installment#: 1",
+      estate: 506,
+      finance_statement: "Expense",
+      is_mortgage: true,
+      month: "July",
+      updated_at: "2024-06-24T19:46:03.224",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 21,
+      amount: 686758,
+      comments: "First Payment",
+      created_at: "2024-06-24T19:46:49.736",
+      detail: "Mortgage Payment, Installment#: 1",
+      estate: 619,
+      finance_statement: "Expense",
+      is_mortgage: true,
+      month: "July",
+      updated_at: "2024-06-24T19:46:49.736",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 22,
+      amount: 460600,
+      comments: null,
+      created_at: "2024-06-24T19:48:59.179",
+      detail: "Rent",
+      estate: 506,
+      finance_statement: "Income",
+      is_mortgage: false,
+      month: "August",
+      updated_at: "2024-06-24T19:48:59.179",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    },
+    {
+      id: 24,
+      amount: 613265,
+      comments: null,
+      created_at: "2024-06-24T19:52:13.52",
+      detail: "Mortgage Payment, Installment#: 2",
+      estate: 506,
+      finance_statement: "Expense",
+      is_mortgage: true,
+      month: "August",
+      updated_at: "2024-06-24T19:52:13.52",
+      year: 2024,
+      user_id: "cde08541-13e8-43bc-b662-c349b0652bf9"
+    }
+  ];
+  

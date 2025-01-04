@@ -137,7 +137,6 @@ const Dashboard = () => {
               Statement By Month
             </Typography>
           </FlexCenter>
-          
 
           <CustomPieChartStatementByMonth />
         </Box>
@@ -163,14 +162,14 @@ const Dashboard = () => {
               Detail By month
             </Typography>
           </FlexCenter>
-            <CustomPieChartDetailByMonth />
+          <CustomPieChartDetailByMonth />
         </Box>
 
         <Box
           mt="20px"
           display="grid"
           gridColumn="span 12"
-          gridRow="span 4"
+          gridRow="span 3"
           bgcolor={theme.palette.background.alt}
           borderRadius="0.55rem"
           sx={{
@@ -196,7 +195,7 @@ const Dashboard = () => {
             // helperText="Please select a detail"
             sx={{
               color: theme.palette.secondary.light,
-              marginTop: 2,
+              marginTop: 0,
               marginLeft: 2,
               display: "flex",
               // justifyContent: "flex-start",
@@ -213,6 +212,7 @@ const Dashboard = () => {
           </TextField>
           <CustomLineChart detail={selectedDetail} />
         </Box>
+
       </Box>
     </Box>
   );

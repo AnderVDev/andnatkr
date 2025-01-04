@@ -1,4 +1,4 @@
-// import { useGetTransactionQuery } from "../../../state/api";
+import { useGetActivitiesQuery } from "../../../state/api";
 import { flatten } from "flat";
 import {
   accumulatorByTotalAmount,
@@ -10,9 +10,10 @@ import {
   dataByUser,
 } from "../../../utilitiesByUser";
 import { useEffect, useState } from "react";
-import { financeTransactions } from "../datasets/dataset_Fake";
+// import { financeTransactions } from "../datasets/dataset_Fake";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../state/store";
+
 // Define types based on the expected data structure
 // interface TransactionData {
 //   financeStatement: {
@@ -55,16 +56,14 @@ type Total12MonthsByDetail = {
 };
 
 export function useActivitiesByUser() {
-  // const { data, isLoading, error } = useGetTransactionQuery({});
-  const data = financeTransactions;
+  const { data, isLoading, error } = useGetActivitiesQuery({});
+  // const data = financeTransactions;
 
   const persisted = useSelector((state: RootState) => state.persisted);
   const { user } = persisted;
   const id = user ? user.id : "";
 
-  console.log({id})
-
-
+  // console.log({ id });
 
   const [totalIncomes, setTotalIncomes] = useState<number>(0);
   const [totalExpenses, setTotalExpenses] = useState<number>(0);
@@ -86,15 +85,13 @@ export function useActivitiesByUser() {
   >([]);
 
   useEffect(() => {
-    // if (!isLoading && data) {
-    if (data) {
+    if (!isLoading && data && id) {
+      // if (data) {
       try {
         // Flatten data
         const flattenedData = data.map((item: unknown) => flatten(item));
-        // const currentUserData = dataByUser(flattenedData, id)
-        const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0652bf9")
-        // const currentUserData = dataByUser(flattenedData, "cde08541-13e8-43bc-b662-c349b0658421")
-        console.log({currentUserData})
+        const currentUserData = dataByUser(flattenedData, id);
+
         // Calculate totals
         const totalIncomesCalculated = accumulatorByTotalAmount(
           currentUserData,
@@ -109,15 +106,17 @@ export function useActivitiesByUser() {
         const totalStatementsByMonthCalculated =
           accumulatorTotalStatementsByMonth(currentUserData) as Transaction[];
 
-        const totalDetailsByMonthCalculated =
-        accumulatorTotalDetailsByMonth(currentUserData) as TotalDetailsByMonth[];
+        const totalDetailsByMonthCalculated = accumulatorTotalDetailsByMonth(
+          currentUserData
+        ) as TotalDetailsByMonth[];
 
         const totalExpensesByDetailCalculated =
           accumulatorTotalExpensesByDetailGrouped(
             currentUserData
           ) as ExpenseDetail[];
 
-        const totals12MonthsCalculated = accumulatorLast12Months(currentUserData);
+        const totals12MonthsCalculated =
+          accumulatorLast12Months(currentUserData);
 
         const totals12MonthsByDetailCalculated =
           accumulatorLast12MonthsByDetail(currentUserData);
@@ -138,9 +137,18 @@ export function useActivitiesByUser() {
         setTotalExpensesByDetail([]);
       }
     }
-  }, [data]);
-  // }, [data, isLoading]);
+    // }, [data]);
+  }, [data, id, isLoading]);
 
+  // return {
+  //   totalIncomes,
+  //   totalExpenses,
+  //   totalStatementsByMonth,
+  //   totalDetailsByMonth,
+  //   total12Months,
+  //   totalExpensesByDetail,
+  //   total12MonthsByDetail,
+  // };
   return {
     totalIncomes,
     totalExpenses,
@@ -149,6 +157,7 @@ export function useActivitiesByUser() {
     total12Months,
     totalExpensesByDetail,
     total12MonthsByDetail,
+    isLoading,
+    error,
   };
-  // return { totalIncomes, totalExpenses,totalStatementsByMonth, totalDetailsByMonth, total12Months, totalExpensesByDetail,total12MonthsByDetail, isLoading, error };
 }
