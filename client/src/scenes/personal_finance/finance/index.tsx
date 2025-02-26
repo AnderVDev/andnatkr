@@ -3,12 +3,15 @@ import Header from "../../../components/Header";
 import FlexBetween from "../../../components/FlexBetween";
 import StatBox from "../../../components/StatBox";
 import {
+  AccountBalanceOutlined,
   AccountBalanceWalletOutlined,
   PaidOutlined,
   PaymentsOutlined,
+  SavingsOutlined,
 } from "@mui/icons-material";
 import numeral from "numeral";
 import {
+  accumulatorByTotalAmount,
   accumulatorCurrentMonthByStatement,
   accumulatorPreviousMonthByStatement,
 } from "../../../utility";
@@ -39,6 +42,8 @@ const Finance = () => {
   const flattenedData = data ? data.map((item: JSON) => flatten(item)) : [];
 
   // console.log({ flattenedData });
+  
+    //Total data
 
 
   const currentUserData = dataByUser(flattenedData, id);
@@ -47,7 +52,29 @@ const Finance = () => {
   //   "cde08541-13e8-43bc-b662-c349b0652bf9"
   // );
 
+  const totalIncomes = accumulatorByTotalAmount(
+    currentUserData,
+    "financeStatement",
+    "Income"
+  );
+  const totalExpenses = accumulatorByTotalAmount(
+    currentUserData,
+    "financeStatement",
+    "Expense"
+  );
+  const totalSavings = accumulatorByTotalAmount(
+    currentUserData,
+    "detail",
+    "Saving"
+  );
+  const totalBalance = totalIncomes - totalExpenses;
+
+
+
+
+
   //Current Month data
+  
   const incomesByCurrentMonth = accumulatorCurrentMonthByStatement(
     currentUserData,
     "Income"
@@ -104,6 +131,39 @@ const Finance = () => {
       >
         {/* ROW 1 */}
         <StatBox
+          span="3"
+          title="Total Balance"
+          value={numeral(totalBalance).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="3"
+          title="Total Savings"
+          value={numeral(totalSavings).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="3"
+          title="Total Incomes"
+          value={numeral(totalIncomes).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="3"
+          title="Total Expenses"
+          value={numeral(totalExpenses).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
+        />
+        {/* ROW 2 */}
+        <StatBox
           span="4"
           title="Balance"
           value={numeral(balanceByCurrentMonth).format("0,0.00")}
@@ -129,7 +189,7 @@ const Finance = () => {
           icon={<PaymentsOutlined sx={{ fontSize: "26px" }} />}
         />
 
-        {/* Row 2 */}
+        {/* Row 3 */}
 
         <SavingPersonalGrid />
 
