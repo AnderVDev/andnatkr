@@ -68,6 +68,7 @@ const Finance = () => {
     "Saving"
   );
   const totalBalance = totalIncomes - totalExpenses;
+  const totalAccount =  totalBalance + totalSavings;
 
 
 
@@ -132,14 +133,22 @@ const Finance = () => {
         {/* ROW 1 */}
         <StatBox
           span="3"
-          title="Total Balance"
-          value={numeral(totalBalance).format("0,0.00")}
+          title="Total Account"
+          value={numeral(totalAccount).format("0,0.00")}
           increase=""
           description=""
           icon={<AccountBalanceOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
           span="3"
+          title="Total Balance"
+          value={numeral(totalBalance).format("0,0.00")}
+          increase=""
+          description=""
+          icon={<AccountBalanceWalletOutlined sx={{ fontSize: "26px" }} />}
+        />
+        <StatBox
+          span="2"
           title="Total Savings"
           value={numeral(totalSavings).format("0,0.00")}
           increase=""
@@ -147,7 +156,7 @@ const Finance = () => {
           icon={<SavingsOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
+          span="2"
           title="Total Incomes"
           value={numeral(totalIncomes).format("0,0.00")}
           increase=""
@@ -155,7 +164,7 @@ const Finance = () => {
           icon={<PaidOutlined sx={{ fontSize: "26px" }} />}
         />
         <StatBox
-          span="3"
+          span="2"
           title="Total Expenses"
           value={numeral(totalExpenses).format("0,0.00")}
           increase=""
